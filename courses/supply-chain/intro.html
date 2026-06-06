@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1期：机票酒店供应链入门 | AI+出行创业培训</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0d47a1; --primary-light: #1976d2; --accent: #00bcd4;
+  --secondary: #ff6d00; --success: #2e7d32; --warning: #f9a825;
+  --dark: #1a1a2e; --light: #f5f7fa; --gray: #78909c;
+  --gradient-1: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #00bcd4 100%);
+  --gradient-2: linear-gradient(135deg, #ff6d00 0%, #ffca28 100%);
+  --shadow: 0 8px 32px rgba(13,71,161,.12);
+  --shadow-lg: 0 16px 48px rgba(13,71,161,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--light);color:#333;overflow:hidden;height:100vh}
+
+/* Slide Container */
+.slide-container{position:relative;width:100%;height:100vh;overflow:hidden}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:all .5s ease;transform:translateX(100px);display:flex;flex-direction:column}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0)}
+.slide.prev{opacity:0;visibility:hidden;transform:translateX(-100px)}
+
+/* Slide Content */
+.slide-content{flex:1;overflow-y:auto;padding:60px 40px 40px;max-width:1200px;margin:0 auto;width:100%}
+.slide-content::-webkit-scrollbar{width:6px}
+.slide-content::-webkit-scrollbar-thumb{background:var(--primary-light);border-radius:3px}
+
+/* Top Bar */
+.top-bar{position:fixed;top:0;left:0;right:0;height:50px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.top-bar-title{font-size:.9rem;font-weight:700;color:var(--primary)}
+.top-bar-progress{display:flex;align-items:center;gap:12px}
+.progress-text{font-size:.75rem;color:var(--gray)}
+.progress-track{width:160px;height:6px;background:#e3f2fd;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--gradient-1);border-radius:3px;transition:width .3s}
+
+/* Navigation */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:60px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 24px;border-radius:30px;border:none;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .3s;font-family:inherit}
+.nav-btn-primary{background:var(--gradient-1);color:#fff;box-shadow:0 4px 16px rgba(13,71,161,.25)}
+.nav-btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,71,161,.35)}
+.nav-btn-secondary{background:#e3f2fd;color:var(--primary)}
+.nav-btn-secondary:hover{background:#bbdefb}
+.nav-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.slide-dots{display:flex;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#cfd8dc;cursor:pointer;transition:all .3s}
+.dot.active{width:24px;border-radius:4px;background:var(--primary-light)}
+
+/* Typography */
+h1.slide-title{font-size:2.4rem;font-weight:900;color:var(--dark);margin-bottom:12px;line-height:1.3}
+h1.slide-title span{background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.section-title{font-size:1.6rem;font-weight:800;color:var(--dark);margin:32px 0 16px;display:flex;align-items:center;gap:10px}
+h2.section-title .num{width:36px;height:36px;border-radius:50%;background:var(--gradient-1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.lead{font-size:1.15rem;color:var(--gray);line-height:1.8;margin-bottom:24px}
+p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:20px 0}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:var(--shadow);transition:all .3s;border:1px solid #e8eaf6}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--primary-light)}
+.card-icon{width:48px;height:48px;border-radius:12px;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px;color:#fff}
+.card h4{font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:8px}
+.card p{font-size:.85rem;color:var(--gray);margin:0;line-height:1.7}
+.card-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600;margin-top:10px;background:#e3f2fd;color:var(--primary)}
+
+/* Flow Diagram */
+.flow-box{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:24px 0;padding:20px;background:#fff;border-radius:16px;box-shadow:var(--shadow)}
+.flow-item{padding:10px 18px;border-radius:10px;font-size:.85rem;font-weight:600;text-align:center;min-width:100px}
+.flow-item.blue{background:#e3f2fd;color:var(--primary);border:2px solid #bbdefb}
+.flow-item.green{background:#e8f5e9;color:var(--success);border:2px solid #a5d6a7}
+.flow-item.orange{background:#fff3e0;color:var(--secondary);border:2px solid #ffcc80}
+.flow-item.purple{background:#f3e5f5;color:#7b1fa2;border:2px solid #ce93d8}
+.flow-arrow{font-size:1.4rem;color:var(--gray)}
+
+/* Definition Box */
+.def-box{background:linear-gradient(135deg,#e3f2fd 0%,#f3e5f5 100%);border-radius:16px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--primary)}
+.def-box h5{font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.def-box p{font-size:.85rem;color:#455a64;margin:0}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin:16px 0;font-size:.85rem}
+.data-table th,.data-table td{padding:12px 16px;text-align:left;border-bottom:1px solid #eceff1}
+.data-table th{background:var(--gradient-1);color:#fff;font-weight:600;font-size:.8rem}
+.data-table tr:hover{background:#f5f7fa}
+.data-table td{color:#455a64}
+
+/* Quiz */
+.quiz-box{background:#fff;border-radius:16px;padding:24px;box-shadow:var(--shadow);margin:20px 0}
+.quiz-question{font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:16px}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-option{padding:12px 16px;border-radius:10px;border:2px solid #e8eaf6;cursor:pointer;transition:all .2s;font-size:.9rem;display:flex;align-items:center;gap:10px}
+.quiz-option:hover{border-color:var(--primary-light);background:#e3f2fd}
+.quiz-option.selected{border-color:var(--primary);background:#e3f2fd}
+.quiz-option.correct{border-color:var(--success);background:#e8f5e9}
+.quiz-option.wrong{border-color:#c62828;background:#ffebee}
+.quiz-option .opt-letter{width:28px;height:28px;border-radius:50%;background:#eceff1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+.quiz-option.correct .opt-letter{background:var(--success);color:#fff}
+.quiz-option.wrong .opt-letter{background:#c62828;color:#fff}
+.quiz-result{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:.9rem;font-weight:600;display:none}
+.quiz-result.show{display:block}
+.quiz-result.correct{background:#e8f5e9;color:var(--success)}
+.quiz-result.wrong{background:#ffebee;color:#c62828}
+
+/* Highlight Box */
+.tip-box{background:linear-gradient(135deg,#fff8e1 0%,#fff3e0 100%);border-radius:16px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--warning);display:flex;gap:14px;align-items:flex-start}
+.tip-box .tip-icon{font-size:1.6rem;flex-shrink:0}
+.tip-box h5{font-size:.9rem;font-weight:700;color:var(--secondary);margin-bottom:6px}
+.tip-box p{font-size:.85rem;color:#5d4037;margin:0}
+
+/* Hero slide */
+.hero-slide{display:flex;align-items:center;justify-content:center;text-align:center;background:var(--dark);position:relative;overflow:hidden}
+.hero-slide::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(13,71,161,.2),transparent 60%),radial-gradient(circle at 70% 80%,rgba(0,188,212,.1),transparent 50%)}
+.hero-slide .slide-content{position:relative;z-index:2}
+.hero-slide h1{color:#fff;font-size:3rem;margin-bottom:16px}
+.hero-slide h1 span{background:var(--gradient-2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-slide .lead{color:rgba(255,255,255,.7);font-size:1.2rem;margin-bottom:32px}
+.hero-badges{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.hero-badge{padding:8px 20px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.85rem;font-weight:500}
+.hero-stat-row{display:flex;justify-content:center;gap:48px;margin-top:40px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-size:2.4rem;font-weight:900;color:#fff;line-height:1}
+.hero-stat-num span{font-size:1.2rem;color:var(--accent)}
+.hero-stat-label{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:6px}
+
+/* Section divider */
+.section-divider{width:50px;height:4px;background:var(--gradient-1);border-radius:2px;margin:16px 0}
+
+/* Two column */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){
+  .two-col{grid-template-columns:1fr}
+  .slide-content{padding:60px 20px 80px}
+  h1.slide-title{font-size:1.8rem}
+  .hero-slide h1{font-size:2rem}
+  .flow-box{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg)}
+  .nav-btn{padding:8px 16px;font-size:.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- Slide 0: Cover -->
+<div class="slide hero-slide active" data-index="0">
+  <div class="slide-content">
+    <div class="hero-badge">🚀 AI+出行创业培训系列</div>
+    <h1>第1期：机票酒店<br><span>供应链入门</span></h1>
+    <p class="lead" style="max-width:600px;margin:0 auto 32px">从0到1理解出行行业的"货源"逻辑，掌握机票酒店供应链的核心骨架与关键术语</p>
+    <div class="hero-badges">
+      <span class="hero-badge">📦 供应链全景</span>
+      <span class="hero-badge">✈️ 机票分销链</span>
+      <span class="hero-badge">🏨 酒店分销链</span>
+      <span class="hero-badge">🤖 AI+供应链</span>
+    </div>
+    <div class="hero-stat-row">
+      <div class="hero-stat"><div class="hero-stat-num">3<span>期</span></div><div class="hero-stat-label">培训体系</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">60+<span>分钟</span></div><div class="hero-stat-label">本期内容</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">0<span>基础</span></div><div class="hero-stat-label">小白友好</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 1: Why Supply Chain -->
+<div class="slide" data-index="1">
+  <div class="slide-content">
+    <h1 class="slide-title">为什么创业要从<span>供应链</span>切入？</h1>
+    <div class="section-divider"></div>
+    <p class="lead">在AI+出行领域，技术可以复制、流量可以购买，但<strong>优质的供应链壁垒</strong>才是长期护城河。</p>
+    
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <h4>利润池在供应链</h4>
+        <p>机票酒店产品的价差、佣金、返点，是出行平台90%以上的收入来源。没有好货源，流量无法变现。</p>
+        <span class="card-tag">核心认知</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h4>供应链=护城河</h4>
+        <p>优质的独家协议价、稳定库存、快速确认能力，用户感知最直接，竞品最难复制。</p>
+        <span class="card-tag">竞争壁垒</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h4>AI的最佳落地场景</h4>
+        <p>AI在动态定价、库存预测、智能采购、自动化客服等供应链环节有最直接的商业价值。</p>
+        <span class="card-tag">AI赋能</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h4>行业仍在数字化</h4>
+        <p>大量中小酒店和机票代理尚未数字化，新入场者有机会用AI工具弯道超车，整合分散资源。</p>
+        <span class="card-tag">窗口期</span>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div>
+        <h5>创业者第一课</h5>
+        <p>不要一上来就做"平台"。先有货（供应链），再找人（流量），最后用AI提效——这是出行创业最稳妥的路径。携程、Booking Holdings的成功本质都是"供应链驱动"。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: Airline Supply Chain Overview -->
+<div class="slide" data-index="2">
+  <div class="slide-content">
+    <h1 class="slide-title">机票供应链<span>全景图</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">一张图看懂：从你买机票到航空公司收钱的完整链条，中间到底经过了多少个环节？</p>
+
+    <h2 class="section-title"><span class="num">1</span>机票分销链条</h2>
+    <div class="flow-box">
+      <div class="flow-item blue">航空公司<br><small>Airline</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item purple">GDS全球分销系统<br><small>Amadeus/Sabre/TravelSky</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item green">代理人/OTA/旅行社<br><small>销售终端</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item orange">旅客<br><small>消费者</small></div>
+    </div>
+    <p>以上是<strong>传统分销链</strong>。实际情况中，中间层更加复杂：</p>
+    <div class="flow-box">
+      <div class="flow-item blue">航司</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item purple">GDS</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item green">批发商/包机商</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item green">一级代理人</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item green">二级代理人/OTA</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item orange">旅客</div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>结算体系：钱怎么流转？</h2>
+    <div class="two-col">
+      <div>
+        <div class="def-box">
+          <h5>📌 BSP（开账与结算计划）</h5>
+          <p>国际航协(IATA)管理的标准化结算系统。代理人销售机票后，通过BSP定期与航司结算。中国由"中国BSP"管理。</p>
+        </div>
+        <div class="def-box">
+          <h5>📌 ARC（航空公司报告公司）</h5>
+          <p>美国的机票结算系统，功能类似BSP但仅覆盖美国和部分美洲地区。</p>
+        </div>
+      </div>
+      <div>
+        <div class="def-box">
+          <h5>📌 IATA资质</h5>
+          <p>国际航协认证的代理人资质。拥有IATA资质才能直接与航司/GDS对接，参与BSP结算。是机票代理的"营业执照"。</p>
+        </div>
+        <div class="def-box">
+          <h5>📌 黑屏/白屏系统</h5>
+          <p>黑屏：代理人使用的专业GDS终端（如Eterm），命令行界面；白屏：面向消费者的OTA网站/APP，图形化界面。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Airline Key Concepts -->
+<div class="slide" data-index="3">
+  <div class="slide-content">
+    <h1 class="slide-title">机票供应链<span>核心术语</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">不懂这些词，连供应商在说什么都听不懂。这12个术语是机票供应链的"普通话"。</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th style="width:22%">术语</th><th style="width:28%">英文/缩写</th><th>通俗解释</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>GDS</strong></td><td>Global Distribution System</td><td>全球分销系统，机票库存的"中央数据库"。三大GDS：Amadeus（欧洲）、Sabre（美国）、TravelSky中航信（中国）</td></tr>
+        <tr><td><strong>NDC</strong></td><td>New Distribution Capability</td><td>国际航协推出的新分销标准，让航司绕过GDS直接向OTA/代理人提供产品和价格，打破GDS垄断</td></tr>
+        <tr><td><strong>舱位/舱等</strong></td><td>Class of Service</td><td>F=头等舱、C=商务舱、Y=经济舱。舱位代码决定票价规则、退改政策和里程累积</td></tr>
+        <tr><td><strong>运价</strong></td><td>Fare Basis</td><td>机票的"定价规则书"，包含舱位、有效期、退改条件、最短停留期等，用字母组合表示（如YVR）</td></tr>
+        <tr><td><strong>净价/裸价</strong></td><td>Net Fare</td><td>不含税的机票底价，代理人/批发商从航司拿到的真实成本价</td></tr>
+        <tr><td><strong>公布运价</strong></td><td>Published Fare</td><td>航司公开销售的运价，所有人都能看到</td></tr>
+        <tr><td><strong>私有运价</strong></td><td>Private Fare/Negotiated Fare</td><td>航司与特定代理/企业客户私下协议的折扣运价，不公开</td></tr>
+        <tr><td><strong>返点/后返</strong></td><td>Commission/Override</td><td>航司或批发商按销售额的一定比例返还给代理人的利润，是机票代理的核心收入来源</td></tr>
+        <tr><td><strong>订票编码</strong></td><td>PNR</td><td>Passenger Name Record，旅客订座记录，6位字母数字代码（如ABC123），是机票订单的唯一标识</td></tr>
+        <tr><td><strong>出票时限</strong></td><td>Ticketing Time Limit (TTL)</td><td>订座后必须在规定时间内出票，否则座位会被取消</td></tr>
+        <tr><td><strong>航班保护</strong></td><td>Flight Protection</td><td>航班取消/延误时，航司将旅客自动安排到其他航班的机制</td></tr>
+        <tr><td><strong>代码共享</strong></td><td>Code Share</td><td>一家航司的航班使用另一家航司的航班号销售，扩大航线网络覆盖</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="tip-icon">🎯</div>
+      <div>
+        <h5>重点记忆</h5>
+        <p>对创业者来说，最重要的三个概念是：<strong>净价</strong>（你的成本）、<strong>私有运价</strong>（你的竞争力来源）、<strong>返点</strong>（你的利润来源）。GDS和NDC是技术基础，了解即可。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Airline Product Types -->
+<div class="slide" data-index="4">
+  <div class="slide-content">
+    <h1 class="slide-title">机票产品的<span>6种形态</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">同一个座位，根据不同的包装方式和销售渠道，可以卖出完全不同的价格和利润。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">1</div>
+        <h4>散客票（Published）</h4>
+        <p>航司官网和OTA上公开销售的散客票。价格透明但利润空间小，通常返点1-3%或零佣金。</p>
+        <span class="card-tag">利润空间：⭐</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">2</div>
+        <h4>团队票（Group Fare）</h4>
+        <p>10人以上的团队预订，可申请比散客更低的团队价格。适合旅行社和企业客户，利润空间5-15%。</p>
+        <span class="card-tag">利润空间：⭐⭐⭐</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">3</div>
+        <h4>包机/切位（Charter/Block Space）</h4>
+        <p>代理人提前向航司包下整条航线或部分座位，自主定价销售。高风险高回报，利润可达20-50%。</p>
+        <span class="card-tag">利润空间：⭐⭐⭐⭐⭐</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">4</div>
+        <h4>协议价/企业价（Corporate）</h4>
+        <p>航司与大企业签订的年度差旅协议价。需要BD能力开拓企业客户，利润稳定但账期较长。</p>
+        <span class="card-tag">利润空间：⭐⭐⭐</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">5</div>
+        <h4>积分/里程票（Award Ticket）</h4>
+        <p>用航空里程兑换的免票或升舱。需要积累大量里程资源，卖给价格敏感旅客，利润空间大但操作复杂。</p>
+        <span class="card-tag">利润空间：⭐⭐⭐⭐</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">6</div>
+        <h4>辅营产品（Ancillary）</h4>
+        <p>行李额、选座、餐食、贵宾厅、保险等非机票收入。边际成本极低，利润率50%+，是OTA新增长点。</p>
+        <span class="card-tag">利润空间：⭐⭐⭐⭐⭐</span>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-icon">💰</div>
+      <div>
+        <h5>创业者的产品组合策略</h5>
+        <p>初期以<strong>散客票</strong>走量建立用户信任，中期用<strong>团队票+协议价</strong>打开企业客户市场，后期通过<strong>包机切位+辅营产品</strong>获取超额利润。积分票是"灰色地带"，不建议正规创业公司涉及。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: Hotel Supply Chain -->
+<div class="slide" data-index="5">
+  <div class="slide-content">
+    <h1 class="slide-title">酒店供应链<span>全景图</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">酒店分销比机票更复杂：库存单位多（每间房每晚都是独立SKU）、价格策略灵活、直连技术门槛高。</p>
+
+    <h2 class="section-title"><span class="num">1</span>酒店分销链条</h2>
+    <div class="flow-box">
+      <div class="flow-item blue">酒店/集团<br><small>Property/Chain</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item purple">直连PMS/CRS<br><small>物业管理系统</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item green">批发商/B2B平台<br><small>Hotelbeds/EXP TAAP</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item green">OTA/代理人<br><small>销售终端</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item orange">旅客<br><small>消费者</small></div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>酒店库存的特殊性</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <h4>时间敏感性</h4>
+        <p> tonight卖不出去的房间，今晚之后就永远失去了价值。"过期作废"特性比机票更极端。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏨</div>
+        <h4>库存碎片化</h4>
+        <p>每个酒店的每间房每晚都是独立SKU。管理1000家酒店×100间房×365天=3650万个库存单元。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💵</div>
+        <h4>价格动态化</h4>
+        <p>同一间房的价格可能每小时变化，受入住率、节假日、竞品价格、需求预测等多因素影响。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h4>直连复杂性</h4>
+        <p>需要与酒店PMS（如Opera、西软、绿云）或集团CRS对接，协议和数据格式各异。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: Hotel Key Concepts -->
+<div class="slide" data-index="6">
+  <div class="slide-content">
+    <h1 class="slide-title">酒店供应链<span>核心术语</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">酒店行业有独立的一套语言体系。搞懂这些词，才能和酒店销售/收益总监"对等交流"。</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th style="width:22%">术语</th><th style="width:28%">英文/缩写</th><th>通俗解释</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ADR</strong></td><td>Average Daily Rate</td><td>已售客房的平均房价 = 客房总收入 ÷ 已售客房数。衡量酒店定价水平的核心指标</td></tr>
+        <tr><td><strong>OCC</strong></td><td>Occupancy Rate</td><td>入住率 = 已售客房数 ÷ 可售客房总数。通常用百分比表示，旺季可达90%+</td></tr>
+        <tr><td><strong>RevPAR</strong></td><td>Revenue per Available Room</td><td>每间可售房收入 = ADR × OCC。酒店行业最重要的收益指标，综合反映定价和 occupancy</td></tr>
+        <tr><td><strong>PMS</strong></td><td>Property Management System</td><td>酒店物业管理系统，管理房态、预订、客人信息、收银等。常见：Opera、西软、绿云</td></tr>
+        <tr><td><strong>CRS</strong></td><td>Central Reservation System</td><td>中央预订系统，酒店集团用来统一管理旗下所有门店的房态和价格</td></tr>
+        <tr><td><strong>Channel Manager</strong></td><td>渠道管理器</td><td>帮助酒店同步管理多个OTA渠道房态和价格的工具（如STAAH、SiteMinder），避免超售</td></tr>
+        <tr><td><strong>BAR价</strong></td><td>Best Available Rate</td><td>酒店官方渠道公开的最优可卖价，通常是OTA展示价格的"天花板"</td></tr>
+        <tr><td><strong>净价/底价</strong></td><td>Net Rate</td><td>酒店给批发商/代理人的底价（不含佣金），代理人在此基础上加价销售</td></tr>
+        <tr><td><strong>佣金率</strong></td><td>Commission</td><td>OTA从酒店收取的佣金比例，通常为10-25%，Booking.com约15%，携程约10-15%</td></tr>
+        <tr><td><strong>预付/现付</strong></td><td>Prepaid/Postpaid</td><td>预付：客人先付款给OTA，OTA再结算给酒店；现付：客人到店付款，OTA收佣金</td></tr>
+        <tr><td><strong>保留房</strong></td><td>Allotment/Block</td><td>酒店提前"预留"给特定渠道/代理人的房间配额，卖不完可在截止日退回（Release）</td></tr>
+        <tr><td><strong>超售</strong></td><td>Overbooking</td><td>酒店卖出的房间数超过实际可售房间数，基于"no-show"概率的收益管理策略</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <div class="tip-icon">🧮</div>
+      <div>
+        <h5>核心公式（必背）</h5>
+        <p><strong>RevPAR = ADR × OCC</strong>。酒店收益总监每天看这个指标做决策。如果你能帮酒店提升RevPAR（比如带来更多订单、优化定价），你就有了谈判筹码。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Hotel Product Types -->
+<div class="slide" data-index="7">
+  <div class="slide-content">
+    <h1 class="slide-title">酒店产品的<span>5种形态</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">酒店产品可以从"房源类型"和"合作模式"两个维度来分类。不同的产品形态决定了你的利润空间和运营复杂度。</p>
+
+    <h2 class="section-title"><span class="num">1</span>按房源类型分类</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#42a5f5,#1976d2)">🏨</div>
+        <h4>标准酒店（Hotel）</h4>
+        <p>传统星级酒店、商务酒店、连锁酒店。标准化程度高，系统对接成熟，但佣金竞争激烈。</p>
+        <span class="card-tag">佣金：10-15%</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#66bb6a,#2e7d32)">🏠</div>
+        <h4>民宿/公寓（Alternative）</h4>
+        <p>Airbnb模式的民宿、服务式公寓、度假别墅。库存分散、标准化低，但利润空间大、增长快。</p>
+        <span class="card-tag">佣金：15-25%</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#ffa726,#ef6c00)">⛺</div>
+        <h4>特色住宿（Unique）</h4>
+        <p>树屋、船屋、帐篷营地、胶囊旅馆等。小众但溢价高，适合内容营销和差异化定位。</p>
+        <span class="card-tag">佣金：20-30%</span>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>按合作模式分类</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-1)">A</div>
+        <h4>代理模式（Agency）</h4>
+        <p>客人到店付款，OTA收取佣金。零库存风险，但现金流慢。Booking.com、携程传统模式。</p>
+        <span class="card-tag">风险：低 | 利润：中</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-1)">M</div>
+        <h4>批发商模式（Merchant）</h4>
+        <p>OTA以净价买断房间，自主定价销售。需承担库存风险，但利润空间大、现金流好。Expedia常用。</p>
+        <span class="card-tag">风险：高 | 利润：高</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-1)">D</div>
+        <h4>直销/托管（Direct）</h4>
+        <p>为酒店提供技术和流量服务，收取技术服务费。轻资产模式，但需要强技术能力。</p>
+        <span class="card-tag">风险：低 | 利润：稳定</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Industry Players -->
+<div class="slide" data-index="8">
+  <div class="slide-content">
+    <h1 class="slide-title">行业格局与<span>核心玩家</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">了解供应链"食物链"上的核心玩家，你才能找到自己的生态位和合作对象。</p>
+
+    <h2 class="section-title"><span class="num">1</span>机票供应链核心玩家</h2>
+    <table class="data-table">
+      <thead><tr><th>层级</th><th>代表企业</th><th>角色</th><th>创业者合作方式</th></tr></thead>
+      <tbody>
+        <tr><td>GDS层</td><td>TravelSky中航信、Amadeus、Sabre</td><td>机票库存中央数据库</td><td>通过代理人/技术商间接使用</td></tr>
+        <tr><td>航司层</td><td>国航、东航、南航、春秋、亚航</td><td>产品提供方</td><td>申请代理人资质、谈团队/协议价</td></tr>
+        <tr><td>批发商层</td><td>各大机票批发商、包机商</td><td>拥有私有运价和包机资源</td><td>成为下游代理，拿返点</td></tr>
+        <tr><td>技术商层</td><td>航班管家、飞常准、TravelFusion</td><td>提供API/搜索/出票技术</td><td>购买API服务，快速搭建系统</td></tr>
+        <tr><td>OTA层</td><td>携程、去哪儿、飞猪、同程</td><td>直面消费者的销售终端</td><td>既是竞争对手也是分销渠道</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title"><span class="num">2</span>酒店供应链核心玩家</h2>
+    <table class="data-table">
+      <thead><tr><th>层级</th><th>代表企业</th><th>角色</th><th>创业者合作方式</th></tr></thead>
+      <tbody>
+        <tr><td>酒店层</td><td>万豪、华住、锦江、亚朵、单体酒店</td><td>房源提供方</td><td>签约直连/批发协议</td></tr>
+        <tr><td>PMS层</td><td>Opera、西软、绿云、别样红</td><td>酒店管理系统的技术底座</td><td>通过PMS实现房态直连</td></tr>
+        <tr><td>批发商层</td><td>Hotelbeds、WebBeds、EXP TAAP</td><td>全球酒店B2B批发商</td><td>签约拿净价库存</td></tr>
+        <tr><td>渠道管理层</td><td>STAAH、SiteMinder、德比</td><td>酒店多渠道房态同步工具</td><td>了解即可，一般不与创业者直接合作</td></tr>
+        <tr><td>OTA层</td><td>Booking.com、携程、Expedia</td><td>直面消费者的销售终端</td><td>既是竞争对手也是分销渠道</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Slide 9: AI + Supply Chain -->
+<div class="slide" data-index="9">
+  <div class="slide-content">
+    <h1 class="slide-title">AI如何改变<span>供应链？</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">AI不是替代供应链，而是让供应链更智能、更高效。以下是AI在机票酒店供应链中最落地的6个应用场景。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#7c4dff,#512da8)">🤖</div>
+        <h4>智能定价（Dynamic Pricing）</h4>
+        <p>AI分析历史数据、竞品价格、需求预测、事件日历，自动调整酒店/机票售价。人工调价从"小时级"变为"分钟级"。</p>
+        <span class="card-tag">效率提升：10x</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#7c4dff,#512da8)">📊</div>
+        <h4>需求预测（Demand Forecasting）</h4>
+        <p>机器学习模型预测未来某航线/某酒店的预订量和价格趋势，指导采购决策（切位、包房）。降低库存积压风险。</p>
+        <span class="card-tag">准确率：85%+</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#7c4dff,#512da8)">🔍</div>
+        <h4>智能搜索与推荐</h4>
+        <p>自然语言处理（NLP）让用户用口语化方式搜索（"周末去海边，预算3000"），AI自动匹配最优机票+酒店组合。</p>
+        <span class="card-tag">转化率：+30%</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#7c4dff,#512da8)">📝</div>
+        <h4>自动化内容生成</h4>
+        <p>ChatGPT/GPT-4自动生成酒店描述、目的地攻略、营销文案。一个运营人员可以管理过去5个人的工作量。</p>
+        <span class="card-tag">人效提升：5x</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#7c4dff,#512da8)">⚙️</div>
+        <h4>RPA流程自动化</h4>
+        <p>机器人自动完成订单录入、对账、发票处理、退改申请等重复性操作。减少人工错误，7×24小时运行。</p>
+        <span class="card-tag">成本降低：60%</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:linear-gradient(135deg,#7c4dff,#512da8)">💬</div>
+        <h4>智能客服（AI Agent）</h4>
+        <p>大模型驱动的客服Agent处理80%的常规咨询（退改、订单查询、政策说明）。复杂问题再转人工。</p>
+        <span class="card-tag">响应时间：秒级</span>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-icon">🚀</div>
+      <div>
+        <h5>创业者的AI切入点</h5>
+        <p>作为初创团队，不需要自研大模型。<strong>最务实的路径</strong>是：用ChatGPT API做内容生成和客服，用开源模型做需求预测，用RPA工具做流程自动化。核心能力仍然是<strong>供应链整合</strong>，AI是放大器。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: Quiz -->
+<div class="slide" data-index="10">
+  <div class="slide-content">
+    <h1 class="slide-title">第1期知识<span>小测验</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">5道题检验你是否掌握了本期核心概念。答对3道以上就可以进入第2期学习！</p>
+
+    <div class="quiz-box" data-q="1">
+      <div class="quiz-question">1. GDS在机票供应链中扮演什么角色？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">A</span>航空公司总部</div>
+        <div class="quiz-option" data-correct="true"><span class="opt-letter">B</span>机票库存的中央数据库和分销平台</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">C</span>机场值机系统</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">D</span>旅客安检系统</div>
+      </div>
+      <div class="quiz-result correct">✅ 正确！GDS（全球分销系统）是连接航空公司和销售终端的中央库存数据库。</div>
+      <div class="quiz-result wrong">❌ 不正确。GDS是Global Distribution System，即全球分销系统，是机票库存的中央数据库。</div>
+    </div>
+
+    <div class="quiz-box" data-q="2">
+      <div class="quiz-question">2. 酒店行业最重要的收益指标是什么？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">A</span>ADR（平均房价）</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">B</span>OCC（入住率）</div>
+        <div class="quiz-option" data-correct="true"><span class="opt-letter">C</span>RevPAR（每间可售房收入）</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">D</span>GOP（营业毛利）</div>
+      </div>
+      <div class="quiz-result correct">✅ 正确！RevPAR = ADR × OCC，综合反映了酒店的定价能力和 occupancy 水平。</div>
+      <div class="quiz-result wrong">❌ 不正确。RevPAR（Revenue per Available Room）才是酒店行业最核心的收益指标。</div>
+    </div>
+
+    <div class="quiz-box" data-q="3">
+      <div class="quiz-question">3. 以下哪种机票产品利润空间最大？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">A</span>散客票（Published Fare）</div>
+        <div class="quiz-option" data-correct="true"><span class="opt-letter">B</span>包机/切位（Charter/Block Space）</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">C</span>团队票（Group Fare）</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">D</span>协议价（Corporate）</div>
+      </div>
+      <div class="quiz-result correct">✅ 正确！包机/切位是代理人买断座位自主定价，利润可达20-50%，但风险也最高。</div>
+      <div class="quiz-result wrong">❌ 不正确。包机/切位（Charter/Block Space）是利润空间最大的机票产品形态。</div>
+    </div>
+
+    <div class="quiz-box" data-q="4">
+      <div class="quiz-question">4. NDC是什么？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">A</span>新的航空公司名称</div>
+        <div class="quiz-option" data-correct="true"><span class="opt-letter">B</span>航司绕过GDS直接向销售终端提供产品的技术标准</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">C</span>一种机票舱位等级</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">D</span>机场导航系统的缩写</div>
+      </div>
+      <div class="quiz-result correct">✅ 正确！NDC（New Distribution Capability）是IATA推出的新标准，让航司可以绕过GDS直接向OTA/代理人提供产品和服务。</div>
+      <div class="quiz-result wrong">❌ 不正确。NDC是New Distribution Capability，是航司绕过GDS直接分销的技术标准。</div>
+    </div>
+
+    <div class="quiz-box" data-q="5">
+      <div class="quiz-question">5. 酒店渠道管理器（Channel Manager）的主要作用是什么？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">A</span>管理酒店内部员工排班</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">B</span>控制酒店空调温度</div>
+        <div class="quiz-option" data-correct="true"><span class="opt-letter">C</span>同步多个OTA渠道的房态和价格，避免超售</div>
+        <div class="quiz-option" data-correct="false"><span class="opt-letter">D</span>管理酒店餐饮菜单</div>
+      </div>
+      <div class="quiz-result correct">✅ 正确！Channel Manager帮助酒店将房态和价格同步到多个OTA渠道，避免超售和价格战。</div>
+      <div class="quiz-result wrong">❌ 不正确。Channel Manager的核心作用是同步多个渠道的房态和价格，避免超售。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: Summary -->
+<div class="slide" data-index="11">
+  <div class="slide-content">
+    <h1 class="slide-title">第1期<span>学习总结</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">恭喜你完成了供应链入门课程！以下是你应该带走的核心认知：</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h4>认知1：供应链=利润池</h4>
+        <p>机票酒店的价差、佣金、返点是出行平台的核心收入来源。流量靠买，供应链靠建。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h4>认知2：机票分销链</h4>
+        <p>航司 → GDS → 代理人/OTA → 消费者。GDS是中央数据库，BSP是结算系统，IATA是准入资质。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h4>认知3：酒店分销链</h4>
+        <p>酒店 → PMS/CRS → 批发商 → OTA → 消费者。ADR×OCC=RevPAR是核心公式。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h4>认知4：产品是利润杠杆</h4>
+        <p>包机/切位利润最高（20-50%），民宿佣金率最高（15-25%），辅营产品边际利润最高（50%+）。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h4>认知5：AI是放大器</h4>
+        <p>智能定价、需求预测、内容生成、RPA自动化、智能客服是AI在供应链中最落地的6个场景。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h4>下期预告：供应链开拓实战</h4>
+        <p>如何找到供应商？如何谈判签约？如何对接系统？如何定价？手把手教你从0开拓第一条供应链。</p>
+        <span class="card-tag">敬请期待</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a href="training_02_supply_chain_sales.html" class="nav-btn nav-btn-primary" style="text-decoration:none;display:inline-flex">
+        进入第2期：供应链开拓实战 →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="top-bar-title">🚀 AI+出行创业培训 · 第1期</div>
+  <div class="top-bar-progress">
+    <span class="progress-text" id="progressText">1 / 12</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:8%"></div></div>
+  </div>
+</div>
+
+<!-- Nav Bar -->
+<div class="nav-bar">
+  <button class="nav-btn nav-btn-secondary" id="prevBtn" onclick="prevSlide()">← 上一页</button>
+  <div class="slide-dots" id="slideDots"></div>
+  <button class="nav-btn nav-btn-primary" id="nextBtn" onclick="nextSlide()">下一页 →</button>
+</div>
+
+</div><!-- /slide-container -->
+
+<script>
+let currentSlide = 0;
+const totalSlides = 12;
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('slideDots');
+
+// Create dots
+for(let i=0;i<totalSlides;i++){
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.onclick = ()=>goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide(){
+  slides.forEach((slide,i)=>{
+    slide.classList.remove('active','prev');
+    if(i===currentSlide) slide.classList.add('active');
+    else if(i<currentSlide) slide.classList.add('prev');
+  });
+  document.querySelectorAll('.dot').forEach((dot,i)=>{
+    dot.classList.toggle('active',i===currentSlide);
+  });
+  document.getElementById('prevBtn').disabled = currentSlide===0;
+  document.getElementById('nextBtn').disabled = currentSlide===totalSlides-1;
+  document.getElementById('nextBtn').textContent = currentSlide===totalSlides-1?'已完成':'下一页 →';
+  document.getElementById('progressText').textContent = `${currentSlide+1} / ${totalSlides}`;
+  document.getElementById('progressFill').style.width = `${((currentSlide+1)/totalSlides*100)}%`;
+  window.scrollTo(0,0);
+}
+
+function nextSlide(){if(currentSlide<totalSlides-1){currentSlide++;updateSlide()}}
+function prevSlide(){if(currentSlide>0){currentSlide--;updateSlide()}}
+function goToSlide(n){currentSlide=n;updateSlide()}
+
+// Keyboard nav
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+});
+
+// Quiz logic
+document.querySelectorAll('.quiz-option').forEach(opt=>{
+  opt.addEventListener('click',function(){
+    const box = this.closest('.quiz-box');
+    if(box.querySelector('.quiz-option.selected')) return; // already answered
+    const isCorrect = this.dataset.correct==='true';
+    this.classList.add('selected', isCorrect?'correct':'wrong');
+    // mark all options
+    box.querySelectorAll('.quiz-option').forEach(o=>{
+      if(o.dataset.correct==='true') o.classList.add('correct');
+      o.style.pointerEvents = 'none';
+    });
+    // show result
+    const resultClass = isCorrect?'correct':'wrong';
+    box.querySelectorAll('.quiz-result').forEach(r=>r.classList.remove('show'));
+    box.querySelector('.quiz-result.'+resultClass).classList.add('show');
+  });
+});
+</script>
+<script src="/assets/js/nav-inject.js"></script>
+</body>
+</html>

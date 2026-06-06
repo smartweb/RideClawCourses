@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>携程集团20年商业演进深度分析</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2577e3;
+            --primary-dark: #1a5bb8;
+            --secondary: #ff6b35;
+            --accent: #00b4d8;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --gradient-1: linear-gradient(135deg, #2577e3 0%, #00b4d8 100%);
+            --gradient-2: linear-gradient(135deg, #ff6b35 0%, #ffc107 100%);
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #fafbfc;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+            padding-top: 70px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(37, 119, 227, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 180, 216, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.05) 0%, transparent 70%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: rgba(37, 119, 227, 0.2);
+            border: 1px solid rgba(37, 119, 227, 0.3);
+            border-radius: 50px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .hero-stat-number span {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 8px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: rgba(255,255,255,0.5);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-1);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .card-highlight {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0;
+        }
+
+        /* Charts */
+        .chart-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .bar {
+            width: 100%;
+            max-width: 50px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        .bar-label {
+            margin-top: 10px;
+            font-size: 0.75rem;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gradient-1);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            max-width: 450px;
+            position: relative;
+            margin-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 0;
+            margin-left: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 3px var(--primary);
+            z-index: 2;
+        }
+
+        .timeline-year {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--gradient-1);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .timeline-content p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Market Share */
+        .market-share {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .pie-chart {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .pie-chart svg {
+            transform: rotate(-90deg);
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .pie-center-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .pie-center-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+        }
+
+        .legend-text {
+            font-size: 0.95rem;
+        }
+
+        .legend-value {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Business Model */
+        .model-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .model-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-card::after {
+            content: attr(data-stage);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(37, 119, 227, 0.05);
+            line-height: 1;
+        }
+
+        .model-period {
+            display: inline-block;
+            padding: 5px 16px;
+            background: rgba(37, 119, 227, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .model-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .model-tagline {
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .model-features {
+            list-style: none;
+        }
+
+        .model-features li {
+            padding: 8px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .model-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: var(--dark);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table td {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .trend-up {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .trend-down {
+            color: #dc3545;
+            font-weight: 700;
+        }
+
+        /* Quote */
+        .quote-section {
+            background: var(--dark);
+            border-radius: 24px;
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '"';
+            font-size: 15rem;
+            position: absolute;
+            top: -60px;
+            left: 40px;
+            color: rgba(255,255,255,0.03);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .quote-text {
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 300;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author {
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+        }
+
+        /* Risk Grid */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .risk-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .risk-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .risk-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+            padding: 60px 40px 30px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                gap: 30px;
+            }
+
+            .hero-stat-number {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 50px;
+                padding-right: 0;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 0;
+                margin-right: 0;
+                max-width: 100%;
+            }
+
+            .timeline-dot {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+
+            .quote-section {
+                padding: 50px 30px;
+            }
+
+            .quote-text {
+                font-size: 1.2rem;
+            }
+
+            .bar-chart {
+                height: 200px;
+            }
+
+            .bar-value {
+                font-size: 0.6rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Progress bar for scroll */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            z-index: 1001;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">携程商业分析</div>
+            <ul class="nav-links">
+                <li><a href="#overview">概览</a></li>
+                <li><a href="#finance">财务</a></li>
+                <li><a href="#timeline">历程</a></li>
+                <li><a href="#model">模式</a></li>
+                <li><a href="#market">格局</a></li>
+                <li><a href="#risk">风险</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">📊 深度研究报告</div>
+            <h1>携程集团<span>20年</span><br>商业演进分析</h1>
+            <p class="hero-subtitle">从1.7亿到533亿营收跨越 | 三次商业模式跃迁 | OTA龙头全球化之路</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">533<span>亿</span></div>
+                    <div class="hero-stat-label">2024年营收</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">56<span>%</span></div>
+                    <div class="hero-stat-label">国内OTA市占率</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">25<span>年</span></div>
+                    <div class="hero-stat-label">品牌积淀</div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview">
+        <div class="section-header fade-in">
+            <h2>核心摘要</h2>
+            <p>从"鼠标+水泥"到"AI+全球化"，携程25年商业密码拆解</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="cards-grid">
+            <div class="card fade-in">
+                <div class="card-icon">📈</div>
+                <h3>财务表现</h3>
+                <div class="card-highlight">43%</div>
+                <p>2003-2017年营收复合增速达43.3%，从1.73亿增长至267.8亿。2024年营收创历史新高533亿元，净利润172亿元。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">🎯</div>
+                <h3>市场地位</h3>
+                <div class="card-highlight">70%+</div>
+                <p>携程系（携程+同程）合计占据中国OTA市场70%以上份额，是绝对的市场领导者，规模是同程的3-4倍。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">🌍</div>
+                <h3>全球化布局</h3>
+                <div class="card-highlight">15%</div>
+                <p>通过Skyscanner和Trip.com双品牌布局海外，2024年海外业务营收占比达15-20%，成为第二增长曲线。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">⚡</div>
+                <h3>商业模式</h3>
+                <div class="card-highlight">80%</div>
+                <p>平台型轻资产模式带来长期80%左右的高毛利率，经调整EBITDA利润率优化至30%的历史高位。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Financial Section -->
+    <section id="finance" style="background: #f0f2f5; margin: 0; max-width: 100%; padding: 100px 40px;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>20年财务数据全景</h2>
+                <p>从纳斯达克上市到港交所双重上市，营收增长超300倍</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="chart-container fade-in">
+                <div class="chart-title">📊 历年净营业收入（亿元）</div>
+                <div class="bar-chart" id="revenueChart"></div>
+            </div>
+
+            <div class="chart-container fade-in">
+                <div class="chart-title">💰 净利润与Non-GAAP净利润（亿元）</div>
+                <div class="bar-chart" id="profitChart"></div>
+            </div>
+
+            <div class="chart-container fade-in">
+                <div class="chart-title">🏗️ 2024年业务结构</div>
+                <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: center; justify-content: center;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <div id="businessChart" style="height: 300px; display: flex; align-items: flex-end; justify-content: space-around; padding: 20px 0;"></div>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>业务板块</th><th>营收（亿元）</th><th>占比</th><th>增速</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>住宿预订</td><td>216</td><td>40%</td><td class="trend-up">+25%</td></tr>
+                                <tr><td>交通票务</td><td>203</td><td>38%</td><td class="trend-up">+10%</td></tr>
+                                <tr><td>旅游度假</td><td>43</td><td>8%</td><td class="trend-up">+38%</td></tr>
+                                <tr><td>商旅管理</td><td>25</td><td>5%</td><td class="trend-up">+11%</td></tr>
+                                <tr><td>其他</td><td>46</td><td>9%</td><td>-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline">
+        <div class="section-header fade-in">
+            <h2>发展里程碑</h2>
+            <p>从1999年创立到全球化OTA，关键节点全梳理</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">1999</span>
+                    <h3>携程旅行网创立</h3>
+                    <p>梁建章、季琦、沈南鹏、范敏"四君子"在上海创立携程旅行网，获得IDG、软银等风险投资。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2003</span>
+                    <h3>纳斯达克上市</h3>
+                    <p>在美国纳斯达克上市，首日股价暴涨89%，创纳市3年来开盘当日涨幅最高纪录。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2008</span>
+                    <h3>"鼠标+水泥"模式成型</h3>
+                    <p>南通呼叫服务中心启动，拥有1.2万个呼叫席位，线上平台与线下服务深度融合。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2010</span>
+                    <h3>移动互联网转型</h3>
+                    <p>推出"携程无线"手机网站，正式进入移动化时代。2013年移动端订单占比超40%。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2015</span>
+                    <h3>行业大整合</h3>
+                    <p>与百度股权置换并购去哪儿，投资同程、艺龙，"携程系"市场份额跃升至50%以上。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2016</span>
+                    <h3>全球化启航</h3>
+                    <p>收购英国Skyscanner（天巡），孙洁接任CEO，梁建章任执行董事会主席，明确国际化方向。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2019</span>
+                    <h3>G2战略发布</h3>
+                    <p>公布20周年G2战略——高品质（Great Quality）+全球化（Globalization），目标成为全球最具价值的旅游企业。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2023</span>
+                    <h3>疫后强势复苏</h3>
+                    <p>全年营收445亿元，较2019年增长24.8%，Non-GAAP净利润131亿元，较2019年增长100%。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2024</span>
+                    <h3>营收创新高</h3>
+                    <p>全年净营收533亿元，同比增长20%；净利润172亿元，国际OTA平台预订增长超70%。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Model Section -->
+    <section id="model" style="background: #f0f2f5; margin: 0; max-width: 100%; padding: 100px 40px;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>商业模式三次跃迁</h2>
+                <p>从"鼠标+水泥"到"拇指+水泥"再到"AI+全球化"</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="model-stages">
+                <div class="model-card fade-in" data-stage="01">
+                    <span class="model-period">1999 — 2009</span>
+                    <h3>互联网平台化</h3>
+                    <div class="model-tagline">"鼠标+水泥"时代</div>
+                    <ul class="model-features">
+                        <li>线上预订+线下呼叫中心深度结合</li>
+                        <li>并购现代运通、海岸航空获取资源</li>
+                        <li>酒店佣金率8-15%，机票佣金率2-5%</li>
+                        <li>会员体系建立用户粘性壁垒</li>
+                        <li>2003年纳斯达克上市，融资扩张</li>
+                    </ul>
+                </div>
+                <div class="model-card fade-in" data-stage="02">
+                    <span class="model-period">2010 — 2019</span>
+                    <h3>移动智能化</h3>
+                    <div class="model-tagline">"拇指+水泥"时代</div>
+                    <ul class="model-features">
+                        <li>移动优先战略，App成为主入口</li>
+                        <li>投资并购整合：去哪儿、同程、艺龙</li>
+                        <li>大数据+AI赋能个性化推荐</li>
+                        <li>"赫程国际"酒店管理平台深化供应链</li>
+                        <li>变现率维持在4-5%水平</li>
+                    </ul>
+                </div>
+                <div class="model-card fade-in" data-stage="03">
+                    <span class="model-period">2020 — 至今</span>
+                    <h3>高品质+全球化</h3>
+                    <div class="model-tagline">"AI+全球化"时代</div>
+                    <ul class="model-features">
+                        <li>TripGenie AI助手重塑服务体验</li>
+                        <li>Skyscanner+Trip.com双品牌出海</li>
+                        <li>从交易平台向内容+交易一体化转型</li>
+                        <li>入境游成为国家政策红利新增长点</li>
+                        <li>海外业务营收占比提升至15-20%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section>
+        <div class="quote-section fade-in">
+            <p class="quote-text">携程的血液里流淌着盈利的基因。从创立第一天起，我们就知道不能只靠烧钱，必须建立可持续的商业模式。</p>
+            <p class="quote-author">—— 梁建章，携程集团联合创始人、董事会执行主席</p>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section id="market">
+        <div class="section-header fade-in">
+            <h2>竞争格局与行业变迁</h2>
+            <p>三次关键跃迁：资源垄断 → 生态竞争 → AI效率革命</p>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div style="background: #fff; border-radius: 20px; padding: 40px; box-shadow: var(--shadow); margin-bottom: 40px;">
+            <div class="market-share fade-in">
+                <div class="pie-chart">
+                    <svg viewBox="0 0 100 100" width="300" height="300">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#2577e3" stroke-width="20" stroke-dasharray="140.8 251.2" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00b4d8" stroke-width="20" stroke-dasharray="37.7 354.3" stroke-dashoffset="-140.8" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#ff6b35" stroke-width="20" stroke-dasharray="32.7 359.3" stroke-dashoffset="-178.5" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#ffc107" stroke-width="20" stroke-dasharray="20.1 371.9" stroke-dashoffset="-211.2" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#6c757d" stroke-width="20" stroke-dasharray="7.5 384.5" stroke-dashoffset="-231.3" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#dee2e6" stroke-width="20" stroke-dasharray="12.6 379.4" stroke-dashoffset="-238.8" />
+                    </svg>
+                    <div class="pie-center">
+                        <div class="pie-center-number">56%</div>
+                        <div class="pie-center-label">携程市占率</div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2577e3;"></div>
+                        <div class="legend-text"><span class="legend-value">56%</span> 携程</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00b4d8;"></div>
+                        <div class="legend-text"><span class="legend-value">15%</span> 同程旅行</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff6b35;"></div>
+                        <div class="legend-text"><span class="legend-value">13%</span> 美团</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffc107;"></div>
+                        <div class="legend-text"><span class="legend-value">8%</span> 飞猪</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #6c757d;"></div>
+                        <div class="legend-text"><span class="legend-value">3%</span> 抖音</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #dee2e6;"></div>
+                        <div class="legend-text"><span class="legend-value">5%</span> 其他</div>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--gray); margin-top: 30px; font-size: 0.9rem;">
+                数据来源：交银国际研报（2024年GMV口径） | 携程系（携程+同程）合计占比超70%
+            </p>
+        </div>
+
+        <div class="chart-container fade-in">
+            <div class="chart-title">📱 各平台月活用户规模（2024年12月）</div>
+            <div class="bar-chart" id="userChart"></div>
+        </div>
+    </section>
+
+    <!-- Risk Section -->
+    <section id="risk" style="background: #f0f2f5; margin: 0; max-width: 100%; padding: 100px 40px;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>风险与挑战</h2>
+                <p>新玩家入局、增长天花板、投资依赖三重考验</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="risk-grid">
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 增长天花板</h4>
+                    <p>国内OTA渗透率已较高，2025年营收增速降至17%。需在海外市场找到第二增长曲线，Trip.com的亚洲扩张成效尚待验证。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 新玩家冲击</h4>
+                    <p>京东2025年以"零佣金"高调入局，抖音以内容流量分食市场，美团持续深耕本地场景，价格战风险上升。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 投资收益依赖</h4>
+                    <p>2025年334亿净利润中，199亿（60%）来自投资收益（出售MakeMyTrip股权）。主营业务营业利润仅增长11.2%。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 航司去中介化</h4>
+                    <p>航空公司"提直降代"趋势持续，机票佣金率长期承压。酒店集团自建会员体系也在削弱OTA议价权。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 宏观经济波动</h4>
+                    <p>旅游属于可选消费，经济下行周期需求收缩明显。商旅需求与企业景气度高度相关，周期性风险不可忽视。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 地缘政治风险</h4>
+                    <p>海外扩张面临中美关系、中印关系等地缘政治不确定性。2025年已出售MakeMyTrip部分股权以优化资产配置。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section>
+        <div class="section-header fade-in">
+            <h2>核心结论</h2>
+            <p>携程的成功密码与未来展望</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="cards-grid">
+            <div class="card fade-in">
+                <div class="card-icon">🔑</div>
+                <h3>成功密码：时机+资本+执行力</h3>
+                <p>在PC互联网、移动互联网、AI时代三个关键节点，携程都通过资本并购快速整合行业资源，以超强执行力建立服务壁垒。"鼠标+水泥"到"拇指+水泥"再到"AI+全球化"，每一步都踩准了时代节奏。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">💎</div>
+                <h3>盈利基因：平台型商业模式的优越性</h3>
+                <p>80%的毛利率、30%的EBITDA利润率，在平台型公司中极为罕见。轻资产模式下，规模效应带来持续的费用率优化，这是携程穿越周期的核心底气。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">🚀</div>
+                <h3>未来展望：从守成到再创业</h3>
+                <p>面对国内增长天花板和京东、抖音等新玩家挑战，国际化和AI转型是破局关键。2025年non-GAAP净利润约210亿，对应PE约15-20倍，已具较高安全边际。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">携程商业分析</div>
+            <div class="footer-links">
+                <a href="#overview">概览</a>
+                <a href="#finance">财务</a>
+                <a href="#timeline">历程</a>
+                <a href="#model">模式</a>
+                <a href="#market">格局</a>
+                <a href="#risk">风险</a>
+            </div>
+            <div class="footer-bottom">
+                <p>数据来源：携程集团财报、交银国际研报、浦银国际研报、QuestMobile、文旅部等公开资料</p>
+                <p style="margin-top: 10px;">本报告仅用于研究分析，不构成投资建议 | 数据截至2025年财报季</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Fade in animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Revenue Chart Data
+        const revenueData = [
+            {year: '2003', value: 1.73, color: '#2577e3'},
+            {year: '2007', value: 10, color: '#2577e3'},
+            {year: '2010', value: 25, color: '#2577e3'},
+            {year: '2013', value: 54, color: '#2577e3'},
+            {year: '2015', value: 109, color: '#2577e3'},
+            {year: '2017', value: 268, color: '#2577e3'},
+            {year: '2019', value: 357, color: '#2577e3'},
+            {year: '2020', value: 183, color: '#dc3545'},
+            {year: '2023', value: 445, color: '#2577e3'},
+            {year: '2024', value: 533, color: '#00b4d8'},
+            {year: '2025', value: 624, color: '#00b4d8'},
+        ];
+
+        const maxRevenue = Math.max(...revenueData.map(d => d.value));
+        const revenueChart = document.getElementById('revenueChart');
+        revenueData.forEach(d => {
+            const height = (d.value / maxRevenue) * 250;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color};">
+                    <span class="bar-value">${d.value}</span>
+                </div>
+                <div class="bar-label">${d.year}</div>
+            `;
+            revenueChart.appendChild(barGroup);
+        });
+
+        // Profit Chart Data
+        const profitData = [
+            {year: '2017', gaap: 21, nonGaap: 65, color1: '#2577e3', color2: '#00b4d8'},
+            {year: '2018', gaap: 11, nonGaap: 55, color1: '#2577e3', color2: '#00b4d8'},
+            {year: '2019', gaap: 70, nonGaap: 65, color1: '#2577e3', color2: '#00b4d8'},
+            {year: '2020', gaap: -32, nonGaap: -22, color1: '#dc3545', color2: '#ff6b35'},
+            {year: '2021', gaap: -6, nonGaap: 14, color1: '#dc3545', color2: '#28a745'},
+            {year: '2022', gaap: 14, nonGaap: 13, color1: '#2577e3', color2: '#00b4d8'},
+            {year: '2023', gaap: 99, nonGaap: 131, color1: '#2577e3', color2: '#00b4d8'},
+            {year: '2024', gaap: 172, nonGaap: 180, color1: '#2577e3', color2: '#00b4d8'},
+            {year: '2025', gaap: 334, nonGaap: 210, color1: '#ffc107', color2: '#28a745'},
+        ];
+
+        const maxProfit = Math.max(...profitData.map(d => Math.max(d.gaap, d.nonGaap)));
+        const profitChart = document.getElementById('profitChart');
+        profitData.forEach(d => {
+            const h1 = Math.abs(d.gaap) / maxProfit * 120;
+            const h2 = Math.abs(d.nonGaap) / maxProfit * 120;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.style.gap = '4px';
+            barGroup.innerHTML = `
+                <div style="display:flex; align-items:flex-end; gap:4px; height:130px;">
+                    <div class="bar" style="height: ${h1}px; background: ${d.color1}; width: 20px;">
+                        <span class="bar-value" style="font-size:0.6rem;">${d.gaap}</span>
+                    </div>
+                    <div class="bar" style="height: ${h2}px; background: ${d.color2}; width: 20px;">
+                        <span class="bar-value" style="font-size:0.6rem;">${d.nonGaap}</span>
+                    </div>
+                </div>
+                <div class="bar-label">${d.year}</div>
+            `;
+            profitChart.appendChild(barGroup);
+        });
+
+        // Business Chart
+        const businessData = [
+            {name: '住宿预订', value: 216, color: '#2577e3'},
+            {name: '交通票务', value: 203, color: '#00b4d8'},
+            {name: '旅游度假', value: 43, color: '#ff6b35'},
+            {name: '商旅管理', value: 25, color: '#ffc107'},
+            {name: '其他', value: 46, color: '#6c757d'},
+        ];
+
+        const maxBusiness = Math.max(...businessData.map(d => d.value));
+        const businessChart = document.getElementById('businessChart');
+        businessData.forEach(d => {
+            const height = (d.value / maxBusiness) * 250;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color}; width: 60px;">
+                    <span class="bar-value">${d.value}亿</span>
+                </div>
+                <div class="bar-label">${d.name}</div>
+            `;
+            businessChart.appendChild(barGroup);
+        });
+
+        // User Chart
+        const userData = [
+            {name: '同程旅行', value: 2.18, color: '#00b4d8'},
+            {name: '携程旅行', value: 1.18, color: '#2577e3'},
+            {name: '去哪儿', value: 0.49, color: '#ff6b35'},
+            {name: '飞猪', value: 0.35, color: '#ffc107'},
+        ];
+
+        const maxUser = Math.max(...userData.map(d => d.value));
+        const userChart = document.getElementById('userChart');
+        userData.forEach(d => {
+            const height = (d.value / maxUser) * 250;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color};">
+                    <span class="bar-value">${d.value}亿</span>
+                </div>
+                <div class="bar-label">${d.name}</div>
+            `;
+            userChart.appendChild(barGroup);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+<script src="/assets/js/nav-inject.js"></script>
+</body>
+</html>

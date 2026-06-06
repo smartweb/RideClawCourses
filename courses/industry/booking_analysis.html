@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Holdings 20年商业演进深度分析</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003580;
+            --primary-light: #0056b3;
+            --secondary: #febb02;
+            --accent: #009fe3;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+            --warning: #febb02;
+            --gradient-1: linear-gradient(135deg, #003580 0%, #009fe3 100%);
+            --gradient-2: linear-gradient(135deg, #febb02 0%, #ff8c00 100%);
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #fafbfc;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+            padding-top: 70px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 53, 128, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 159, 227, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(254, 187, 2, 0.05) 0%, transparent 70%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 40px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            background: rgba(0, 53, 128, 0.3);
+            border: 1px solid rgba(0, 159, 227, 0.3);
+            border-radius: 50px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .hero-stat-number span {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 8px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: rgba(255,255,255,0.5);
+        }
+
+        section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-1);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .card-highlight {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0;
+        }
+
+        .chart-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            max-width: 70px;
+        }
+
+        .bar {
+            width: 100%;
+            max-width: 45px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        .bar-label {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gradient-1);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            max-width: 450px;
+            position: relative;
+            margin-right: 40px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 0;
+            margin-left: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 3px var(--primary);
+            z-index: 2;
+        }
+
+        .timeline-year {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--gradient-1);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .timeline-content p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .market-share {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .pie-chart {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .pie-chart svg {
+            transform: rotate(-90deg);
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .pie-center-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .pie-center-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+        }
+
+        .legend-text {
+            font-size: 0.95rem;
+        }
+
+        .legend-value {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .model-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .model-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-card::after {
+            content: attr(data-stage);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(0, 53, 128, 0.05);
+            line-height: 1;
+        }
+
+        .model-period {
+            display: inline-block;
+            padding: 5px 16px;
+            background: rgba(0, 53, 128, 0.1);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .model-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .model-tagline {
+            font-size: 1rem;
+            color: #ff8c00;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .model-features {
+            list-style: none;
+        }
+
+        .model-features li {
+            padding: 8px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .model-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: var(--dark);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-table td {
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .trend-up {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .trend-down {
+            color: #dc3545;
+            font-weight: 700;
+        }
+
+        .quote-section {
+            background: var(--dark);
+            border-radius: 24px;
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '"';
+            font-size: 15rem;
+            position: absolute;
+            top: -60px;
+            left: 40px;
+            color: rgba(255,255,255,0.03);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .quote-text {
+            font-size: 1.8rem;
+            color: #fff;
+            font-weight: 300;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author {
+            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .risk-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid #dc3545;
+        }
+
+        .risk-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .risk-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+            padding: 60px 40px 30px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                gap: 30px;
+            }
+
+            .hero-stat-number {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 50px;
+                padding-right: 0;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 0;
+                margin-right: 0;
+                max-width: 100%;
+            }
+
+            .timeline-dot {
+                left: 20px;
+                transform: translateX(-50%);
+            }
+
+            .quote-section {
+                padding: 50px 30px;
+            }
+
+            .quote-text {
+                font-size: 1.2rem;
+            }
+
+            .bar-chart {
+                height: 200px;
+            }
+
+            .bar-value {
+                font-size: 0.55rem;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            z-index: 1001;
+            transition: width 0.1s;
+        }
+
+        .compare-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">Booking Holdings 商业分析</div>
+            <ul class="nav-links">
+                <li><a href="#overview">概览</a></li>
+                <li><a href="#finance">财务</a></li>
+                <li><a href="#timeline">历程</a></li>
+                <li><a href="#model">模式</a></li>
+                <li><a href="#market">格局</a></li>
+                <li><a href="#risk">风险</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">📊 深度研究报告</div>
+            <h1>Booking Holdings<span>20年</span><br>商业演进分析</h1>
+            <p class="hero-subtitle">从Priceline到全球最大OTA | $1.33亿缔造$1300亿帝国 | Agency模式革命</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">269<span>亿$</span></div>
+                    <div class="hero-stat-label">2025年营收</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">1861<span>亿$</span></div>
+                    <div class="hero-stat-label">2025年总预订量</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">12.4<span>亿晚</span></div>
+                    <div class="hero-stat-label">2025年间夜量</div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </section>
+
+    <section id="overview">
+        <div class="section-header fade-in">
+            <h2>核心摘要</h2>
+            <p>从"Name Your Own Price"到全球旅行操作系统，Booking Holdings 28年商业密码</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="cards-grid">
+            <div class="card fade-in">
+                <div class="card-icon">📈</div>
+                <h3>财务表现</h3>
+                <div class="card-highlight">28x</div>
+                <p>2005-2025年营收从$9.6亿增长至$269亿，增长约28倍。2024年净利润$59亿，净利润率25%，为全球OTA最高水平。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">🎯</div>
+                <h3>市场地位</h3>
+                <div class="card-highlight">#1</div>
+                <p>全球OTA总预订量第一（$1656亿），日均间夜量330万晚，远超Expedia和Airbnb。与Expedia合计占全球OTA市场42%份额。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">💰</div>
+                <h3>盈利效率</h3>
+                <div class="card-highlight">33%</div>
+                <p>自由现金流占营收比例约33%，为全球OTA最高。轻资产代理模式几乎零库存风险，资本效率极高。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">⚡</div>
+                <h3>战略转型</h3>
+                <div class="card-highlight">Connected</div>
+                <p>从单一酒店预订向"Connected Trip"全旅程平台进化。Genius忠诚度计划贡献50%+间夜量，跨品类绑定提升LTV。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="finance" style="background: #f0f2f5; margin: 0; max-width: 100%; padding: 100px 40px;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>20年财务数据全景</h2>
+                <p>从濒临破产到年赚$59亿，全球最高效的OTA盈利机器</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="chart-container fade-in">
+                <div class="chart-title">📊 历年营业收入（亿美元）</div>
+                <div class="bar-chart" id="revenueChart"></div>
+            </div>
+
+            <div class="chart-container fade-in">
+                <div class="chart-title">💰 净利润演变（亿美元）</div>
+                <div class="bar-chart" id="profitChart"></div>
+            </div>
+
+            <div class="chart-container fade-in">
+                <div class="chart-title">🏨 间夜量与总预订量增长</div>
+                <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: center; justify-content: center;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <div id="gbChart" style="height: 280px; display: flex; align-items: flex-end; justify-content: space-around; padding: 20px 0;"></div>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>年份</th><th>GB（亿美元）</th><th>间夜量（亿晚）</th><th>机票（百万）</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>2019</td><td>964</td><td>8.44</td><td>8.6</td></tr>
+                                <tr><td>2020</td><td>354</td><td>3.55</td><td>7.1</td></tr>
+                                <tr><td>2021</td><td>766</td><td>5.90</td><td>15.3</td></tr>
+                                <tr><td>2022</td><td>1213</td><td>8.95</td><td>23.0</td></tr>
+                                <tr><td>2023</td><td>1506</td><td>10.49</td><td>36.0</td></tr>
+                                <tr><td>2024</td><td>1656</td><td>11.44</td><td>49.0</td></tr>
+                                <tr><td>2025</td><td>1861</td><td>12.35</td><td>68.0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container fade-in">
+                <div class="chart-title">🏗️ 2024年收入结构</div>
+                <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: center; justify-content: center;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <div id="revenueMixChart" style="height: 280px; display: flex; align-items: flex-end; justify-content: space-around; padding: 20px 0;"></div>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>收入类型</th><th>金额（亿美元）</th><th>占比</th><th>变动</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Merchant收入</td><td>141.4</td><td>60%</td><td class="trend-up">+29%</td></tr>
+                                <tr><td>Agency收入</td><td>85.2</td><td>36%</td><td class="trend-down">-10%</td></tr>
+                                <tr><td>广告及其他</td><td>10.7</td><td>4.5%</td><td class="trend-up">+6%</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top:15px;color:var(--gray);font-size:0.85rem;">
+                            <strong>战略趋势</strong>：从Agency向Merchant模式转移，增强现金流和定价权
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline">
+        <div class="section-header fade-in">
+            <h2>发展里程碑</h2>
+            <p>从Priceline.com到Booking Holdings，关键并购与战略转折全梳理</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">1997</span>
+                    <h3>Priceline.com创立</h3>
+                    <p>Jay Walker创立Priceline，推出革命性的"Name Your Own Price"（NYOP）自我定价模式，由William Shatner代言。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">1999</span>
+                    <h3>纳斯达克上市</h3>
+                    <p>在互联网泡沫顶峰时期上市，随后因泡沫破裂和非旅游品类扩张失败濒临破产。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2002</span>
+                    <h3>Jeffery Boyd临危受命</h3>
+                    <p>新任CEO彻底砍掉非旅游业务，聚焦酒店和机票。2003年李嘉诚入股成为最大股东。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2004-2005</span>
+                    <h3>史上最划算的并购</h3>
+                    <p>先后收购Active Hotels和Booking.com（仅$1.33亿），转向欧洲零售酒店市场和Agency代理模式。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2007</span>
+                    <h3>收购Agoda进军亚洲</h3>
+                    <p>收购新加坡/泰国酒店分销商Agoda，开启亚太市场布局。Glenn Fogel主导并购战略。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2010</span>
+                    <h3>超越Expedia成为全球第一</h3>
+                    <p>Booking.com间夜量超越Expedia，正式成为全球最大的在线酒店预订平台。收购Rentalcars.com。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2013-2014</span>
+                    <h3>元搜索+餐厅跨界</h3>
+                    <p>$18亿收购Kayak进入元搜索，$26亿收购OpenTable跨界餐厅预订。多元化品牌矩阵成型。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2017-2018</span>
+                    <h3>品牌升级与新生代领导</h3>
+                    <p>Glenn Fogel接任CEO。2018年从Priceline Group更名为Booking Holdings，强化Booking.com核心地位。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2020</span>
+                    <h3>疫情冲击与韧性测试</h3>
+                    <p>营收腰斩至$68亿，净利润仅$0.59亿。但凭借轻资产模式快速调整成本，展现了强大的商业模式韧性。</p>
+                </div>
+            </div>
+            <div class="timeline-item fade-in">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2024-2025</span>
+                    <h3>Connected Trip + AI新时代</h3>
+                    <p>推出Transformation Program年化节省$5-5.5亿。Connected Trip交易增长30%+，GenAI深度赋能全链路。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="model" style="background: #f0f2f5; margin: 0; max-width: 100%; padding: 100px 40px;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>商业模式三次跃迁</h2>
+                <p>从"自我定价"到"代理模式"再到"Connected Trip生态"</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="model-stages">
+                <div class="model-card fade-in" data-stage="01">
+                    <span class="model-period">1997 — 2004</span>
+                    <h3>创新定价实验</h3>
+                    <div class="model-tagline">"Name Your Own Price"时代</div>
+                    <ul class="model-features">
+                        <li>NYOP不透明定价模式——消费者出价、平台决定</li>
+                        <li>William Shatner代言，品牌知名度飙升</li>
+                        <li>盲目扩张至杂货、汽油等非旅游品类</li>
+                        <li>2000年互联网泡沫破裂，濒临破产</li>
+                        <li>2002年Boyd聚焦旅游主业，挽救公司</li>
+                    </ul>
+                </div>
+                <div class="model-card fade-in" data-stage="02">
+                    <span class="model-period">2005 — 2017</span>
+                    <h3>欧洲征服与代理模式</h3>
+                    <div class="model-tagline">"Agency Model + 无为而治"时代</div>
+                    <ul class="model-features">
+                        <li>$1.33亿收购Booking.com，史上最划算OTA并购</li>
+                        <li>Agency模式（现付佣金）适配欧洲独立酒店</li>
+                        <li>全球82%酒店为独立酒店，欧洲市场尤为分散</li>
+                        <li>"无为而治"管理：被收购团队保持独立运营</li>
+                        <li>2010年超越Expedia成为全球OTA龙头</li>
+                    </ul>
+                </div>
+                <div class="model-card fade-in" data-stage="03">
+                    <span class="model-period">2018 — 至今</span>
+                    <h3>Connected Trip平台化</h3>
+                    <div class="model-tagline">"全旅程操作系统"时代</div>
+                    <ul class="model-features">
+                        <li>Connected Trip战略：酒店+机票+租车+体验一站式</li>
+                        <li>Genius忠诚度计划贡献50%+间夜量</li>
+                        <li>自研支付系统，嵌入式金融服务</li>
+                        <li>GenAI赋能搜索、推荐和客服体验</li>
+                        <li>替代住宿840万房源，追赶Airbnb</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="quote-section fade-in">
+            <p class="quote-text">当初收购Booking.com不仅仅是买对了一个商业模式，而是收获了一个愿意和我们一起实现更大梦想的团队。</p>
+            <p class="quote-author">—— Glenn Fogel，Booking Holdings CEO（时任并购战略负责人）</p>
+        </div>
+    </section>
+
+    <section id="market">
+        <div class="section-header fade-in">
+            <h2>竞争格局与行业变迁</h2>
+            <p>全球OTA双寡头格局：Booking vs Expedia vs Airbnb三足鼎立</p>
+            <div class="section-divider"></div>
+        </div>
+        
+        <div style="background: #fff; border-radius: 20px; padding: 40px; box-shadow: var(--shadow); margin-bottom: 40px;">
+            <div class="market-share fade-in">
+                <div class="pie-chart">
+                    <svg viewBox="0 0 100 100" width="300" height="300">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#003580" stroke-width="20" stroke-dasharray="55.3 196.7" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#009fe3" stroke-width="20" stroke-dasharray="38.0 214.0" stroke-dashoffset="-55.3" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#febb02" stroke-width="20" stroke-dasharray="27.7 224.3" stroke-dashoffset="-93.3" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#6c757d" stroke-width="20" stroke-dasharray="22.1 229.9" stroke-dashoffset="-121.0" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#dee2e6" stroke-width="20" stroke-dasharray="18.8 233.2" stroke-dashoffset="-143.1" />
+                    </svg>
+                    <div class="pie-center">
+                        <div class="pie-center-number">22%</div>
+                        <div class="pie-center-label">Booking市占率</div>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #003580;"></div>
+                        <div class="legend-text"><span class="legend-value">~22%</span> Booking Holdings</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #009fe3;"></div>
+                        <div class="legend-text"><span class="legend-value">~14%</span> Expedia Group</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #febb02;"></div>
+                        <div class="legend-text"><span class="legend-value">~10%</span> Airbnb</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #6c757d;"></div>
+                        <div class="legend-text"><span class="legend-value">~8%</span> 携程集团</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #dee2e6;"></div>
+                        <div class="legend-text"><span class="legend-value">~46%</span> 其他</div>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--gray); margin-top: 30px; font-size: 0.9rem;">
+                数据来源：Skift 2024研究报告（全球OTA Gross Bookings口径）| Booking + Expedia合计占~42%
+            </p>
+        </div>
+
+        <div class="chart-container fade-in">
+            <div class="chart-title">🏆 全球四大OTA核心指标对比（2024年）</div>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>指标</th><th>Booking Holdings</th><th>Expedia Group</th><th>Airbnb</th><th>携程集团</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>营收</td><td><strong>$237亿</strong></td><td>$137亿</td><td>$119亿</td><td>$82亿</td></tr>
+                        <tr><td>净利润</td><td><strong>$59亿</strong></td><td>~$8亿</td><td>~$15亿</td><td>$27亿</td></tr>
+                        <tr><td>净利润率</td><td><strong>25%</strong></td><td>~6%</td><td>~13%</td><td>32%</td></tr>
+                        <tr><td>总预订量GB</td><td><strong>$1656亿</strong></td><td>~$1000亿</td><td>$818亿</td><td>~$800亿</td></tr>
+                        <tr><td>变现率</td><td><strong>14.3%</strong></td><td>~13.7%</td><td>~14.5%</td><td>~4-5%</td></tr>
+                        <tr><td>FCF/营收</td><td><strong>~33%</strong></td><td>~10%</td><td>~20%</td><td>~25%</td></tr>
+                        <tr><td>核心市场</td><td>欧洲（~78%）</td><td>北美（~40%+）</td><td>全球分散</td><td>中国（~70%）</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="chart-container fade-in">
+            <div class="chart-title">🏠 全球短租/替代住宿市场格局（2024年）</div>
+            <div class="bar-chart" id="strChart"></div>
+        </div>
+    </section>
+
+    <section id="risk" style="background: #f0f2f5; margin: 0; max-width: 100%; padding: 100px 40px;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header fade-in">
+                <h2>风险与挑战</h2>
+                <p>Google跨界、酒店直销、监管收紧三重夹击</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="risk-grid">
+                <div class="risk-card fade-in">
+                    <h4>⚠️ Google等科技巨头跨界</h4>
+                    <p>Google Travel搜索查询2024年同比增~18%，Google Maps直接嵌入预订功能。科技巨头掌握流量入口，可轻松分流OTA需求。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 酒店与航司去中介化</h4>
+                    <p>万豪直销占比约60%，达美航空约55%。酒店集团通过忠诚度计划和会员专属价格吸引回头客，直接预订趋势持续上升。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 欧盟DMA监管</h4>
+                    <p>《数字市场法》2024年生效，违规罚款可达全球营收10%（对Booking最高约$24亿）。限制数据使用和"自我偏好"行为。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 增速放缓与营销通胀</h4>
+                    <p>2024年营收增速降至11%，欧洲核心市场趋于饱和。营销费用$104亿占营收44%，获客成本持续攀升。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ 地缘政治与汇率</h4>
+                    <p>欧洲业务（欧元计价）占营收~78%，美元走强时汇率拖累明显。俄乌冲突、中东局势影响跨境旅游需求。</p>
+                </div>
+                <div class="risk-card fade-in">
+                    <h4>⚠️ Airbnb在短租领域领先</h4>
+                    <p>全球短租市场Airbnb占44%，Booking.com仅18%。替代住宿是Booking战略重点，但与Airbnb的品牌心智差距仍大。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header fade-in">
+            <h2>核心结论</h2>
+            <p>Booking Holdings的成功密码与未来挑战</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="cards-grid">
+            <div class="card fade-in">
+                <div class="card-icon">🔑</div>
+                <h3>最划算的并购缔造最大OTA</h3>
+                <p>2005年$1.33亿收购Booking.com，至今创造了超过$2000亿市值的价值，是互联网史上最成功的并购之一。精准识别欧洲独立酒店市场的数字化红利是关键。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">💎</div>
+                <h3>商业模式决定盈利天花板</h3>
+                <p>Agency模式几乎零库存风险、极低资本开支，带来33%+的自由现金流利润率。"无为而治"的去中心化管理策略保留了被收购团队的创业活力。</p>
+            </div>
+            <div class="card fade-in">
+                <div class="card-icon">🚀</div>
+                <h3>从酒店中介到旅行操作系统</h3>
+                <p>Connected Trip战略是全旅程生态系统的进化。2024年净利润$59亿、FCF近$80亿，PE约20-25倍，已从高成长型转为稳健增长型现金牛。</p>
+            </div>
+        </div>
+
+        <div class="compare-section fade-in">
+            <h3 style="text-align:center;margin-bottom:30px;color:var(--dark);font-size:1.5rem;">📊 Booking Holdings vs 携程集团 核心指标对比</h3>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>维度</th><th>Booking Holdings</th><th>携程集团</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2024年营收</td><td><strong>$237亿</strong></td><td>$82亿（RMB 533亿）</td></tr>
+                        <tr><td>2024年净利润</td><td><strong>$59亿</strong></td><td>$27亿（RMB 172亿）</td></tr>
+                        <tr><td>净利润率</td><td>25%</td><td><strong>32%</strong></td></tr>
+                        <tr><td>总预订量GB</td><td><strong>$1656亿</strong></td><td>~$800亿</td></tr>
+                        <tr><td>变现率</td><td><strong>14.3%</strong></td><td>4-5%</td></tr>
+                        <tr><td>间夜量</td><td><strong>11.44亿晚</strong></td><td>~3-4亿晚</td></tr>
+                        <tr><td>核心市场</td><td>欧洲（~78%）</td><td>中国（~70%）</td></tr>
+                        <tr><td>商业模式</td><td>Agency→Merchant</td><td>佣金+广告+金融</td></tr>
+                        <tr><td>FCF/营收</td><td><strong>~33%</strong></td><td>~25%</td></tr>
+                        <tr><td>市值（2025）</td><td><strong>~$1300亿</strong></td><td>~$480亿</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Booking Holdings 商业分析</div>
+            <div class="footer-links">
+                <a href="#overview">概览</a>
+                <a href="#finance">财务</a>
+                <a href="#timeline">历程</a>
+                <a href="#model">模式</a>
+                <a href="#market">格局</a>
+                <a href="#risk">风险</a>
+            </div>
+            <div class="footer-bottom">
+                <p>数据来源：Booking Holdings财报、Expedia财报、Skift研究报告、Business of Apps、Statista等公开资料</p>
+                <p style="margin-top: 10px;">本报告仅用于研究分析，不构成投资建议 | 数据截至2025年财报季</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Fade in
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Revenue Chart
+        const revenueData = [
+            {year:'2007', value:14.1, color:'#003580'},{year:'2009', value:23.4, color:'#003580'},
+            {year:'2011', value:43.6, color:'#003580'},{year:'2013', value:67.9, color:'#003580'},
+            {year:'2015', value:92.2, color:'#003580'},{year:'2017', value:126.8, color:'#003580'},
+            {year:'2019', value:150.6, color:'#003580'},{year:'2020', value:67.9, color:'#dc3545'},
+            {year:'2021', value:109.5, color:'#003580'},{year:'2022', value:170.9, color:'#003580'},
+            {year:'2023', value:213.7, color:'#003580'},{year:'2024', value:237.4, color:'#009fe3'},
+            {year:'2025', value:269.0, color:'#009fe3'},
+        ];
+        const maxRevenue = Math.max(...revenueData.map(d => d.value));
+        const revenueChart = document.getElementById('revenueChart');
+        revenueData.forEach(d => {
+            const height = (d.value / maxRevenue) * 250;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color};">
+                    <span class="bar-value">${d.value}</span>
+                </div>
+                <div class="bar-label">${d.year}</div>
+            `;
+            revenueChart.appendChild(barGroup);
+        });
+
+        // Profit Chart
+        const profitData = [
+            {year:'2010', value:5.3, color:'#003580'},{year:'2012', value:14.2, color:'#003580'},
+            {year:'2014', value:24.2, color:'#003580'},{year:'2016', value:21.4, color:'#003580'},
+            {year:'2018', value:40.0, color:'#003580'},{year:'2019', value:48.7, color:'#003580'},
+            {year:'2020', value:0.6, color:'#dc3545'},{year:'2021', value:11.7, color:'#003580'},
+            {year:'2022', value:30.6, color:'#003580'},{year:'2023', value:42.9, color:'#003580'},
+            {year:'2024', value:58.8, color:'#009fe3'},{year:'2025', value:54.0, color:'#009fe3'},
+        ];
+        const maxProfit = Math.max(...profitData.map(d => d.value));
+        const profitChart = document.getElementById('profitChart');
+        profitData.forEach(d => {
+            const height = (d.value / maxProfit) * 250;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color};">
+                    <span class="bar-value">${d.value}</span>
+                </div>
+                <div class="bar-label">${d.year}</div>
+            `;
+            profitChart.appendChild(barGroup);
+        });
+
+        // GB Chart
+        const gbData = [
+            {name:'2019', value:964, color:'#003580'},{name:'2020', value:354, color:'#dc3545'},
+            {name:'2021', value:766, color:'#003580'},{name:'2022', value:1213, color:'#003580'},
+            {name:'2023', value:1506, color:'#003580'},{name:'2024', value:1656, color:'#009fe3'},
+            {name:'2025', value:1861, color:'#009fe3'},
+        ];
+        const maxGb = Math.max(...gbData.map(d => d.value));
+        const gbChart = document.getElementById('gbChart');
+        gbData.forEach(d => {
+            const height = (d.value / maxGb) * 240;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color}; width: 50px;">
+                    <span class="bar-value">${d.value}</span>
+                </div>
+                <div class="bar-label">${d.name}</div>
+            `;
+            gbChart.appendChild(barGroup);
+        });
+
+        // Revenue Mix Chart
+        const mixData = [
+            {name:'Merchant', value:141.4, color:'#003580'},{name:'Agency', value:85.2, color:'#009fe3'},
+            {name:'广告其他', value:10.7, color:'#6c757d'},
+        ];
+        const maxMix = Math.max(...mixData.map(d => d.value));
+        const mixChart = document.getElementById('revenueMixChart');
+        mixData.forEach(d => {
+            const height = (d.value / maxMix) * 240;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color}; width: 70px;">
+                    <span class="bar-value">$${d.value}亿</span>
+                </div>
+                <div class="bar-label">${d.name}</div>
+            `;
+            mixChart.appendChild(barGroup);
+        });
+
+        // STR Chart
+        const strData = [
+            {name:'Airbnb', value:44, color:'#ff5a5f'},{name:'Booking.com', value:18, color:'#003580'},
+            {name:'Vrbo', value:9, color:'#6c757d'},{name:'其他', value:29, color:'#dee2e6'},
+        ];
+        const maxStr = Math.max(...strData.map(d => d.value));
+        const strChart = document.getElementById('strChart');
+        strData.forEach(d => {
+            const height = (d.value / maxStr) * 250;
+            const barGroup = document.createElement('div');
+            barGroup.className = 'bar-group';
+            barGroup.innerHTML = `
+                <div class="bar" style="height: ${height}px; background: ${d.color}; width: 60px;">
+                    <span class="bar-value">${d.value}%</span>
+                </div>
+                <div class="bar-label">${d.name}</div>
+            `;
+            strChart.appendChild(barGroup);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            navbar.style.boxShadow = window.scrollY > 100 ? '0 2px 20px rgba(0,0,0,0.1)' : 'none';
+        });
+    </script>
+<script src="/assets/js/nav-inject.js"></script>
+</body>
+</html>

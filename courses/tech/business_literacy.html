@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>龙虾出行 · 技术研发人员出行行业商业通识课</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0c1222;
+    --bg-secondary: #111827;
+    --bg-card: #1a2332;
+    --bg-code: #0d1117;
+    --accent: #c9a96e;
+    --accent-light: #e8d5a3;
+    --text-primary: #f0f2f5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #1e293b;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    --code: #a5d6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Noto Serif SC', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+  }
+  .slide-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 40px 60px 80px;
+    opacity: 0;
+    transform: translateX(80px);
+    transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+  .slide.prev {
+    opacity: 0;
+    transform: translateX(-80px);
+  }
+
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .top-bar .progress {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .slide-counter {
+    position: fixed;
+    top: 16px;
+    right: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    z-index: 100;
+  }
+
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 64px;
+    background: rgba(12,18,34,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 8px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .nav-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .dots { display: flex; gap: 8px; }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dot.active { background: var(--accent); transform: scale(1.3); }
+
+  h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    margin: 20px 0 12px;
+  }
+  p, li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  ul { padding-left: 24px; }
+  li { margin-bottom: 8px; }
+
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    background: var(--bg-primary);
+  }
+  .cover-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    border-radius: 4px;
+  }
+  .cover h1 {
+    font-size: 3.2rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cover-meta-item strong {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .cover-deco {
+    position: absolute;
+    bottom: 100px;
+    right: 60px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .cover-deco::after {
+    content: '';
+    position: absolute;
+    top: 30px; left: 30px;
+    width: 140px; height: 140px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .card p { font-size: 14px; margin-bottom: 0; }
+
+  .code-block {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--code);
+    margin: 12px 0;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  .code-comment { color: var(--text-muted); }
+  .code-key { color: var(--accent); }
+
+  .term-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .term-card .term {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .term-card .explain {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .term-card .tech {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .flow-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    text-align: center;
+    min-width: 100px;
+  }
+  .flow-box.tech {
+    border-color: var(--info);
+    background: rgba(59,130,246,0.08);
+  }
+  .flow-box.biz {
+    border-color: var(--accent);
+    background: rgba(201,169,110,0.08);
+  }
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 16px;
+  }
+
+  .value-chain {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .value-node {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .value-node .icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .value-node .label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .value-node .desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .comp-col {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .comp-col h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .checklist-item .cb {
+    width: 18px; height: 18px;
+    border: 2px solid var(--text-muted);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .checklist-item strong {
+    color: var(--text-primary);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .checklist-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .quote-block {
+    border-left: 3px solid var(--accent);
+    padding-left: 18px;
+    margin: 16px 0;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(201,169,110,0.1);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    margin-right: 5px;
+    letter-spacing: 0.5px;
+  }
+
+  .case-step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .case-step-num {
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: var(--bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .case-step-content {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .case-step-content h5 {
+    font-size: 13px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+  .case-step-content p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  @media(max-width:768px){
+    .slide { padding: 24px 24px 80px; }
+    h1 { font-size: 2rem; }
+    .cover h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.4rem; }
+    .metric-row { grid-template-columns: repeat(2, 1fr); }
+    .value-chain { grid-template-columns: repeat(3, 1fr); }
+    .comparison { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr; }
+    .cover-deco { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"><div class="progress" id="progressBar"></div></div>
+<div class="slide-counter"><span id="currentNum">1</span> / <span id="totalNum">14</span></div>
+
+<div class="slide-container">
+
+<!-- Slide 1: Cover -->
+<div class="slide active cover">
+  <div class="cover-badge">龙虾出行 · 技术团队商业通识课</div>
+  <h1>出行行业商业通识<br><span>技术视角版</span></h1>
+  <p class="cover-subtitle">写给研发工程师、算法工程师、产品经理的行业底层逻辑</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span>课程编号</span>
+      <strong>TECH-BIZ-101</strong>
+    </div>
+    <div class="cover-meta-item">
+      <span>目标学员</span>
+      <strong>技术研发团队</strong>
+    </div>
+    <div class="cover-meta-item">
+      <span>预计时长</span>
+      <strong>50 分钟</strong>
+    </div>
+  </div>
+  <div class="cover-deco"></div>
+</div>
+
+<!-- Slide 2: Why Tech Need Biz -->
+<div class="slide">
+  <h2><span class="num">01</span>为什么技术人员要懂商业？</h2>
+  <p>很多技术同学认为："我只管写代码，商业是老板的事。"但在出行行业，<strong>不懂商业的技术决策，往往会导致华丽的废品</strong>。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>避免自嗨式开发</h4>
+      <p>你做的功能用户真的付费吗？99%的「酷炫功能」对商业结果没有影响，反而增加维护成本。</p>
+    </div>
+    <div class="card">
+      <h4>理解技术优先级</h4>
+      <p>为什么先接A供应商而不是B？为什么容忍5秒查询延迟？商业上的ROI决定技术投入的排序。</p>
+    </div>
+    <div class="card">
+      <h4>与业务团队同频</h4>
+      <p>当产品经理说「GMV」「转化率」「库存满足率」时，你能听懂背后的技术含义。</p>
+    </div>
+    <div class="card">
+      <h4>发现创新机会</h4>
+      <p>商业痛点往往藏在技术细节里。真正好的创新，是技术与商业的交汇点。</p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "伟大的工程师不是只写优雅代码的人，而是能用技术解决真实商业问题的人。"
+  </div>
+
+  <div class="code-block">
+    <span class="code-comment">// 本课的目标：让你写出这样的代码注释</span><br>
+    <span class="code-key">function</span> calculateCommission(order) {<br>
+    &nbsp;&nbsp;<span class="code-comment">// 佣金率 = 供应商协议价 × 渠道系数 × 会员等级</span><br>
+    &nbsp;&nbsp;<span class="code-comment">// 直接影响: 毛利率 / LTV / CAC</span><br>
+    &nbsp;&nbsp;<span class="code-key">return</span> order.netPrice * order.channelRate * order.tierMultiplier;<br>
+    }
+  </div>
+</div>
+
+<!-- Slide 3: Value Chain -->
+<div class="slide">
+  <h2><span class="num">02</span>出行行业价值链全景图</h2>
+  <p>一次出行交易背后，至少有<strong>5个核心参与方</strong>。理解它们的位置和利益，是理解行业的基础。</p>
+
+  <div class="value-chain">
+    <div class="value-node">
+      <div class="icon">🏨✈️🚗</div>
+      <div class="label">供给侧</div>
+      <div class="desc">航空公司、酒店、租车公司、景区</div>
+    </div>
+    <div class="value-node">
+      <div class="icon">🌐</div>
+      <div class="label">分销层</div>
+      <div class="desc">GDS、OTA、TMC、旅行社</div>
+    </div>
+    <div class="value-node">
+      <div class="icon">⚙️</div>
+      <div class="label">技术层</div>
+      <div class="desc">PMS、CRS、ERP、支付、风控</div>
+    </div>
+    <div class="value-node">
+      <div class="icon">🤖</div>
+      <div class="label">智能层</div>
+      <div class="desc">AI推荐、动态定价、收益管理</div>
+    </div>
+    <div class="value-node">
+      <div class="icon">👤</div>
+      <div class="label">用户侧</div>
+      <div class="desc">C端旅客、企业差旅、旅行Agent</div>
+    </div>
+  </div>
+
+  <h3>钱的流向</h3>
+  <div class="flow-diagram">
+    <div class="flow-box biz">用户付款</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box tech">平台收款</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box biz">扣除佣金</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box tech">结算给供应商</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box biz">平台赚差价</div>
+  </div>
+
+  <p style="font-size:14px;"><strong>关键认知：</strong>平台的核心价值不是拥有库存，而是<strong>降低供需匹配成本</strong>。技术团队所有的工作——搜索、推荐、定价、订单、支付——最终都服务于这个目标。</p>
+</div>
+
+<!-- Slide 4: Flight Business -->
+<div class="slide">
+  <h2><span class="num">03</span>机票业务：产品、分销与收益管理</h2>
+  <p>机票可能是出行行业里最复杂的商品：同一架飞机上的座位，价格可能相差10倍。为什么？</p>
+
+  <div class="comparison">
+    <div class="comp-col">
+      <h4 style="color:var(--accent);">机票的特殊性</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li>库存极易过期（起飞后座位价值归零）</li>
+        <li>价格动态变化（每秒都可能调整）</li>
+        <li>产品高度标准化（座位+时刻+服务）</li>
+        <li>退改签规则复杂（不同舱位不同政策）</li>
+        <li>分销依赖GDS/NDC协议</li>
+      </ul>
+    </div>
+    <div class="comp-col">
+      <h4 style="color:var(--info);">技术同学的关注点</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li>库存查询性能（毫秒级响应）</li>
+        <li>缓存一致性（价格不能过期）</li>
+        <li>订单状态机（PNR/出票/改签/退票）</li>
+        <li>多供应商聚合（GDS+NDC+直连）</li>
+        <li>辅营产品打包（行李+选座+餐食）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>收益管理（Revenue Management）</h3>
+  <p>航空公司通过<strong>收益管理系统</strong>决定每个舱位卖多少钱。核心算法是：在起飞前把座位卖给「愿意付最高价的旅客」。</p>
+
+  <div class="code-block">
+    <span class="code-comment"># 简化版收益管理逻辑</span><br>
+    expected_revenue = price * probability_of_sale<br>
+    <span class="code-comment"># 目标: 在起飞前最大化所有座位的 expected_revenue 之和</span><br>
+    <span class="code-comment"># 涉及: 需求预测、竞品价格、历史数据、节假日、事件</span>
+  </div>
+
+  <div class="card-grid">
+    <div class="card"><h4>舱位（Class）</h4><p>同一物理座位，因退改签规则、里程累积、行李额度不同而形成不同舱位代码（Y/B/M/H/K...）。</p></div>
+    <div class="card"><h4>运价（Fare Basis）</h4><p>由字母和数字组成的代码，定义了一个票价产品的全部规则。技术人员解析它来判断退改签政策。</p></div>
+    <div class="card"><h4>PNR</h4><p>旅客订座记录，6位字母数字组合。一次行程的所有乘客、航班、座位、特殊服务都在里面。</p></div>
+  </div>
+</div>
+
+<!-- Slide 5: Hotel Business -->
+<div class="slide">
+  <h2><span class="num">04</span>酒店业务：库存、价格与渠道管理</h2>
+  <p>酒店比机票简单一些，但也有自己的复杂性：每个房间的每晚价格独立，渠道众多，库存管理必须精细到「房态」。</p>
+
+  <div class="card-grid">
+    <div class="card"><h4>房态（Availability）</h4><p>某天某房型是否可售。必须实时同步到所有渠道，避免超售（Overbooking）或空置。</p></div>
+    <div class="card"><h4>BAR价（Best Available Rate）</h4><p>酒店官网最优价，通常是渠道价格的锚点。OTA价格不能低于BAR，否则违反Rate Parity。</p></div>
+    <div class="card"><h4>渠道管理（Channel Management）</h4><p>酒店同时向官网、携程、Booking.com、Expedia、TMC等渠道放库存。需要Channel Manager统一调控。</p></div>
+    <div class="card"><h4>包房/切房</h4><p>平台提前以固定价买断某段时间的库存，承担卖不完的风险，换取更高毛利。</p></div>
+  </div>
+
+  <h3>酒店分销的利益格局</h3>
+  <div class="metric-row">
+    <div class="metric-card"><div class="metric-value">15-25%</div><div class="metric-label">OTA佣金率</div></div>
+    <div class="metric-card"><div class="metric-value">8-15%</div><div class="metric-label">B2B批发商佣金</div></div>
+    <div class="metric-card"><div class="metric-value">3-8%</div><div class="metric-label">官网直销成本</div></div>
+    <div class="metric-card"><div class="metric-value">10-20%</div><div class="metric-label">会员复购折扣</div></div>
+  </div>
+
+  <div class="code-block">
+    <span class="code-comment">// 酒店价格计算的一个简化示例</span><br>
+    finalPrice = baseRate * dateMultiplier * occupancyMultiplier<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- memberDiscount<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ serviceFee<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ tax<br>
+    <span class="code-comment">// dateMultiplier: 周末/节假日/展会期间的溢价系数</span><br>
+    <span class="code-comment">// occupancyMultiplier: 入住率越高，价格越贵</span>
+  </div>
+</div>
+
+<!-- Slide 6: Ride Hailing -->
+<div class="slide">
+  <h2><span class="num">05</span>打车/地面交通：网络效应与调度系统</h2>
+  <p>打车业务和前两者最大的不同：它<strong>不是卖库存，而是实时匹配供给（司机）和需求（乘客）</strong>。</p>
+
+  <div class="comparison">
+    <div class="comp-col">
+      <h4 style="color:var(--accent);">核心商业特征</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li><strong>双边网络效应：</strong>司机越多→等车越短→乘客越多→司机收入越高</li>
+        <li><strong>实时匹配：</strong>每笔订单都在几秒内完成供需匹配</li>
+        <li><strong>动态定价：</strong>高峰/雨天/偏远地区自动加价</li>
+        <li><strong>服务不可存储：</strong>司机空驶时间就是浪费</li>
+        <li><strong>地域性强：</strong>每个城市都是独立战场</li>
+      </ul>
+    </div>
+    <div class="comp-col">
+      <h4 style="color:var(--info);">技术同学的关注点</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li>供需预测算法（哪里会缺车？）</li>
+        <li>派单策略（最近？最快？最顺路？）</li>
+        <li>动态定价模型（如何平衡供需？）</li>
+        <li>司机调度与热力图</li>
+        <li>ETA估算（预计到达时间）</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>关键公式：供需平衡</h3>
+  <div class="code-block">
+    <span class="code-comment"># 动态定价的核心逻辑</span><br>
+    surgeMultiplier = f(supply_demand_ratio, wait_time, cancellation_rate)<br>
+    <span class="code-comment"># 当 surgeMultiplier > 1.0 时，用户看到加价</span><br>
+    <span class="code-comment"># 加价目的: 1)抑制需求 2)激励更多司机上线</span>
+  </div>
+
+  <p style="font-size:14px;"><strong>对龙虾出行的启示：</strong>如果我们做接送机/包车，核心不是拥有车辆，而是<strong>建立可靠的调度系统和供应商网络</strong>。</p>
+</div>
+
+<!-- Slide 7: Terminology -->
+<div class="slide">
+  <h2><span class="num">06</span>行业术语词典（技术视角）</h2>
+  <p>以下是你在日常工作中最可能遇到的术语，以及它们背后的技术含义。</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;">
+    <div class="term-card">
+      <div class="term">GDS</div>
+      <p class="explain">全球分销系统，航空业的「中央数据库」。</p>
+      <p class="tech">技术含义：Amadeus/Sabre/Travelport的API，通常使用EDIFACT老协议，查询费用按look-to-book计费。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">NDC</div>
+      <p class="explain">新分销能力，航空零售化的技术标准。</p>
+      <p class="tech">技术含义：基于XML/JSON的REST API，支持更丰富产品展示、动态定价和辅营销售。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">PMS / CRS</div>
+      <p class="explain">酒店物业管理系统 / 中央预订系统。</p>
+      <p class="tech">技术含义：PMS管单店运营，CRS管集团库存。我们通过API与它们同步房态和价格。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">API聚合商</div>
+      <p class="explain">把多个供应商API封装成统一接口的公司。</p>
+      <p class="tech">技术含义：如Kyte、Duffel、Travelfusion，让我们用一套接口接入全球多家航司/酒店。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">BSP</div>
+      <p class="explain">开账与结算计划，机票行业的资金清算系统。</p>
+      <p class="tech">技术含义：代理人出票后，通过BSP统一结算给航司。中国由CATA管理。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">Look-to-Book</div>
+      <p class="explain">查询与预订比例。</p>
+      <p class="tech">技术含义：GDS/供应商按查询次数收费，缓存策略直接影响成本。健康值通常 < 500:1。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">Commission / Rebate</div>
+      <p class="explain">佣金 / 返点，平台的收入来源。</p>
+      <p class="tech">技术含义：需要在订单系统中记录协议佣金率，并在结算时准确计算。</p>
+    </div>
+    <div class="term-card">
+      <div class="term">Voucher / Coupon</div>
+      <p class="explain">代金券 / 优惠券。</p>
+      <p class="tech">技术含义：涉及复杂的叠加规则、有效期、适用范围、风控防薅等技术逻辑。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Tech Drives Business Value -->
+<div class="slide">
+  <h2><span class="num">07</span>技术如何驱动商业价值</h2>
+  <p>在出行行业，技术不是成本中心，而是<strong>利润杠杆</strong>。下面用具体例子说明技术与商业结果的关系。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>搜索推荐算法</h4>
+      <p>推荐准确度提升10% → 转化率提升2% → 年收入增加数百万。<br><span style="color:var(--text-muted);font-size:12px;">对应技术：排序模型、用户画像、A/B测试</span></p>
+    </div>
+    <div class="card">
+      <h4>缓存与查询优化</h4>
+      <p>Look-to-Book从800:1降到300:1 → GDS查询成本下降60%。<br><span style="color:var(--text-muted);font-size:12px;">对应技术：Redis缓存、预计算、智能刷新策略</span></p>
+    </div>
+    <div class="card">
+      <h4>订单履约自动化</h4>
+      <p>出票成功率从92%提升到99% → 客服工单下降50%。<br><span style="color:var(--text-muted);font-size:12px;">对应技术：状态机、重试机制、异常告警、对账系统</span></p>
+    </div>
+    <div class="card">
+      <h4>动态打包引擎</h4>
+      <p>机票+酒店打包销售 → 客单价提升33%，毛利更高。<br><span style="color:var(--text-muted);font-size:12px;">对应技术：规则引擎、价格组合优化、实时库存校验</span></p>
+    </div>
+    <div class="card">
+      <h4>反欺诈风控</h4>
+      <p>信用卡拒付率从3%降到0.5% → 年避免损失数百万。<br><span style="color:var(--text-muted);font-size:12px;">对应技术：风控模型、设备指纹、行为分析、黑名单</span></p>
+    </div>
+    <div class="card">
+      <h4>客服自动化</h4>
+      <p>AI客服处理80%标准问题 → 人力成本下降35%。<br><span style="color:var(--text-muted);font-size:12px;">对应技术：NLP、RAG知识库、工单自动分类</span></p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "技术团队的KPI不应该只是系统可用性99.9%，而是「我们优化的系统，让公司多赚了多少钱 / 省了多少钱」。"
+  </div>
+</div>
+
+<!-- Slide 9: Metrics -->
+<div class="slide">
+  <h2><span class="num">08</span>技术人员应该关心的业务指标</h2>
+  <p>这些指标会出现在业务团队的周会上。理解它们的定义和计算方式，能帮助你做出更好的技术决策。</p>
+
+  <div class="metric-row">
+    <div class="metric-card"><div class="metric-value">GMV</div><div class="metric-label">交易总额</div></div>
+    <div class="metric-card"><div class="metric-value">转化率</div><div class="metric-label">UV→下单→支付</div></div>
+    <div class="metric-card"><div class="metric-value">LTV</div><div class="metric-label">用户终身价值</div></div>
+    <div class="metric-card"><div class="metric-value">CAC</div><div class="metric-label">获客成本</div></div>
+  </div>
+
+  <h3>更偏技术的业务指标</h3>
+  <div class="card-grid">
+    <div class="card"><h4>库存满足率</h4><p>用户搜索后有可售库存的占比。低于90%说明供应链覆盖不足或缓存过期。</p></div>
+    <div class="card"><h4>查询响应时间</h4><p>机票/酒店搜索结果返回时间。超过3秒用户流失率显著上升。</p></div>
+    <div class="card"><h4>出票成功率</h4><p>支付成功到最终出票的比例。涉及供应商稳定性、订单状态同步、异常处理。</p></div>
+    <div class="card"><h4>客单价 (AOV)</h4><p>平均每单金额。受推荐策略、打包能力、交叉销售影响。</p></div>
+    <div class="card"><h4>30日留存率</h4><p>注册/首单用户30天后仍活跃的比例。反映产品价值和推荐质量。</p></div>
+    <div class="card"><h4>NPS</h4><p>净推荐值。客服响应速度、退改签体验、行程变更处理能力都会影响。</p></div>
+  </div>
+
+  <div class="code-block">
+    <span class="code-comment">// 一个简单的转化率漏斗埋点</span><br>
+    trackEvent(<span class="code-key">'flight_search'</span>, {userId, query, timestamp})<br>
+    trackEvent(<span class="code-key">'flight_list_view'</span>, {userId, resultCount})<br>
+    trackEvent(<span class="code-key">'flight_select'</span>, {userId, selectedFlight})<br>
+    trackEvent(<span class="code-key">'flight_booking_init'</span>, {userId, price})<br>
+    trackEvent(<span class="code-key">'flight_payment_success'</span>, {userId, orderId, revenue})<br>
+    <span class="code-comment">// 每个环节的流失率，都是技术+产品共同优化的空间</span>
+  </div>
+</div>
+
+<!-- Slide 10: Business Models -->
+<div class="slide">
+  <h2><span class="num">09</span>出行行业的6种商业模式</h2>
+  <p>同一个出行产品，可以有完全不同的变现方式。理解商业模式，有助于你理解系统为什么要这样设计。</p>
+
+  <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
+    <div style="display:flex; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px;">
+      <div style="width:80px; font-size:13px; font-weight:600; color:var(--accent);">佣金模式</div>
+      <div style="flex:1;">
+        <p style="font-size:13px; margin:0;">按交易金额抽取一定比例。OTA、B2B批发商的主要模式。<br><span style="color:var(--text-muted);">技术重点：订单追踪、佣金计算、对账结算</span></p>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px;">
+      <div style="width:80px; font-size:13px; font-weight:600; color:var(--accent);">差价模式</div>
+      <div style="flex:1;">
+        <p style="font-size:13px; margin:0;">低价买断库存，高价卖出。包房、机票切位常用。<br><span style="color:var(--text-muted);">技术重点：库存锁定、价格弹性分析、风险控制</span></p>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px;">
+      <div style="width:80px; font-size:13px; font-weight:600; color:var(--accent);">SaaS订阅</div>
+      <div style="flex:1;">
+        <p style="font-size:13px; margin:0;">企业客户按月/年付费使用差旅管理系统。<br><span style="color:var(--text-muted);">技术重点：多租户架构、权限管理、企业级SLA</span></p>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px;">
+      <div style="width:80px; font-size:13px; font-weight:600; color:var(--accent);">API调用费</div>
+      <div style="flex:1;">
+        <p style="font-size:13px; margin:0;">按API调用次数收费，或按成功交易量抽成。<br><span style="color:var(--text-muted);">技术重点：计费系统、限流、SLA监控</span></p>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px;">
+      <div style="width:80px; font-size:13px; font-weight:600; color:var(--accent);">广告模式</div>
+      <div style="flex:1;">
+        <p style="font-size:13px; margin:0;">向供应商出售搜索结果的优先展示位。<br><span style="color:var(--text-muted);">技术重点：竞价排序、广告相关性、点击率优化</span></p>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px;">
+      <div style="width:80px; font-size:13px; font-weight:600; color:var(--accent);">会员增值</div>
+      <div style="flex:1;">
+        <p style="font-size:13px; margin:0;">付费会员享受专属价格、退改签特权。<br><span style="color:var(--text-muted);">技术重点：权益系统、价格歧视、会员生命周期管理</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: Full Journey -->
+<div class="slide">
+  <h2><span class="num">10</span>案例：一次完整出行的商业流转</h2>
+  <p>假设用户小明通过龙虾出行APP预订了一次「北京→上海」的商务出行。让我们看看钱和数据是怎么流动的。</p>
+
+  <div class="case-step">
+    <div class="case-step-num">1</div>
+    <div class="case-step-content">
+      <h5>搜索与推荐</h5>
+      <p>小明输入「周五下午北京飞上海」。系统调用GDS/NDC/酒店API查询库存，AI推荐引擎根据偏好排序。<br><strong>商业价值：</strong>推荐质量决定转化率。</p>
+    </div>
+  </div>
+  <div class="case-step">
+    <div class="case-step-num">2</div>
+    <div class="case-step-content">
+      <h5>选择产品与下单</h5>
+      <p>小明选择机票+酒店打包方案。系统校验库存、计算价格（含佣金、服务费、税费）。<br><strong>商业价值：</strong>打包提升客单价33%。</p>
+    </div>
+  </div>
+  <div class="case-step">
+    <div class="case-step-num">3</div>
+    <div class="case-step-content">
+      <h5>支付与风控</h5>
+      <p>小明支付¥2,800。风控系统实时判断交易风险，支付网关处理资金。<br><strong>商业价值：</strong>拒付率每降0.1%，省数十万。</p>
+    </div>
+  </div>
+  <div class="case-step">
+    <div class="case-step-num">4</div>
+    <div class="case-step-content">
+      <h5>出票与确认</h5>
+      <p>系统向航司下单出票，向酒店发送预订请求，拿到PNR和确认号，同步给小明。<br><strong>商业价值：</strong>出票成功率必须接近99%。</p>
+    </div>
+  </div>
+  <div class="case-step">
+    <div class="case-step-num">5</div>
+    <div class="case-step-content">
+      <h5>履约与服务</h5>
+      <p>出行当天，系统推送登机提醒、酒店入住码。如遇航班延误，AI客服主动介入改签。<br><strong>商业价值：</strong>服务质量决定NPS和复购。</p>
+    </div>
+  </div>
+  <div class="case-step">
+    <div class="case-step-num">6</div>
+    <div class="case-step-content">
+      <h5>结算与分账</h5>
+      <p>平台扣除佣金后，向航司结算机票款、向酒店结算房费、向接送车供应商结算车费。<br><strong>商业价值：</strong>分账准确直接影响供应商关系和财务合规。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 12: System Architecture -->
+<div class="slide">
+  <h2><span class="num">11</span>出行平台的核心系统架构</h2>
+  <p>作为技术人员，你需要知道一个出行平台大概长什么样。以下是一个简化但完整的系统架构。</p>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px; margin-top:12px;">
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; text-align:center; font-size:12px;">
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--accent); font-weight:600; margin-bottom:6px;">用户端</div>
+        <div style="color:var(--text-muted);">App / 小程序 / Web</div>
+      </div>
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--accent); font-weight:600; margin-bottom:6px;">网关层</div>
+        <div style="color:var(--text-muted);">API Gateway / 鉴权 / 限流</div>
+      </div>
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--accent); font-weight:600; margin-bottom:6px;">业务中台</div>
+        <div style="color:var(--text-muted);">搜索 / 推荐 / 订单 / 支付 / 用户</div>
+      </div>
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--accent); font-weight:600; margin-bottom:6px;">供应链层</div>
+        <div style="color:var(--text-muted);">GDS / NDC / 酒店API / 聚合商</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin:10px 0; color:var(--text-muted); font-size:11px;">↑ 这是业务系统 ↑</div>
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; text-align:center; font-size:12px;">
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--info); font-weight:600; margin-bottom:6px;">数据平台</div>
+        <div style="color:var(--text-muted);">数仓 / 实时计算 / BI</div>
+      </div>
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--info); font-weight:600; margin-bottom:6px;">算法平台</div>
+        <div style="color:var(--text-muted);">推荐 / 定价 / NLP</div>
+      </div>
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--info); font-weight:600; margin-bottom:6px;">基础设施</div>
+        <div style="color:var(--text-muted);">K8s / 消息队列 / 缓存 / DB</div>
+      </div>
+      <div style="background:var(--bg-primary); border:1px solid var(--border); border-radius:6px; padding:10px;">
+        <div style="color:var(--info); font-weight:600; margin-bottom:6px;">DevOps</div>
+        <div style="color:var(--text-muted);">监控 / 告警 / CI/CD</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>龙虾出行MVP阶段的简化版</h3>
+  <p style="font-size:14px;">MVP阶段不需要完整中台。建议优先建设：</p>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>统一API网关</strong><span>封装供应商差异，统一协议和错误处理</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>订单状态机</strong><span>机票/酒店/用车的订单生命周期必须清晰可追踪</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>价格与库存缓存</strong><span>控制GDS查询成本，避免频繁调用</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>埋点与数据看板</strong><span>从Day 1记录关键用户行为和业务指标</span></div>
+  </div>
+</div>
+
+<!-- Slide 13: Action Items -->
+<div class="slide">
+  <h2><span class="num">12</span>技术团队的行动清单</h2>
+  <p>课程结束，以下是每位技术同学可以立刻践行的3件事。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>1. 读一遍产品PRD</h4>
+      <p>不要只看技术实现部分，重点关注「商业价值」和「成功指标」章节。问问自己：这个功能解决谁的什么问题？如何衡量成功？</p>
+    </div>
+    <div class="card">
+      <h4>2. 熟悉一个业务指标</h4>
+      <p>选择你最关心的一个指标（如转化率、库存满足率、出票成功率），理解它的定义、计算方式，以及你的工作如何影响它。</p>
+    </div>
+    <div class="card">
+      <h4>3. 走近一次完整交易</h4>
+      <p>在测试环境手动完成一次机票/酒店预订，追踪从搜索到支付的完整链路。这比看100页文档都有效。</p>
+    </div>
+  </div>
+
+  <h3>推荐阅读/学习资源</h3>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>IATA NDC官方文档</strong><span>理解航空分销技术标准的必读材料</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>OTA公司财报（Booking/Ctrip/Expedia）</strong><span>了解行业巨头的商业模式和关键指标</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>《收益管理》（Robert Cross）</strong><span>航空/酒店定价策略的经典教材</span></div>
+  </div>
+
+  <div class="quote-block">
+    "技术改变世界，但只有当技术服务于真实商业需求时，它才值钱。"
+  </div>
+</div>
+
+<!-- Slide 14: QA -->
+<div class="slide">
+  <h2><span class="num">13</span>Q&A 与讨论</h2>
+  <p>有任何问题，现在就是提问的最佳时机。以下是几个常见的「好问题」供参考。</p>
+
+  <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:18px;">
+      <div style="font-size:15px; font-weight:600; color:var(--text-primary); margin-bottom:6px;">❓ 为什么机票价格每秒都在变？</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin:0;">因为航司的收益管理系统根据需求预测、竞品价格、剩余座位实时调整。缓存策略需要平衡「新鲜度」和「查询成本」。</p>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:18px;">
+      <div style="font-size:15px; font-weight:600; color:var(--text-primary); margin-bottom:6px;">❓ 为什么酒店要签「价格一致性协议」？</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin:0;">酒店希望避免不同渠道价格差异过大导致用户信任崩塌。技术上需要监控各渠道价格，防止违规低价。</p>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:18px;">
+      <div style="font-size:15px; font-weight:600; color:var(--text-primary); margin-bottom:6px;">❓ 打车业务的「动态加价」是怎么算的？</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin:0;">基于供需比、预计等待时间、取消率等因子，通过算法模型实时计算。目标是平衡供给和需求，而不是单纯涨价。</p>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:18px;">
+      <div style="font-size:15px; font-weight:600; color:var(--text-primary); margin-bottom:6px;">❓ 作为后端工程师，我怎么理解「转化率」？</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin:0;">转化率 = 完成目标行为的用户数 ÷ 总用户数。你负责的接口性能、稳定性、错误处理都会直接或间接影响它。</p>
+    </div>
+  </div>
+
+  <div style="background:rgba(201,169,110,0.08); border:1px solid var(--accent); border-radius:12px; padding:20px; margin-top:24px; text-align:center;">
+    <p style="font-size:14px; color:var(--text-secondary); margin:0;">感谢聆听！<br><strong style="color:var(--accent);">最好的技术，是让商业变得简单的技术。</strong></p>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一页</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页 →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+document.getElementById('totalNum').textContent = totalSlides;
+
+const dotsContainer = document.getElementById('dots');
+for(let i=0;i<totalSlides;i++){
+  const dot = document.createElement('span');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.onclick = ()=>goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide(){
+  slides.forEach((slide,i)=>{
+    slide.classList.remove('active','prev');
+    if(i===currentSlide) slide.classList.add('active');
+    else if(i<currentSlide) slide.classList.add('prev');
+  });
+  document.querySelectorAll('.dot').forEach((dot,i)=>{
+    dot.classList.toggle('active', i===currentSlide);
+  });
+  document.getElementById('currentNum').textContent = currentSlide + 1;
+  document.getElementById('progressBar').style.width = ((currentSlide+1)/totalSlides*100)+'%';
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+}
+
+function changeSlide(dir){
+  const newIdx = currentSlide + dir;
+  if(newIdx >= 0 && newIdx < totalSlides){
+    currentSlide = newIdx;
+    updateSlide();
+  }
+}
+
+function goToSlide(idx){
+  currentSlide = idx;
+  updateSlide();
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key===' ') changeSlide(1);
+  if(e.key==='ArrowLeft') changeSlide(-1);
+});
+
+updateSlide();
+</script>
+
+<script src="/assets/js/nav-inject.js"></script>
+</body>
+</html>

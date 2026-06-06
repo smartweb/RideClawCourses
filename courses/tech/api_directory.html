@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球出行行业API/B2B平台大全 | Travel Tech Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f172a; --bg-card: #1e293b; --bg-hover: #334155;
+  --primary: #38bdf8; --primary-dark: #0ea5e9; --accent: #f59e0b;
+  --success: #22c55e; --danger: #ef4444; --purple: #a855f7;
+  --text: #f1f5f9; --text-secondary: #94a3b8; --text-muted: #64748b;
+  --border: #334155; --shadow: 0 4px 24px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* Header */
+.header{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#0f172a 100%);padding:60px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 50% 0%,rgba(56,189,248,.15),transparent 60%)}
+.header-content{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.header h1{font-size:2.6rem;font-weight:900;margin-bottom:12px;background:linear-gradient(90deg,#38bdf8,#a855f7,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header p{color:var(--text-secondary);font-size:1.1rem;max-width:600px;margin:0 auto 28px;line-height:1.7}
+.header-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:20px}
+.stat{text-align:center}
+.stat-num{font-size:2rem;font-weight:800;color:var(--primary);line-height:1}
+.stat-label{font-size:.8rem;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Search & Filter */
+.filter-bar{position:sticky;top:0;z-index:50;background:rgba(15,23,41,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:20px 24px}
+.filter-inner{max-width:1200px;margin:0 auto}
+.search-box{position:relative;margin-bottom:16px}
+.search-box input{width:100%;padding:14px 20px 14px 48px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);font-size:1rem;font-family:inherit;outline:none;transition:all .3s}
+.search-box input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(56,189,248,.15)}
+.search-box svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);stroke:var(--text-muted)}
+
+.filter-tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.tag{padding:8px 18px;border-radius:20px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-secondary);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tag:hover{border-color:var(--primary);color:var(--primary)}
+.tag.active{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(56,189,248,.25)}
+
+/* Main */
+.main{max-width:1200px;margin:0 auto;padding:32px 24px 60px}
+
+/* Section Title */
+.section-title{display:flex;align-items:center;gap:12px;margin:40px 0 20px;font-size:1.3rem;font-weight:800}
+.section-title .icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:linear-gradient(135deg,var(--primary),var(--purple))}
+.section-title .count{font-size:.85rem;font-weight:500;color:var(--text-muted);margin-left:auto;background:var(--bg-card);padding:4px 12px;border-radius:20px}
+
+/* Card Grid */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+
+/* Card */
+.card{background:var(--bg-card);border-radius:16px;padding:22px;border:1px solid var(--border);transition:all .3s;cursor:pointer;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--purple));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.card:hover{transform:translateY(-4px);border-color:var(--bg-hover);box-shadow:var(--shadow)}
+.card:hover::before{transform:scaleX(1)}
+.card.hidden{display:none}
+
+.card-header{display:flex;gap:14px;margin-bottom:14px}
+.card-logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#1e293b,#334155);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;border:1px solid var(--border)}
+.card-meta{flex:1;min-width:0}
+.card-name{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-hq{font-size:.8rem;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.card-category{display:inline-block;padding:3px 10px;border-radius:10px;font-size:.7rem;font-weight:600;margin-top:6px}
+.cat-ndc{background:rgba(56,189,248,.12);color:#7dd3fc}
+.cat-gds{background:rgba(168,85,247,.12);color:#d8b4fe}
+.cat-hotel{background:rgba(34,197,94,.12);color:#86efac}
+.cat-platform{background:rgba(245,158,11,.12);color:#fcd34d}
+.cat-tmc{background:rgba(239,68,68,.12);color:#fca5a5}
+.cat-activity{background:rgba(236,72,153,.12);color:#f9a8d4}
+.cat-payment{background:rgba(20,184,166,.12);color:#5eead4}
+.cat-china{background:rgba(59,130,246,.12);color:#93c5fd}
+
+.card-desc{font-size:.88rem;color:var(--text-secondary);line-height:1.7;margin-bottom:14px;flex:1}
+.card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.card-tag{padding:3px 10px;border-radius:8px;font-size:.7rem;font-weight:600;background:var(--bg);color:var(--text-muted);border:1px solid var(--border)}
+.card-link{padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:.8rem;font-weight:600;text-decoration:none;transition:all .2s;white-space:nowrap}
+.card-link:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(56,189,248,.3)}
+
+/* No results */
+.no-results{text-align:center;padding:80px 24px;color:var(--text-muted)}
+.no-results svg{width:64px;height:64px;stroke:var(--text-muted);margin-bottom:16px}
+.no-results h3{font-size:1.2rem;color:var(--text-secondary);margin-bottom:8px}
+
+/* Footer */
+.footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);color:var(--text-muted);font-size:.85rem}
+.footer a{color:var(--primary);text-decoration:none}
+
+/* Responsive */
+@media(max-width:768px){
+  .header h1{font-size:1.8rem}
+  .header-stats{gap:24px}
+  .stat-num{font-size:1.5rem}
+  .card-grid{grid-template-columns:1fr}
+  .filter-tags{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .tag{flex-shrink:0}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <h1>🌍 全球出行行业 API / B2B 平台大全</h1>
+    <p>类似 Duffel.com 的 Travel-as-a-Service 基础设施公司全收录。按类别筛选，快速找到适合你业务的供应链技术伙伴。</p>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-num">60+</div><div class="stat-label">平台收录</div></div>
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">分类维度</div></div>
+      <div class="stat"><div class="stat-num">30+</div><div class="stat-label">国家地区</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="search-box">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索公司名称、国家、产品类型...">
+    </div>
+    <div class="filter-tags">
+      <span class="tag active" data-cat="all">全部</span>
+      <span class="tag" data-cat="ndc">✈️ NDC/机票API</span>
+      <span class="tag" data-cat="gds">🌐 传统GDS</span>
+      <span class="tag" data-cat="hotel">🏨 酒店B2B API</span>
+      <span class="tag" data-cat="platform">🔧 综合技术平台</span>
+      <span class="tag" data-cat="tmc">💼 企业差旅TMC</span>
+      <span class="tag" data-cat="activity">🎯 活动/租车API</span>
+      <span class="tag" data-cat="payment">💳 旅游支付</span>
+      <span class="tag" data-cat="china">🇨🇳 中国平台</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<main class="main">
+
+<!-- Section: NDC / Flight API -->
+<div class="section" data-section="ndc">
+  <h2 class="section-title">
+    <span class="icon">✈️</span>
+    NDC / 机票 API 聚合器
+    <span class="count">类似 Duffel 的核心竞品</span>
+  </h2>
+  <div class="card-grid">
+    <div class="card" data-cat="ndc" data-name="duffel kyte travelfusion airgateway verteil tpconnects farelogix mystifly aaron hitchhiker pkfare spotnana openjaw datalex jrtechnologies">
+      <div class="card-header">
+        <div class="card-logo">🛫</div>
+        <div class="card-meta">
+          <div class="card-name">Duffel</div>
+          <div class="card-hq">📍 英国伦敦 🇬🇧 | 2017年成立</div>
+          <span class="card-category cat-ndc">NDC API</span>
+        </div>
+      </div>
+      <div class="card-desc">现代航空分销API平台，通过统一API让开发者快速接入30+航空公司的NDC内容，支持机票搜索、预订、辅营服务（行李/选座）和支付。Developer-first设计理念。</div>
+      <div class="card-footer">
+        <div class="card-tags">
+          <span class="card-tag">机票API</span>
+          <span class="card-tag">NDC</span>
+          <span class="card-tag">辅营</span>
+        </div>
+        <a href="https://duffel.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">✈️</div>
+        <div class="card-meta">
+          <div class="card-name">Kyte</div>
+          <div class="card-hq">📍 美国波士顿 🇺🇸 | 2020年成立</div>
+          <span class="card-category cat-ndc">NDC API</span>
+        </div>
+      </div>
+      <div class="card-desc">航空零售和分销B2B平台，简化航空公司API接入，支持直接预订、PNR即时出票、辅营服务和运价访问。定位为航空公司的零售和分销平台。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">机票API</span><span class="card-tag">NDC</span><span class="card-tag">B2B</span></div>
+        <a href="https://www.kyte.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🔍</div>
+        <div class="card-meta">
+          <div class="card-name">Travelfusion</div>
+          <div class="card-hq">📍 英国伦敦 🇬🇧 | Booking Holdings旗下</div>
+          <span class="card-category cat-ndc">机票聚合API</span>
+        </div>
+      </div>
+      <div class="card-desc">全球领先的机票元搜索和聚合API，连接600+航空公司（含GDS、NDC、LCC直连），提供统一API访问全球机票内容。已被Booking Holdings收购。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">机票API</span><span class="card-tag">聚合</span><span class="card-tag">LCC</span></div>
+        <a href="https://www.travelfusion.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🌉</div>
+        <div class="card-meta">
+          <div class="card-name">AirGateway</div>
+          <div class="card-hq">📍 西班牙 🇪🇸</div>
+          <span class="card-category cat-ndc">NDC聚合器</span>
+        </div>
+      </div>
+      <div class="card-desc">NDC聚合器，提供Booking Pad（代理人桌面）和开放API，支持从多家航空公司获取NDC内容。以开放性和详尽的API文档著称，提供沙箱环境测试。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">NDC</span><span class="card-tag">Agent UI</span><span class="card-tag">开放API</span></div>
+        <a href="https://www.airgateway.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🇮🇳</div>
+        <div class="card-meta">
+          <div class="card-name">Verteil Technologies</div>
+          <div class="card-hq">📍 印度 🇮🇳</div>
+          <span class="card-category cat-ndc">NDC聚合器</span>
+        </div>
+      </div>
+      <div class="card-desc">印度NDC聚合平台，通过统一API连接40+航空公司NDC内容，支持航班搜索、品牌运价、辅营预订、常旅客计划、多支付方式、改签和退款的自动化流程。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">NDC</span><span class="card-tag">40+航司</span><span class="card-tag">印度</span></div>
+        <a href="https://www.verteil.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🔗</div>
+        <div class="card-meta">
+          <div class="card-name">TPConnects</div>
+          <div class="card-hq">📍 印度 🇮🇳</div>
+          <span class="card-category cat-ndc">NDC聚合器</span>
+        </div>
+      </div>
+      <div class="card-desc">IATA认证的NDC Level 3技术提供商，提供Iris API和Iris Portal，支持GDS+NDC+LCC混合内容搜索。为全球旅行社和企业提供NDC实施解决方案。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">NDC L3</span><span class="card-tag">IATA</span><span class="card-tag">混合内容</span></div>
+        <a href="https://www.tpconnects.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">⚙️</div>
+        <div class="card-meta">
+          <div class="card-name">Farelogix (Accelya)</div>
+          <div class="card-hq">📍 美国迈阿密 🇺🇸 | 已被Accelya收购</div>
+          <span class="card-category cat-ndc">NDC平台</span>
+        </div>
+      </div>
+      <div class="card-desc">航空业领先的NDC解决方案提供商，被Accelya收购后成为其航空零售技术核心。与全球主要航司有深度合作，提供Offer/Order管理、动态定价和个性化零售。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">NDC</span><span class="card-tag">航空零售</span><span class="card-tag">动态定价</span></div>
+        <a href="https://www.accelya.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🎫</div>
+        <div class="card-meta">
+          <div class="card-name">Mystifly</div>
+          <div class="card-hq">📍 新加坡/印度 🇸🇬🇮🇳</div>
+          <span class="card-category cat-ndc">机票聚合API</span>
+        </div>
+      </div>
+      <div class="card-desc">全球机票聚合平台，连接GDS、NDC、LCC和航司直连，提供统一API访问全球900+航空公司内容。支持私有运价、企业协议价和辅营产品。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">900+航司</span><span class="card-tag">私有运价</span><span class="card-tag">企业价</span></div>
+        <a href="https://www.mystifly.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🎼</div>
+        <div class="card-meta">
+          <div class="card-name">Aaron Group</div>
+          <div class="card-hq">📍 以色列 🇮🇱</div>
+          <span class="card-category cat-ndc">机票聚合API</span>
+        </div>
+      </div>
+      <div class="card-desc">通过Symphony API提供580+ GDS、NDC和低成本航空公司的机票内容，支持辅营预订、旅行保险、航班延误补偿，以及IATA BSP/EasyPay/ARC多种结算方式。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">580+航司</span><span class="card-tag">Symphony API</span><span class="card-tag">保险</span></div>
+        <a href="https://www.aarongroup.net" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🚗</div>
+        <div class="card-meta">
+          <div class="card-name">HitchHiker</div>
+          <div class="card-hq">📍 德国 🇩🇪</div>
+          <span class="card-category cat-ndc">机票聚合API</span>
+        </div>
+      </div>
+      <div class="card-desc">德国机票分销API平台，直连120+ LCC和全服务航司（含20+ NDC航司），以及所有主要GDS和批发商。同时提供SaaS解决方案，无需自建系统。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">120+航司</span><span class="card-tag">LCC</span><span class="card-tag">SaaS</span></div>
+        <a href="https://www.hitchhiker.io" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🇨🇳</div>
+        <div class="card-meta">
+          <div class="card-name">PKFare (比客)</div>
+          <div class="card-hq">📍 中国深圳 🇨🇳</div>
+          <span class="card-category cat-ndc">全球旅游产品聚合</span>
+        </div>
+      </div>
+      <div class="card-desc">全球旅游产品B2B交易平台，聚合600+航空公司、40万+酒店、20+ DMC。2024年与Duffel达成战略合作，强化NDC和LCC内容。提供实时库存、最优价格和多语言客服。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">600+航司</span><span class="card-tag">B2B交易</span><span class="card-tag">中国</span></div>
+        <a href="https://www.pkfare.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🎯</div>
+        <div class="card-meta">
+          <div class="card-name">Spotnana</div>
+          <div class="card-hq">📍 美国纽约 🇺🇸 | 2020年成立</div>
+          <span class="card-category cat-ndc">TMC基础设施</span>
+        </div>
+      </div>
+      <div class="card-desc">Travel-as-a-Service平台，为TMC（差旅管理公司）提供现代化预订基础设施，核心优势是NDC航空内容接入。Brex Travel等企业平台均基于Spotnana构建。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">TMC infra</span><span class="card-tag">NDC</span><span class="card-tag">企业差旅</span></div>
+        <a href="https://www.spotnana.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🇮🇪</div>
+        <div class="card-meta">
+          <div class="card-name">OpenJaw Technologies</div>
+          <div class="card-hq">📍 爱尔兰都柏林 🇮🇪</div>
+          <span class="card-category cat-ndc">航空零售平台</span>
+        </div>
+      </div>
+      <div class="card-desc">航空零售和忠诚度平台，帮助航空公司建立直接分销渠道、管理NDC内容、运营常旅客计划。被IATA认可为NDC技术合作伙伴，服务全球多家航司。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">航司零售</span><span class="card-tag">忠诚度</span><span class="card-tag">NDC</span></div>
+        <a href="https://www.openjawtech.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">📊</div>
+        <div class="card-meta">
+          <div class="card-name">Datalex</div>
+          <div class="card-hq">📍 爱尔兰都柏林 🇮🇪</div>
+          <span class="card-category cat-ndc">航空商务平台</span>
+        </div>
+      </div>
+      <div class="card-desc">航空公司数字商务平台，提供零售、定价和个性化服务。帮助航司通过自有渠道和NDC直接销售全品类产品（机票+辅营+酒店+租车）。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">航司直销</span><span class="card-tag">个性化</span><span class="card-tag">动态定价</span></div>
+        <a href="https://www.datalex.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="ndc">
+      <div class="card-header">
+        <div class="card-logo">🛠️</div>
+        <div class="card-meta">
+          <div class="card-name">JR Technologies</div>
+          <div class="card-hq">📍 美国/爱尔兰 🇺🇸🇮🇪</div>
+          <span class="card-category cat-ndc">NDC技术商</span>
+        </div>
+      </div>
+      <div class="card-desc">航空分销技术公司，专注于NDC实施和航空零售转型。提供端到端的Offer/Order管理解决方案，帮助航司和代理人迁移到IATA NDC标准。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">NDC实施</span><span class="card-tag">Offer/Order</span><span class="card-tag">航司</span></div>
+        <a href="https://www.jrtechnologies.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: GDS -->
+<div class="section" data-section="gds">
+  <h2 class="section-title"><span class="icon">🌐</span>传统GDS（全球分销系统）<span class="count">三大巨头</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="gds" data-name="amadeus sabre travelport galileo worldspan apollo">
+      <div class="card-header">
+        <div class="card-logo">🇪🇸</div>
+        <div class="card-meta">
+          <div class="card-name">Amadeus</div>
+          <div class="card-hq">📍 西班牙马德里 🇪🇸 | 全球最大GDS</div>
+          <span class="card-category cat-gds">GDS</span>
+        </div>
+      </div>
+      <div class="card-desc">全球最大的旅游分销系统，连接700+航空公司、58万+酒店、50+租车公司。提供REST/JSON和SOAP/XML API，覆盖航班、酒店、租车、保险等全品类。欧洲市场占有率第一。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">700+航司</span><span class="card-tag">58万酒店</span><span class="card-tag">欧洲#1</span></div>
+        <a href="https://developers.amadeus.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="gds">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">Sabre</div>
+          <div class="card-hq">📍 美国德克萨斯 🇺🇸 | 北美主导</div>
+          <span class="card-category cat-gds">GDS</span>
+        </div>
+      </div>
+      <div class="card-desc">北美最大GDS，连接400+航空公司、75万+酒店、36个租车品牌。高峰期每分钟处理超100万笔预订。提供数百个REST/SOAP API，也是NDC技术先行者。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">400+航司</span><span class="card-tag">75万酒店</span><span class="card-tag">北美#1</span></div>
+        <a href="https://developer.sabre.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="gds">
+      <div class="card-header">
+        <div class="card-logo">🇬🇧</div>
+        <div class="card-meta">
+          <div class="card-name">Travelport</div>
+          <div class="card-hq">📍 英国/美国 🇬🇧🇺🇸 | 三大GDS之一</div>
+          <span class="card-category cat-gds">GDS</span>
+        </div>
+      </div>
+      <div class="card-desc">整合Apollo、Worldspan和Galileo三大GDS系统，提供Universal API（SOAP/XML）和轻量级JSON API。在商务旅和企业差旅领域有深厚积累，已支持NDC内容接入。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">3大系统</span><span class="card-tag">商务旅</span><span class="card-tag">NDC就绪</span></div>
+        <a href="https://developer.travelport.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: Hotel B2B -->
+<div class="section" data-section="hotel">
+  <h2 class="section-title"><span class="icon">🏨</span>酒店 B2B API / 批发商<span class="count">全球库存引擎</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="hotel" data-name="hotelbeds webbeds expedia eps booking affiliate ratehawk hotelspro dotw">
+      <div class="card-header">
+        <div class="card-logo">🏨</div>
+        <div class="card-meta">
+          <div class="card-name">Hotelbeds</div>
+          <div class="card-hq">📍 西班牙帕尔马 🇪🇸 | 全球最大酒店批发商</div>
+          <span class="card-category cat-hotel">酒店批发</span>
+        </div>
+      </div>
+      <div class="card-desc">全球最大酒店B2B批发商，覆盖185个国家7万+酒店。提供API直连，支持实时库存、价格和预订管理。同时也提供目的地活动、接送和租车产品。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">7万+酒店</span><span class="card-tag">185国</span><span class="card-tag">批发</span></div>
+        <a href="https://developer.hotelbeds.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">🛏️</div>
+        <div class="card-meta">
+          <div class="card-name">WebBeds</div>
+          <div class="card-hq">📍 英国伦敦 🇬🇧</div>
+          <span class="card-category cat-hotel">酒店批发</span>
+        </div>
+      </div>
+      <div class="card-desc">全球酒店B2B批发商，旗下品牌包括JacTravel、Sunhotels、Lots of Hotels等。提供全球酒店净价库存，覆盖欧洲、亚太和美洲市场，API对接成熟。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">酒店批发</span><span class="card-tag">多品牌</span><span class="card-tag">全球</span></div>
+        <a href="https://www.webbeds.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">Expedia Partner Solutions (EPS)</div>
+          <div class="card-hq">📍 美国西雅图 🇺🇸 | Expedia旗下</div>
+          <span class="card-category cat-hotel">酒店API</span>
+        </div>
+      </div>
+      <div class="card-desc">Expedia的B2B部门，向合作伙伴提供50万+酒店和35万+ vacation rentals的API接入。 Rapid API是其核心产品，RESTful JSON接口，开发者友好，文档完善。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">50万酒店</span><span class="card-tag">Rapid API</span><span class="card-tag">JSON</span></div>
+        <a href="https://developers.expediagroup.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">🇳🇱</div>
+        <div class="card-meta">
+          <div class="card-name">Booking.com Affiliate Partner</div>
+          <div class="card-hq">📍 荷兰阿姆斯特丹 🇳🇱</div>
+          <span class="card-category cat-hotel">酒店API</span>
+        </div>
+      </div>
+      <div class="card-desc">Booking.com的合作伙伴API计划，提供95万+酒店/民宿库存。支持XML/API和联盟链接两种模式，适合不同规模的合作伙伴。 content rich（图片、评论、设施详情完整）。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">95万+房源</span><span class="card-tag">联盟</span><span class="card-tag">内容丰富</span></div>
+        <a href="https://affiliate-program.booking.com" target="_blank" class="card-link">合作伙伴 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">⚡</div>
+        <div class="card-meta">
+          <div class="card-name">RateHawk</div>
+          <div class="card-hq">📍 阿联酋迪拜 🇦🇪 | Emerging Travel Group</div>
+          <span class="card-category cat-hotel">酒店B2B</span>
+        </div>
+      </div>
+      <div class="card-desc">快速发展的酒店B2B预订平台，提供全球50万+住宿选择。以竞争性价格和用户友好的B2B界面著称，API支持REST/JSON，适合中小OTA快速接入。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">50万+住宿</span><span class="card-tag">B2B</span><span class="card-tag">价格优</span></div>
+        <a href="https://www.ratehawk.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">🏗️</div>
+        <div class="card-meta">
+          <div class="card-name">HyperGuest</div>
+          <div class="card-hq">📍 以色列 🇮🇱</div>
+          <span class="card-category cat-hotel">酒店直连技术</span>
+        </div>
+      </div>
+      <div class="card-desc">酒店直连技术平台，帮助酒店集团和OTA建立直接API连接，绕过传统批发商。支持实时房态同步、价格管理和预订直连，降低分销成本。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">直连</span><span class="card-tag">降本</span><span class="card-tag">实时同步</span></div>
+        <a href="https://www.hyperguest.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">🌍</div>
+        <div class="card-meta">
+          <div class="card-name">DOTW (Destinations of the World)</div>
+          <div class="card-hq">📍 阿联酋迪拜 🇦🇪</div>
+          <span class="card-category cat-hotel">酒店批发</span>
+        </div>
+      </div>
+      <div class="card-desc">中东领先的酒店批发商，覆盖全球10万+酒店。提供XML API和B2B预订平台，在中东、非洲和亚洲市场有深厚的酒店资源和价格优势。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">10万+酒店</span><span class="card-tag">中东优势</span><span class="card-tag">B2B</span></div>
+        <a href="https://www.dotw.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="hotel">
+      <div class="card-header">
+        <div class="card-logo">🏢</div>
+        <div class="card-meta">
+          <div class="card-name">HPro Travel / HotelsPro</div>
+          <div class="card-hq">📍 土耳其 🇹🇷</div>
+          <span class="card-category cat-hotel">酒店批发</span>
+        </div>
+      </div>
+      <div class="card-desc">土耳其酒店批发商，提供全球酒店净价库存和API接入。在欧洲、中东和地中海地区有价格优势，也提供transfer和活动等目的地服务。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">酒店批发</span><span class="card-tag">欧洲</span><span class="card-tag">目的地服务</span></div>
+        <a href="https://www.hotelspro.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: Comprehensive Platform -->
+<div class="section" data-section="platform">
+  <h2 class="section-title"><span class="icon">🔧</span>综合旅游技术平台<span class="count">一站式解决方案</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="platform" data-name="technoheaven trawex travelopro altexsoft">
+      <div class="card-header">
+        <div class="card-logo">🇮🇳</div>
+        <div class="card-meta">
+          <div class="card-name">Technoheaven</div>
+          <div class="card-hq">📍 印度/阿联酋 🇮🇳🇦🇪</div>
+          <span class="card-category cat-platform">旅游技术平台</span>
+        </div>
+      </div>
+      <div class="card-desc">提供B2B/B2C旅游门户网站、预订引擎、XML API集成、DMC软件和ERP系统。已与Expedia Group B2B、RateHawk、Hotelston等建立合作。IATA NDC Level 3认证。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">门户系统</span><span class="card-tag">NDC L3</span><span class="card-tag">ERP</span></div>
+        <a href="https://www.technoheaven.net" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="platform">
+      <div class="card-header">
+        <div class="card-logo">🇮🇳</div>
+        <div class="card-meta">
+          <div class="card-name">Trawex</div>
+          <div class="card-hq">📍 印度 🇮🇳</div>
+          <span class="card-category cat-platform">旅游技术平台</span>
+        </div>
+      </div>
+      <div class="card-desc">IATA NDC Level 3认证旅游技术方案商，提供旅游API集成、B2B/B2C预订门户、GDS集成（Amadeus/Sabre/Travelport）、酒店XML集成和定制开发服务。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">NDC L3</span><span class="card-tag">GDS集成</span><span class="card-tag">定制开发</span></div>
+        <a href="https://www.trawex.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="platform">
+      <div class="card-header">
+        <div class="card-logo">🇺🇦</div>
+        <div class="card-meta">
+          <div class="card-name">AltexSoft</div>
+          <div class="card-hq">📍 乌克兰/美国 🇺🇦🇺🇸</div>
+          <span class="card-category cat-platform">旅游技术咨询</span>
+        </div>
+      </div>
+      <div class="card-desc">旅游技术咨询和软件开发公司，Sabre认证开发合作伙伴。提供GDS/API集成、NDC实施、预订引擎开发、收益管理系统和旅游App开发服务。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">咨询</span><span class="card-tag">Sabre认证</span><span class="card-tag">定制开发</span></div>
+        <a href="https://www.altexsoft.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="platform">
+      <div class="card-header">
+        <div class="card-logo">🇮🇳</div>
+        <div class="card-meta">
+          <div class="card-name">Travel Boutique Online (TBO)</div>
+          <div class="card-hq">📍 印度古尔冈 🇮🇳 | 已上市</div>
+          <span class="card-category cat-platform">旅游B2B</span>
+        </div>
+      </div>
+      <div class="card-desc">印度最大旅游B2B平台之一，为旅行社和代理人提供机票、酒店、签证、保险等产品的预订平台和API。在印度和中东市场有深厚根基，2021年在印度交易所上市。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">B2B平台</span><span class="card-tag">印度最大</span><span class="card-tag">上市公司</span></div>
+        <a href="https://www.tbo.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="platform">
+      <div class="card-header">
+        <div class="card-logo">🎫</div>
+        <div class="card-meta">
+          <div class="card-name">Travelopro</div>
+          <div class="card-hq">📍 印度 🇮🇳</div>
+          <span class="card-category cat-platform">旅游技术平台</span>
+        </div>
+      </div>
+      <div class="card-desc">提供旅游API集成服务，连接GDS、批发商和第三方供应商。产品线涵盖机票、酒店、租车、度假套餐等，提供白标门户和定制预订引擎。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">API集成</span><span class="card-tag">白标</span><span class="card-tag">预订引擎</span></div>
+        <a href="https://www.travelopro.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: TMC -->
+<div class="section" data-section="tmc">
+  <h2 class="section-title"><span class="icon">💼</span>企业差旅 / TMC 技术<span class="count">商旅基础设施</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="tmc" data-name="sap concur travelperk navan tripactions deem cwt amex gbt egencia">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">SAP Concur</div>
+          <div class="card-hq">📍 美国华盛顿 🇺🇸 | 1993年成立</div>
+          <span class="card-category cat-tmc">企业差旅T&E</span>
+        </div>
+      </div>
+      <div class="card-desc">全球领先的企业差旅、费用和发票管理平台。深度SAP生态集成，适合有复杂审批链和合规要求的大型企业。提供AI数据分析、政策执行和审计追踪。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">T&E</span><span class="card-tag">SAP集成</span><span class="card-tag">企业级</span></div>
+        <a href="https://www.concur.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tmc">
+      <div class="card-header">
+        <div class="card-logo">🇪🇸</div>
+        <div class="card-meta">
+          <div class="card-name">TravelPerk</div>
+          <div class="card-hq">📍 西班牙巴塞罗那 🇪🇸 | 独角兽</div>
+          <span class="card-category cat-tmc">企业差旅</span>
+        </div>
+      </div>
+      <div class="card-desc">欧洲增长最快的企业差旅平台，FlexiTravel功能支持80%退款率的最后一分钟取消。Starter套餐按5%/单收费。整合全球供应商网络+NDC内容。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">欧洲#1</span><span class="card-tag">灵活退改</span><span class="card-tag">独角兽</span></div>
+        <a href="https://www.travelperk.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tmc">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">Navan (原TripActions)</div>
+          <div class="card-hq">📍 美国帕洛阿尔托 🇺🇸 | 独角兽</div>
+          <span class="card-category cat-tmc">企业差旅</span>
+        </div>
+      </div>
+      <div class="card-desc">AI驱动的企业差旅平台，整合企业卡、费用管理和差旅预订。以AI助手和自动化报销著称。Valuation超$90亿的超级独角兽，SAP Concur的主要挑战者。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">AI驱动</span><span class="card-tag">超级独角兽</span><span class="card-tag">自动化</span></div>
+        <a href="https://www.navan.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tmc">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">Deem</div>
+          <div class="card-hq">📍 美国 🇺🇸</div>
+          <span class="card-category cat-tmc">TMC技术</span>
+        </div>
+      </div>
+      <div class="card-desc">专为TMC（差旅管理公司）提供的企业差旅预订技术平台，移动端体验业界领先。被Etta收购后继续服务TMC客户，支持NDC内容和全球供应商网络。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">TMC技术</span><span class="card-tag">移动端</span><span class="card-tag">NDC</span></div>
+        <a href="https://www.deem.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tmc">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">Amex GBT Egencia</div>
+          <div class="card-hq">📍 美国 🇺🇸 | Amex GBT旗下</div>
+          <span class="card-category cat-tmc">企业差旅</span>
+        </div>
+      </div>
+      <div class="card-desc">美国运通全球商务旅行旗下的企业差旅平台，覆盖航班、酒店、租车和铁路。提供24/7人工支持、政策控制和预订后票价监控（自动找更低价格）。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">Amex</span><span class="card-tag">全球网络</span><span class="card-tag">票价监控</span></div>
+        <a href="https://www.amexglobalbusinesstravel.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="tmc">
+      <div class="card-header">
+        <div class="card-logo">🇺🇸</div>
+        <div class="card-meta">
+          <div class="card-name">TravelBank</div>
+          <div class="card-hq">📍 美国 🇺🇸 | U.S. Bank旗下</div>
+          <span class="card-category cat-tmc">T&E+银行</span>
+        </div>
+      </div>
+      <div class="card-desc">结合差旅预订、费用追踪和银行卡对账的一站式平台。员工节省差旅预算可获得奖励（cash back incentive）。提供免费入门计划，NDC已接入美联航、汉莎等。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">免费起步</span><span class="card-tag">员工激励</span><span class="card-tag">银行背景</span></div>
+        <a href="https://www.travelbank.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: Activity / Car -->
+<div class="section" data-section="activity">
+  <h2 class="section-title"><span class="icon">🎯</span>活动 / 体验 / 租车 API<span class="count">目的地服务引擎</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="activity" data-name="viator getyourguide klook rentalcars cartrawler">
+      <div class="card-header">
+        <div class="card-logo">🎭</div>
+        <div class="card-meta">
+          <div class="card-name">Viator</div>
+          <div class="card-hq">📍 美国旧金山 🇺🇸 | TripAdvisor旗下</div>
+          <span class="card-category cat-activity">活动/体验API</span>
+        </div>
+      </div>
+      <div class="card-desc">全球最大旅游活动和体验预订平台之一，提供30万+目的地体验（门票、一日游、美食、探险）。提供Affiliate API，支持搜索、预订和库存管理。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">30万+体验</span><span class="card-tag">TripAdvisor</span><span class="card-tag">API</span></div>
+        <a href="https://www.viator.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="activity">
+      <div class="card-header">
+        <div class="card-logo">🗺️</div>
+        <div class="card-meta">
+          <div class="card-name">GetYourGuide</div>
+          <div class="card-hq">📍 德国柏林 🇩🇪 | 独角兽</div>
+          <span class="card-category cat-activity">活动/体验API</span>
+        </div>
+      </div>
+      <div class="card-desc">欧洲领先的旅游体验预订平台，提供8万+全球活动和景点门票。提供合作伙伴API和联盟计划，内容质量高，用户评价系统完善。2023年估值超$20亿。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">8万+活动</span><span class="card-tag">欧洲</span><span class="card-tag">独角兽</span></div>
+        <a href="https://www.getyourguide.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="activity">
+      <div class="card-header">
+        <div class="card-logo">🇭🇰</div>
+        <div class="card-meta">
+          <div class="card-name">Klook</div>
+          <div class="card-hq">📍 中国香港 🇭🇰 | 独角兽</div>
+          <span class="card-category cat-activity">活动/体验API</span>
+        </div>
+      </div>
+      <div class="card-desc">亚太地区领先的旅游体验预订平台，覆盖50万+景点、活动、交通和住宿。在日韩、东南亚、港澳台市场有深厚根基。提供B2B API和联盟合作。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">亚太#1</span><span class="card-tag">50万+SKU</span><span class="card-tag">B2B API</span></div>
+        <a href="https://www.klook.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="activity">
+      <div class="card-header">
+        <div class="card-logo">🚗</div>
+        <div class="card-meta">
+          <div class="card-name">Rentalcars.com</div>
+          <div class="card-hq">📍 英国曼彻斯特 🇬🇧 | Booking Holdings</div>
+          <span class="card-category cat-activity">租车API</span>
+        </div>
+      </div>
+      <div class="card-desc">全球最大租车预订平台之一（Booking Holdings旗下），覆盖900+租车公司、6万+取车点。提供Affiliate API和B2B合作，支持多语言和多种支付方式。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">900+公司</span><span class="card-tag">6万+网点</span><span class="card-tag">Booking</span></div>
+        <a href="https://www.rentalcars.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="activity">
+      <div class="card-header">
+        <div class="card-logo">🚙</div>
+        <div class="card-meta">
+          <div class="card-name">CarTrawler</div>
+          <div class="card-hq">📍 爱尔兰都柏林 🇮🇪</div>
+          <span class="card-category cat-activity">租车B2B</span>
+        </div>
+      </div>
+      <div class="card-desc">B2B租车技术平台，为全球航空公司、酒店集团和OTA提供白标租车预订解决方案。与主要租车品牌有深度合作，技术平台成熟，转换率高。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">B2B</span><span class="card-tag">白标</span><span class="card-tag">航司合作</span></div>
+        <a href="https://www.cartrawler.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: Payment -->
+<div class="section" data-section="payment">
+  <h2 class="section-title"><span class="icon">💳</span>旅游支付 / 金融科技<span class="count">资金流转基础设施</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="payment" data-name="flywire travelbank paynode">
+      <div class="card-header">
+        <div class="card-logo">💸</div>
+        <div class="card-meta">
+          <div class="card-name">Flywire</div>
+          <div class="card-hq">📍 美国波士顿 🇺🇸 | 已上市</div>
+          <span class="card-category cat-payment">跨境支付</span>
+        </div>
+      </div>
+      <div class="card-desc">垂直领域跨境支付平台，专注于教育、医疗和旅游行业。为旅游公司提供多币种收款、汇率锁定和供应商付款服务。2021年纳斯达克上市，全球240+国家/地区覆盖。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">跨境支付</span><span class="card-tag">上市公司</span><span class="card-tag">240+国家</span></div>
+        <a href="https://www.flywire.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="payment">
+      <div class="card-header">
+        <div class="card-logo">🏦</div>
+        <div class="card-meta">
+          <div class="card-name">Paynode (by Avinode Group)</div>
+          <div class="card-hq">📍 瑞典 🇸🇪</div>
+          <span class="card-category cat-payment">航空支付</span>
+        </div>
+      </div>
+      <div class="card-desc">专注于航空和旅游行业的支付解决方案，支持BSP/ARC结算、信用卡处理和供应商付款。与IATA BSP系统深度集成，简化航空代理人资金流转。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">BSP</span><span class="card-tag">航空支付</span><span class="card-tag">IATA</span></div>
+        <a href="https://www.paynode.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section: China -->
+<div class="section" data-section="china">
+  <h2 class="section-title"><span class="icon">🇨🇳</span>中国出行 API / B2B 平台<span class="count">本土市场深耕者</span></h2>
+  <div class="card-grid">
+    <div class="card" data-cat="china" data-name="travelsky 中航信 携程开放平台 同程 飞猪 航班管家 飞常准">
+      <div class="card-header">
+        <div class="card-logo">🇨🇳</div>
+        <div class="card-meta">
+          <div class="card-name">TravelSky (中航信)</div>
+          <div class="card-hq">📍 中国北京 🇨🇳 | 中国GDS垄断者</div>
+          <span class="card-category cat-china">中国GDS</span>
+        </div>
+      </div>
+      <div class="card-desc">中国民航信息系统运营商，垄断国内机票分销（>95%市场份额）。提供Eterm黑屏系统、BEA航空信息平台、机场旅客处理系统等。任何在中国卖机票的公司都必须对接TravelSky。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">垄断地位</span><span class="card-tag">95%+份额</span><span class="card-tag">必需对接</span></div>
+        <a href="http://www.travelsky.cn" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="china">
+      <div class="card-header">
+        <div class="card-logo">🏨</div>
+        <div class="card-meta">
+          <div class="card-name">携程开放平台</div>
+          <div class="card-hq">📍 中国上海 🇨🇳</div>
+          <span class="card-category cat-china">OTA开放API</span>
+        </div>
+      </div>
+      <div class="card-desc">携程向第三方合作伙伴开放的API平台，提供机票、酒店、火车票、用车、门票等全品类库存。适合小程序、企业差旅系统和垂直旅游App快速接入中国市场。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">全品类</span><span class="card-tag">中国市场</span><span class="card-tag">小程序</span></div>
+        <a href="https://open.ctrip.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="china">
+      <div class="card-header">
+        <div class="card-logo">🐷</div>
+        <div class="card-meta">
+          <div class="card-name">飞猪开放平台</div>
+          <div class="card-hq">📍 中国杭州 🇨🇳 | 阿里旗下</div>
+          <span class="card-category cat-china">OTA开放API</span>
+        </div>
+      </div>
+      <div class="card-desc">阿里巴巴旗下飞猪的开放API平台，提供机票、酒店、度假、签证等产品的预订接口。与支付宝生态深度打通，适合阿里系流量入口和商家系统对接。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">阿里生态</span><span class="card-tag">支付宝</span><span class="card-tag">商家系统</span></div>
+        <a href="https://open.fliggy.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="china">
+      <div class="card-header">
+        <div class="card-logo">✈️</div>
+        <div class="card-meta">
+          <div class="card-name">同程旅行开放平台</div>
+          <div class="card-hq">📍 中国苏州 🇨🇳 | 携程系</div>
+          <span class="card-category cat-china">OTA开放API</span>
+        </div>
+      </div>
+      <div class="card-desc">同程旅行向合作伙伴开放的API服务，覆盖机票、酒店、火车票、汽车票、门票、用车等。微信生态内旅游服务的重要供应商，小程序场景有优势。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">微信生态</span><span class="card-tag">小程序</span><span class="card-tag">携程系</span></div>
+        <a href="https://open.ly.com" target="_blank" class="card-link">开发者 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="china">
+      <div class="card-header">
+        <div class="card-logo">📱</div>
+        <div class="card-meta">
+          <div class="card-name">航班管家 (VariFlight)</div>
+          <div class="card-hq">📍 中国北京 🇨🇳</div>
+          <span class="card-category cat-china">航班数据API</span>
+        </div>
+      </div>
+      <div class="card-desc">国内领先的航班数据和行程管理App，提供航班动态、延误预警、机场信息、机票预订等服务。也向第三方提供航班数据API，适合需要航班信息的场景。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">航班动态</span><span class="card-tag">延误预警</span><span class="card-tag">数据API</span></div>
+        <a href="https://www.133.cn" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="china">
+      <div class="card-header">
+        <div class="card-logo">⏱️</div>
+        <div class="card-meta">
+          <div class="card-name">飞常准 (FlightStats/Variflight)</div>
+          <div class="card-hq">📍 中国合肥 🇨🇳</div>
+          <span class="card-category cat-china">航班动态API</span>
+        </div>
+      </div>
+      <div class="card-desc">全球最准的航班动态数据服务商之一，覆盖全球1000+航空公司、10000+机场。提供航班动态API、历史航班数据、机场准点率分析等企业级数据服务。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">全球覆盖</span><span class="card-tag">航班动态</span><span class="card-tag">企业API</span></div>
+        <a href="https://www.variflight.com" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+
+    <div class="card" data-cat="china">
+      <div class="card-header">
+        <div class="card-logo">🚆</div>
+        <div class="card-meta">
+          <div class="card-name">12306 (中国铁路)</div>
+          <div class="card-hq">📍 中国北京 🇨🇳 | 国铁集团</div>
+          <span class="card-category cat-china">铁路API</span>
+        </div>
+      </div>
+      <div class="card-desc">中国铁路官方售票平台，垄断国内火车票分销。通过官方API或授权代理商（如携程、飞猪）对接。年售票量超40亿张，是全球最大的铁路票务系统。</div>
+      <div class="card-footer">
+        <div class="card-tags"><span class="card-tag">垄断</span><span class="card-tag">40亿+票</span><span class="card-tag">铁路</span></div>
+        <a href="https://www.12306.cn" target="_blank" class="card-link">访问官网 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No Results -->
+<div class="no-results" id="noResults" style="display:none">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+  <h3>未找到匹配结果</h3>
+  <p>尝试更换搜索关键词或切换分类筛选</p>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>数据来源：公开资料整理，持续更新中 | 发现遗漏？欢迎补充</p>
+  <p style="margin-top:8px">本目录收录了 <strong style="color:var(--primary)">60+</strong> 个全球出行行业API/B2B平台，覆盖机票、酒店、活动、租车、支付等全链路</p>
+</footer>
+
+<script>
+// Search & Filter Logic
+const searchInput = document.getElementById('searchInput');
+const tags = document.querySelectorAll('.tag');
+const cards = document.querySelectorAll('.card');
+const sections = document.querySelectorAll('.section');
+const noResults = document.getElementById('noResults');
+
+function filter() {
+  const query = searchInput.value.toLowerCase().trim();
+  const activeTag = document.querySelector('.tag.active')?.dataset.cat || 'all';
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const cat = card.dataset.cat;
+    const nameData = (card.dataset.name || '').toLowerCase();
+    const text = card.textContent.toLowerCase();
+    
+    const matchCat = activeTag === 'all' || cat === activeTag;
+    const matchSearch = !query || text.includes(query) || nameData.includes(query);
+    
+    if (matchCat && matchSearch) {
+      card.classList.remove('hidden');
+      visibleCount++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  // Hide empty sections
+  sections.forEach(section => {
+    const visibleCards = section.querySelectorAll('.card:not(.hidden)');
+    section.style.display = visibleCards.length > 0 ? 'block' : 'none';
+  });
+
+  noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+searchInput.addEventListener('input', filter);
+
+tags.forEach(tag => {
+  tag.addEventListener('click', () => {
+    tags.forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+    filter();
+  });
+});
+</script>
+<script src="/assets/js/nav-inject.js"></script>
+</body>
+</html>

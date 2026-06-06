@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>龙虾出行 · MVP增长与运营执行</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0c1222;
+    --bg-secondary: #111827;
+    --bg-card: #1a2332;
+    --accent: #c9a96e;
+    --accent-light: #e8d5a3;
+    --text-primary: #f0f2f5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #1e293b;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --info: #3b82f6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Noto Serif SC', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+  }
+  .slide-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 40px 60px 80px;
+    opacity: 0;
+    transform: translateX(80px);
+    transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+  .slide.prev {
+    opacity: 0;
+    transform: translateX(-80px);
+  }
+
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .top-bar .progress {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .slide-counter {
+    position: fixed;
+    top: 16px;
+    right: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    z-index: 100;
+  }
+
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 64px;
+    background: rgba(12,18,34,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 8px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .nav-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .dots { display: flex; gap: 8px; }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dot.active { background: var(--accent); transform: scale(1.3); }
+
+  h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    margin: 20px 0 12px;
+  }
+  p, li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  ul { padding-left: 24px; }
+  li { margin-bottom: 8px; }
+
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    background: var(--bg-primary);
+  }
+  .cover-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    border-radius: 4px;
+  }
+  .cover h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cover-meta-item strong {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .cover-deco {
+    position: absolute;
+    bottom: 100px;
+    right: 60px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .cover-deco::after {
+    content: '';
+    position: absolute;
+    top: 30px; left: 30px;
+    width: 140px; height: 140px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .card p { font-size: 14px; margin-bottom: 0; }
+
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .metric-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metric-target {
+    font-size: 11px;
+    color: var(--success);
+    margin-top: 4px;
+  }
+
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px 0;
+    max-width: 600px;
+  }
+  .funnel-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .funnel-bar {
+    height: 44px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.8s ease;
+  }
+  .funnel-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    width: 120px;
+    text-align: right;
+  }
+  .funnel-conv {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .checklist-item .cb {
+    width: 20px; height: 20px;
+    border: 2px solid var(--text-muted);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .checklist-item strong {
+    color: var(--text-primary);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .checklist-item span {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .quote-block {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(201,169,110,0.1);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .quiz-option {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+  }
+  .quiz-option:hover { border-color: var(--accent); }
+  .quiz-option.correct { border-color: var(--success); background: rgba(34,197,94,0.1); }
+  .quiz-option.wrong { border-color: var(--danger); background: rgba(239,68,68,0.1); }
+  .quiz-feedback {
+    display: none;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(34,197,94,0.1); border: 1px solid var(--success); color: var(--success); }
+  .quiz-feedback.wrong { background: rgba(239,68,68,0.1); border: 1px solid var(--danger); color: var(--danger); }
+
+  .week-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .week-card h4 {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .week-card ul {
+    font-size: 13px;
+    padding-left: 18px;
+  }
+  .week-card li {
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+  }
+
+  @media(max-width:768px){
+    .slide { padding: 24px 24px 80px; }
+    h1 { font-size: 2rem; }
+    .cover h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.4rem; }
+    .metric-row { grid-template-columns: repeat(2, 1fr); }
+    .card-grid { grid-template-columns: 1fr; }
+    .cover-deco { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"><div class="progress" id="progressBar"></div></div>
+<div class="slide-counter"><span id="currentNum">1</span> / <span id="totalNum">12</span></div>
+
+<div class="slide-container">
+
+<!-- Slide 1: Cover -->
+<div class="slide active cover">
+  <div class="cover-badge">龙虾出行专属 · 商学院MVP课程</div>
+  <h1>MVP增长与<br><span>运营执行</span></h1>
+  <p class="cover-subtitle">从验证到规模化的一号位执行手册</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span>课程编号</span>
+      <strong>MVP-EXECUTION-02</strong>
+    </div>
+    <div class="cover-meta-item">
+      <span>目标学员</span>
+      <strong>业务一号位 / Founder</strong>
+    </div>
+    <div class="cover-meta-item">
+      <span>预计时长</span>
+      <strong>45 分钟</strong>
+    </div>
+  </div>
+  <div class="cover-deco"></div>
+</div>
+
+<!-- Slide 2: 增长飞轮 -->
+<div class="slide">
+  <h2><span class="num">01</span>龙虾出行增长飞轮设计</h2>
+  <p>增长不是「烧钱买量」，而是设计一个<strong>自我强化的循环系统</strong>。好的飞轮一旦转动，会越来越快。</p>
+
+  <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin:24px 0;">
+    <div style="background:var(--bg-card); border:2px solid var(--accent); border-radius:16px; padding:20px 40px; text-align:center; max-width:400px; width:100%;">
+      <div style="font-size:14px; color:var(--accent); font-weight:600; margin-bottom:4px;">1. 优质AI推荐</div>
+      <p style="font-size:13px; margin:0;">精准匹配用户需求，提升转化率</p>
+    </div>
+    <div style="font-size:20px; color:var(--accent);">↓</div>
+    <div style="background:var(--bg-card); border:2px solid var(--accent); border-radius:16px; padding:20px 40px; text-align:center; max-width:400px; width:100%;">
+      <div style="font-size:14px; color:var(--accent); font-weight:600; margin-bottom:4px;">2. 更多交易数据</div>
+      <p style="font-size:13px; margin:0;">用户行为反哺模型，推荐越来越准</p>
+    </div>
+    <div style="font-size:20px; color:var(--accent);">↓</div>
+    <div style="background:var(--bg-card); border:2px solid var(--accent); border-radius:16px; padding:20px 40px; text-align:center; max-width:400px; width:100%;">
+      <div style="font-size:14px; color:var(--accent); font-weight:600; margin-bottom:4px;">3. 更强供应链议价权</div>
+      <p style="font-size:13px; margin:0;">交易量提升→拿到独家价格/库存</p>
+    </div>
+    <div style="font-size:20px; color:var(--accent);">↓</div>
+    <div style="background:var(--bg-card); border:2px solid var(--accent); border-radius:16px; padding:20px 40px; text-align:center; max-width:400px; width:100%;">
+      <div style="font-size:14px; color:var(--accent); font-weight:600; margin-bottom:4px;">4. 更低价格 → 更多用户</div>
+      <p style="font-size:13px; margin:0;">价格优势带来口碑传播和自然增长</p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "亚马逊的增长飞轮花了20年才完美运转。你的任务是：在MVP阶段验证飞轮的每一个齿轮是否能咬合。"
+  </div>
+</div>
+
+<!-- Slide 3: 0到1冷启动 -->
+<div class="slide">
+  <h2><span class="num">02</span>0到1冷启动：谁来第一批用户？</h2>
+  <p>没有预算、没有品牌、没有口碑时，如何找到前1000个用户？这里有<strong>5个实战策略</strong>。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>1. 创始人私域</h4>
+      <p>你和联合创始人的微信好友、前同事、行业群。不要觉得"不好意思"——第一批用户必须是<strong>你亲自服务</strong>的人。</p>
+    </div>
+    <div class="card">
+      <h4>2. 垂直社群渗透</h4>
+      <p>找到目标用户聚集的社群：商务人士在LinkedIn/脉脉，旅行爱好者在小红书/马蜂窝，出差党在飞客茶馆。</p>
+    </div>
+    <div class="card">
+      <h4>3. 内容冷启动</h4>
+      <p>在公众号/知乎/即刻持续输出「AI出行干货」。内容即产品，读者即用户。零成本，高信任。</p>
+    </div>
+    <div class="card">
+      <h4>4. KOC种子计划</h4>
+      <p>找到100个「旅行意见领袖」，给他们免费体验+专属优惠码。让他们成为龙虾出行的布道者。</p>
+    </div>
+    <div class="card">
+      <h4>5. B端地推</h4>
+      <p>针对中小企业HR/行政，直接上门演示。B端决策链短，一个签约可能带来100个C端用户。</p>
+    </div>
+  </div>
+
+  <h3>冷启动的「3个不要」</h3>
+  <ul>
+    <li><strong style="color:var(--danger);">不要买量。</strong>早期买量来的用户没有忠诚度，数据会误导你。</li>
+    <li><strong style="color:var(--danger);">不要搞活动。</strong>补贴换来的不是真实需求，是贪便宜的人。</li>
+    <li><strong style="color:var(--danger);">不要追求规模。</strong>前1000个用户的质量 > 前10000个用户的数量。</li>
+  </ul>
+</div>
+
+<!-- Slide 4: PMF验证指标 -->
+<div class="slide">
+  <h2><span class="num">03</span>PMF验证：数据不说谎</h2>
+  <p>Product-Market Fit不是「感觉」，而是<strong>一组可量化的指标</strong>。达到这些数字，才能说「我们找到了PMF」。</p>
+
+  <div class="metric-row">
+    <div class="metric-card">
+      <div class="metric-value">40%+</div>
+      <div class="metric-label">30日留存率</div>
+      <div class="metric-target">目标：>40%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">3次+</div>
+      <div class="metric-label">月使用频次</div>
+      <div class="metric-target">目标：>3次</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">50+</div>
+      <div class="metric-label">NPS净推荐值</div>
+      <div class="metric-target">目标：>50</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">20%+</div>
+      <div class="metric-label">付费转化率</div>
+      <div class="metric-target">目标：>20%</div>
+    </div>
+  </div>
+
+  <h3>漏斗健康度诊断</h3>
+  <div style="display:flex; gap:40px; align-items:flex-start;">
+    <div class="funnel">
+      <div class="funnel-step">
+        <span class="funnel-label">访问用户</span>
+        <div class="funnel-bar" style="width:400px; background:rgba(100,116,139,0.3);">10,000</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-label">注册</span>
+        <span class="funnel-conv">30%</span>
+        <div class="funnel-bar" style="width:280px; background:rgba(100,116,139,0.4);">3,000</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-label">搜索/交互</span>
+        <span class="funnel-conv">60%</span>
+        <div class="funnel-bar" style="width:220px; background:rgba(100,116,139,0.5);">1,800</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-label">发起预订</span>
+        <span class="funnel-conv">25%</span>
+        <div class="funnel-bar" style="width:140px; background:rgba(201,169,110,0.3);">450</div>
+      </div>
+      <div class="funnel-step">
+        <span class="funnel-label">完成支付</span>
+        <span class="funnel-conv">60%</span>
+        <div class="funnel-bar" style="width:100px; background:var(--accent); color:var(--bg-primary);">270</div>
+      </div>
+    </div>
+    <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px;">
+      <h4 style="font-size:13px; color:var(--accent); margin-bottom:12px;">漏斗诊断要点</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li><strong>访问→注册 30%</strong>：如果低于20%，说明landing page价值传递不清晰</li>
+        <li><strong>注册→交互 60%</strong>：如果低于40%， onboarding流程有问题</li>
+        <li><strong>交互→预订 25%</strong>：如果低于15%，AI推荐质量或价格竞争力不足</li>
+        <li><strong>预订→支付 60%</strong>：如果低于50%，支付流程或信任感有问题</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: 数据驱动决策 -->
+<div class="slide">
+  <h2><span class="num">04</span>数据驱动决策：一号位的仪表盘</h2>
+  <p>作为一号位，你不需要看所有数据。你需要一个<strong>「北极星指标 + 5个核心指标」</strong>的极简仪表盘。</p>
+
+  <div style="background:var(--bg-card); border:1px solid var(--accent); border-radius:12px; padding:24px; margin:16px 0;">
+    <h4 style="font-size:14px; color:var(--accent); margin-bottom:8px;">🌟 北极星指标</h4>
+    <div style="font-size:2.5rem; font-weight:900; color:var(--accent);">周活跃交易用户数 (WATU)</div>
+    <p style="font-size:14px; margin-top:8px;">为什么选它：「活跃」说明产品有价值，「交易」说明商业化跑通，「周」维度比日稳定、比月灵敏。</p>
+  </div>
+
+  <h3>5个核心监控指标</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>1. 留存曲线</h4>
+      <p>第1天/第7天/第30天留存率。如果30日留存低于20%，产品没有粘住用户。</p>
+    </div>
+    <div class="card">
+      <h4>2. 单位经济</h4>
+      <p>LTV/CAC实时计算。每花一笔营销费用，立刻知道是否划算。</p>
+    </div>
+    <div class="card">
+      <h4>3. 库存满足率</h4>
+      <p>用户搜索后成功预订的比例。反映供应链覆盖深度。</p>
+    </div>
+    <div class="card">
+      <h4>4. 客服工单率</h4>
+      <p>每100单产生的客服工单数。衡量产品自助化程度。</p>
+    </div>
+    <div class="card">
+      <h4>5. 现金跑道</h4>
+      <p>按当前burn rate，现金还能撑几个月。<strong style="color:var(--danger);">低于6个月必须启动融资。</strong></p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "每周一早上，用15分钟看仪表盘。如果某个指标连续3周恶化，停下所有其他事，专注解决它。"
+  </div>
+</div>
+
+<!-- Slide 6: 供应链整合 -->
+<div class="slide">
+  <h2><span class="num">05</span>供应链整合：快速执行路线图</h2>
+  <p>增长需要产品支撑，产品需要供应链支撑。MVP阶段的供应链策略是<strong>「先借后建，渐进整合」</strong>。</p>
+
+  <div style="display:flex; gap:0; margin-top:16px;">
+    <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-right:none; border-radius:8px 0 0 8px; padding:20px; position:relative;">
+      <div style="position:absolute; top:-10px; left:20px; background:var(--accent); color:var(--bg-primary); font-size:11px; font-weight:600; padding:2px 10px; border-radius:4px;">阶段一</div>
+      <h4 style="margin-top:8px; margin-bottom:8px;">M0-M1：API聚合</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li>接入1-2家API聚合商</li>
+        <li>覆盖核心城市+热门航线</li>
+        <li>佣金率：10-15%</li>
+        <li>投入：2-4周，1名工程师</li>
+      </ul>
+    </div>
+    <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-right:none; padding:20px; position:relative;">
+      <div style="position:absolute; top:-10px; left:20px; background:var(--accent); color:var(--bg-primary); font-size:11px; font-weight:600; padding:2px 10px; border-radius:4px;">阶段二</div>
+      <h4 style="margin-top:8px; margin-bottom:8px;">M2-M4：直连谈判</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li>筛选TOP 20%高转化供应商</li>
+        <li>谈B2B直连/white-label</li>
+        <li>佣金率提升至15-20%</li>
+        <li>投入：商务1人+法务支持</li>
+      </ul>
+    </div>
+    <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:0 8px 8px 0; padding:20px; position:relative;">
+      <div style="position:absolute; top:-10px; left:20px; background:var(--accent); color:var(--bg-primary); font-size:11px; font-weight:600; padding:2px 10px; border-radius:4px;">阶段三</div>
+      <h4 style="margin-top:8px; margin-bottom:8px;">M5+：独家资源</h4>
+      <ul style="font-size:13px; padding-left:18px;">
+        <li>包房/切位/团体协议</li>
+        <li>动态打包(dynamic packaging)</li>
+        <li>佣金率：20-30%+</li>
+        <li>投入：供应链团队3-5人</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>一号位的供应链决策清单</h3>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>供应商筛选标准</strong><span>不是「谁佣金低选谁」，而是「谁的库存稳定+响应快+售后好」。用户体验 > 利润率。</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>合同谈判要点</strong><span>保底量、结算周期（T+7优于T+30）、退改签政策、API SLA（99.5%+）、数据归属权。</span></div>
+  </div>
+  <div class="checklist-item">
+    <div class="cb"></div>
+    <div><strong>风险对冲</strong><span>同一品类至少2家供应商，避免单点故障。建立供应商评分卡，每季度评估。</span></div>
+  </div>
+</div>
+
+<!-- Slide 7: 团队搭建 -->
+<div class="slide">
+  <h2><span class="num">06</span>团队搭建：MVP阶段的人力配置</h2>
+  <p>早期团队质量决定公司天花板。MVP阶段不是「招最多的人」，而是<strong>「招最对的人」</strong>。</p>
+
+  <h3>龙虾出行MVP核心团队（6-8人）</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>业务一号位（你）</h4>
+      <p>战略、融资、关键供应商关系、文化塑造。<strong>不要写代码，不要管设计。</strong></p>
+    </div>
+    <div class="card">
+      <h4>CTO / 技术负责人</h4>
+      <p>全栈能力优先，能独立搭建MVP。AI背景加分，但工程执行力是刚需。</p>
+    </div>
+    <div class="card">
+      <h4>产品经理</h4>
+      <p>能画原型、能写PRD、能做数据分析。最好是出行行业背景。</p>
+    </div>
+    <div class="card">
+      <h4>AI工程师</h4>
+      <p>负责模型微调、prompt工程、RAG架构。初期可用GPT API+向量数据库起步。</p>
+    </div>
+    <div class="card">
+      <h4>增长运营</h4>
+      <p>冷启动操盘手。熟悉社群、内容、投放。有从0到1经验者优先。</p>
+    </div>
+    <div class="card">
+      <h4>供应链/商务</h4>
+      <p>负责供应商谈判和关系维护。有OTA/酒店/航司资源者直接加分。</p>
+    </div>
+  </div>
+
+  <div style="background:rgba(239,68,68,0.05); border:1px solid var(--danger); border-radius:8px; padding:16px; margin-top:16px;">
+    <h4 style="font-size:14px; color:var(--danger); margin-bottom:8px;">⚠️ 早期招聘常见陷阱</h4>
+    <ul style="font-size:13px; padding-left:18px; margin:0;">
+      <li><strong>不要招「总监」：</strong>总监思维重、成本高、执行力弱。要招能干活的人。</li>
+      <li><strong>不要迷信大厂背景：</strong>大厂员工习惯资源充沛，不适合资源匮乏的初创环境。</li>
+      <li><strong>不要平均股权：</strong>创始人必须保持绝对控股（67%+），预留15-20%期权池。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 8: 融资路演 -->
+<div class="slide">
+  <h2><span class="num">07</span>融资路演：投资人想听什么</h2>
+  <p>融资的本质是<strong>「用未来的钱买现在的时间」</strong>。路演不是表演，而是清晰地回答投资人最关心的5个问题。</p>
+
+  <div style="margin-top:16px;">
+    <div style="display:flex; gap:16px; margin-bottom:16px;">
+      <div style="width:40px; height:40px; background:var(--accent); color:var(--bg-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">1</div>
+      <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:6px;">为什么要现在做？</h4>
+        <p style="font-size:13px; margin:0;">AI技术成熟（GPT-4/Claude）+ 出行供应链API化 + 用户对个性化需求爆发。三个趋势交汇，窗口期12-18个月。</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:16px; margin-bottom:16px;">
+      <div style="width:40px; height:40px; background:var(--accent); color:var(--bg-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">2</div>
+      <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:6px;">为什么是你们做？</h4>
+        <p style="font-size:13px; margin:0;">团队的技术+出行+商业复合背景。过往成绩（如果有）。对行业的深刻理解。</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:16px; margin-bottom:16px;">
+      <div style="width:40px; height:40px; background:var(--accent); color:var(--bg-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">3</div>
+      <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:6px;">市场有多大？</h4>
+        <p style="font-size:13px; margin:0;">TAM/SAM/SOM数据。参考本课第2课内容，用具体数字说话。</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:16px; margin-bottom:16px;">
+      <div style="width:40px; height:40px; background:var(--accent); color:var(--bg-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">4</div>
+      <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:6px;">产品验证了什么？</h4>
+        <p style="font-size:13px; margin:0;">种子用户数据、转化率、留存率、NPS。用图表代替文字。</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:16px;">
+      <div style="width:40px; height:40px; background:var(--accent); color:var(--bg-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; flex-shrink:0;">5</div>
+      <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:16px;">
+        <h4 style="font-size:14px; color:var(--text-primary); margin-bottom:6px;">钱怎么花？</h4>
+        <p style="font-size:13px; margin:0;">18个月财务模型。40%研发、30%增长、20%供应链、10%运营。明确的里程碑节点。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: 风险管理 -->
+<div class="slide">
+  <h2><span class="num">08</span>风险管理与现金流</h2>
+  <p>90%的初创公司不是死于「没有用户」，而是死于<strong>「现金流断裂」</strong>。作为一号位，这是你最后的安全网。</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px;">
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:24px;">
+      <h4 style="font-size:14px; color:var(--accent); margin-bottom:12px;">现金流监控</h4>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <span style="font-size:13px;">当前现金余额</span>
+          <span style="font-size:13px; font-weight:600; color:var(--text-primary);">¥ ___ 万</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <span style="font-size:13px;">月Burn Rate</span>
+          <span style="font-size:13px; font-weight:600; color:var(--danger);">¥ ___ 万/月</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <span style="font-size:13px;">跑道(Runway)</span>
+          <span style="font-size:13px; font-weight:600; color:var(--accent);">___ 个月</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <span style="font-size:13px;">安全线</span>
+          <span style="font-size:13px; font-weight:600; color:var(--success);">≥ 6 个月</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:24px;">
+      <h4 style="font-size:14px; color:var(--accent); margin-bottom:12px;">Top 5 风险与应对</h4>
+      <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
+        <div style="padding:8px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <strong style="color:var(--danger);">1. 供应商断供</strong><br>
+          <span style="color:var(--text-muted);">应对：多供应商+合同违约条款</span>
+        </div>
+        <div style="padding:8px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <strong style="color:var(--danger);">2. 核心人员流失</strong><br>
+          <span style="color:var(--text-muted);">应对：期权 vesting + 文档沉淀</span>
+        </div>
+        <div style="padding:8px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <strong style="color:var(--danger);">3. 融资失败</strong><br>
+          <span style="color:var(--text-muted);">应对：提前6个月启动+收入自救</span>
+        </div>
+        <div style="padding:8px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <strong style="color:var(--danger);">4. 政策监管</strong><br>
+          <span style="color:var(--text-muted);">应对：合规审查+数据本地化</span>
+        </div>
+        <div style="padding:8px; background:rgba(255,255,255,0.03); border-radius:6px;">
+          <strong style="color:var(--danger);">5. 大厂进入</strong><br>
+          <span style="color:var(--text-muted);">应对：垂直深耕+供应链壁垒</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "创业公司唯一不可接受的风险，就是现金耗尽。其他所有风险都可以通过快速迭代解决。"
+  </div>
+</div>
+
+<!-- Slide 10: 案例研究 -->
+<div class="slide">
+  <h2><span class="num">09</span>案例研究：TravelPerk的增长黑客</h2>
+  <p>TravelPerk是欧洲增长最快的企业差旅平台，8年估值$14亿。它的早期增长策略对龙虾出行的B端业务有直接借鉴意义。</p>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:24px; margin-top:16px;">
+    <div style="display:flex; gap:20px; margin-bottom:20px;">
+      <div style="flex:1;">
+        <h4 style="color:var(--accent); margin-bottom:8px;">增长飞轮</h4>
+        <p style="font-size:14px;">免费SaaS工具（差旅政策计算器）→ 获取企业邮箱 → 定向销售跟进 → 签约 → 口碑推荐 → 更多企业</p>
+      </div>
+      <div style="flex:1;">
+        <h4 style="color:var(--accent); margin-bottom:8px;">关键数据</h4>
+        <ul style="font-size:14px; padding-left:18px;">
+          <li>ARR从0到$3亿仅用7年</li>
+          <li>客户获取成本(CAC) $2,400</li>
+          <li>客户终身价值(LTV) $24,000</li>
+          <li>LTV/CAC = 10x</li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--border); padding-top:16px;">
+      <h4 style="font-size:14px; color:var(--accent-light); margin-bottom:8px;">龙虾出行可以复制的3件事</h4>
+      <div class="card-grid" style="margin-top:8px;">
+        <div class="card">
+          <h4>免费工具获客</h4>
+          <p>做一个「企业差旅费用计算器」或「AI行程优化器」，用免费价值换企业线索。</p>
+        </div>
+        <div class="card">
+          <h4>SLG（销售主导增长）</h4>
+          <p>B端产品不要指望用户自助注册。配备销售团队，一对一演示 onboarding。</p>
+        </div>
+        <div class="card">
+          <h4>客户成功驱动留存</h4>
+          <p>签约只是开始。配置专属客户成功经理，确保企业客户90日激活。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: 课程测验 -->
+<div class="slide">
+  <h2><span class="num">10</span>课程测验</h2>
+  <p>检验你对MVP增长与执行的理解。</p>
+
+  <div style="margin-top:20px;">
+    <h3 style="font-size:16px; color:var(--text-primary); margin-bottom:12px;">Q1: 冷启动阶段，以下哪种获客方式最不推荐？</h3>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q1')">A. 创始人私域朋友圈推广</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q1')">B. 在目标用户社群提供价值内容</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true, 'q1')">C. 在抖音/小红书大规模投放广告</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q1')">D. 邀请KOC种子用户免费体验</div>
+    <div class="quiz-feedback" id="q1-feedback">
+      <strong>正确！</strong>早期大规模投放是浪费。你没有验证产品是否满足需求，买来的流量只会给你虚假的数据信号。
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <h3 style="font-size:16px; color:var(--text-primary); margin-bottom:12px;">Q2: 以下哪个是MVP阶段最重要的北极星指标？</h3>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q2')">A. 总注册用户量</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true, 'q2')">B. 周活跃交易用户数(WATU)</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q2')">C. 社交媒体粉丝数</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q2')">D. App Store评分</div>
+    <div class="quiz-feedback" id="q2-feedback">
+      <strong>正确！</strong>WATU同时衡量「活跃」（产品价值）和「交易」（商业化能力），是出行产品最敏感的北极星指标。
+    </div>
+  </div>
+
+  <div style="margin-top:24px;">
+    <h3 style="font-size:16px; color:var(--text-primary); margin-bottom:12px;">Q3: 当现金跑道低于多少个月时，必须立即启动融资？</h3>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q3')">A. 1个月</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q3')">B. 3个月</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true, 'q3')">C. 6个月</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false, 'q3')">D. 12个月</div>
+    <div class="quiz-feedback" id="q3-feedback">
+      <strong>正确！</strong>6个月是安全线。融资周期通常需要3-6个月（从接触投资人到资金到账），低于6个月启动会让你处于极度被动的谈判地位。
+    </div>
+  </div>
+</div>
+
+<!-- Slide 12: 30天行动清单 -->
+<div class="slide">
+  <h2><span class="num">11</span>30天行动清单</h2>
+  <p>从知识到行动。以下是你在接下来的30天内应该完成的具体任务。</p>
+
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:16px;">
+    <div class="week-card">
+      <h4>Week 1 · 增长启动</h4>
+      <ul>
+        <li>定义龙虾出行的北极星指标</li>
+        <li>搭建最小数据看板（5个核心指标）</li>
+        <li>列出20个种子用户名单并逐一联系</li>
+        <li>设计A/B测试验证核心假设</li>
+      </ul>
+    </div>
+    <div class="week-card">
+      <h4>Week 2 · 产品打磨</h4>
+      <ul>
+        <li>优化onboarding流程（注册→首单）</li>
+        <li>梳理全链路数据埋点</li>
+        <li>跑通第一个完整的用户交易闭环</li>
+        <li>收集10个用户深度访谈反馈</li>
+      </ul>
+    </div>
+    <div class="week-card">
+      <h4>Week 3-4 · 加速运转</h4>
+      <ul>
+        <li>启动1个免费获客工具项目</li>
+        <li>梳理现金流表，计算精确runway</li>
+        <li>更新投资人一页纸BP（含最新数据）</li>
+        <li>确定供应商优先级名单并开始接触</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:rgba(201,169,110,0.08); border:1px solid var(--accent); border-radius:12px; padding:24px; margin-top:24px; text-align:center;">
+    <h4 style="font-size:16px; color:var(--accent); margin-bottom:8px;">龙虾出行 · MVP执行课</h4>
+    <p style="font-size:14px; color:var(--text-secondary);">战略决定方向，执行决定成败。课程结束，实战开始。</p>
+    <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">课程1回顾：《MVP战略与商业模式设计》</p>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一页</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页 →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+document.getElementById('totalNum').textContent = totalSlides;
+
+const dotsContainer = document.getElementById('dots');
+for(let i=0;i<totalSlides;i++){
+  const dot = document.createElement('span');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.onclick = ()=>goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide(){
+  slides.forEach((slide,i)=>{
+    slide.classList.remove('active','prev');
+    if(i===currentSlide) slide.classList.add('active');
+    else if(i<currentSlide) slide.classList.add('prev');
+  });
+  document.querySelectorAll('.dot').forEach((dot,i)=>{
+    dot.classList.toggle('active', i===currentSlide);
+  });
+  document.getElementById('currentNum').textContent = currentSlide + 1;
+  document.getElementById('progressBar').style.width = ((currentSlide+1)/totalSlides*100)+'%';
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+}
+
+function changeSlide(dir){
+  const newIdx = currentSlide + dir;
+  if(newIdx >= 0 && newIdx < totalSlides){
+    currentSlide = newIdx;
+    updateSlide();
+  }
+}
+
+function goToSlide(idx){
+  currentSlide = idx;
+  updateSlide();
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key===' ') changeSlide(1);
+  if(e.key==='ArrowLeft') changeSlide(-1);
+});
+
+function checkQuiz(el, isCorrect, id){
+  const parent = el.parentElement;
+  parent.querySelectorAll('.quiz-option').forEach(opt=>{
+    opt.style.pointerEvents = 'none';
+    opt.classList.remove('correct','wrong');
+  });
+  el.classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){
+    parent.querySelectorAll('.quiz-option').forEach(opt=>{
+      if(opt.onclick.toString().includes('true')) opt.classList.add('correct');
+    });
+  }
+  const fb = document.getElementById(id+'-feedback');
+  fb.classList.add('show', isCorrect?'correct':'wrong');
+}
+
+updateSlide();
+</script>
+
+<script src="/assets/js/nav-inject.js"></script>
+</body>
+</html>
