@@ -19,7 +19,7 @@
 
 | 环境 | 地址 |
 |------|------|
-| 生产环境 | `https://rideclaw-courses.vercel.app/` |
+| 生产环境 | `https://learn.rideclaw.ai` |
 | Vercel Preview | 每次 PR 自动生成 |
 
 ---

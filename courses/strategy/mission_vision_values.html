@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>龙虾出行 · 使命、愿景、价值观</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0c1222;
+    --bg-secondary: #111827;
+    --bg-card: #1a2332;
+    --accent: #c9a96e;
+    --accent-light: #e8d5a3;
+    --text-primary: #f0f2f5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #1e293b;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --info: #3b82f6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Noto Serif SC', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+  }
+  .slide-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 40px 60px 80px;
+    opacity: 0;
+    transform: translateX(80px);
+    transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+  .slide.prev {
+    opacity: 0;
+    transform: translateX(-80px);
+  }
+
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--border);
+    z-index: 100;
+  }
+  .top-bar .progress {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .slide-counter {
+    position: fixed;
+    top: 16px;
+    right: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    z-index: 100;
+  }
+
+  .nav-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 64px;
+    background: rgba(12,18,34,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 8px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .nav-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .dots { display: flex; gap: 8px; }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dot.active { background: var(--accent); transform: scale(1.3); }
+
+  h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2 .num {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    margin: 20px 0 12px;
+  }
+  p, li {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  ul { padding-left: 24px; }
+  li { margin-bottom: 8px; }
+
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    background: var(--bg-primary);
+  }
+  .cover-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    border-radius: 4px;
+  }
+  .cover h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .cover-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cover-meta-item strong {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .cover-deco {
+    position: absolute;
+    bottom: 100px;
+    right: 60px;
+    width: 200px;
+    height: 200px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .cover-deco::after {
+    content: '';
+    position: absolute;
+    top: 30px; left: 30px;
+    width: 140px; height: 140px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    opacity: 0.3;
+  }
+
+  .brand-card {
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 4px; height: 100%;
+  }
+  .brand-card.lobster {
+    background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(201,169,110,0.05) 100%);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+  .brand-card.lobster::before { background: var(--danger); }
+  .brand-card.voyagent {
+    background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(201,169,110,0.05) 100%);
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+  .brand-card.voyagent::before { background: var(--info); }
+  .brand-card.open {
+    background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(201,169,110,0.05) 100%);
+    border: 1px solid rgba(34,197,94,0.2);
+  }
+  .brand-card.open::before { background: var(--success); }
+  .brand-card .brand-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    font-family: 'Noto Serif SC', serif;
+  }
+  .brand-card .brand-tagline {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .brand-card .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .brand-card .section-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .pyramid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .pyramid-level {
+    text-align: center;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .pyramid-level.top {
+    width: 40%;
+    background: rgba(201,169,110,0.2);
+    border: 1px solid var(--accent);
+    color: var(--accent-light);
+  }
+  .pyramid-level.mid {
+    width: 65%;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid var(--info);
+    color: #93c5fd;
+  }
+  .pyramid-level.base {
+    width: 90%;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid var(--success);
+    color: #86efac;
+  }
+
+  .value-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+  .value-card:hover { border-color: var(--accent); }
+  .value-card .value-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .value-card .value-title .num {
+    width: 24px; height: 24px;
+    background: var(--accent);
+    color: var(--bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .value-card .value-title h4 {
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+  .value-card .value-sub {
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .value-card p {
+    font-size: 13px;
+    margin: 0;
+  }
+  .value-card .behaviors {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .value-card .behaviors li {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .card h4 {
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 13px; margin: 0; }
+
+  .manifesto {
+    background: rgba(201,169,110,0.08);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .manifesto .line {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+  }
+  .manifesto .line:last-child { color: var(--accent); }
+
+  .discussion-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .discussion-item:hover {
+    border-color: var(--accent);
+    background: rgba(201,169,110,0.05);
+  }
+  .discussion-item .q {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .discussion-item .hint {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(201,169,110,0.1);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    margin-right: 5px;
+  }
+
+  .quote-block {
+    border-left: 3px solid var(--accent);
+    padding-left: 18px;
+    margin: 16px 0;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    font-family: 'Noto Serif SC', serif;
+  }
+
+  @media(max-width:768px){
+    .slide { padding: 24px 24px 80px; }
+    h1 { font-size: 2rem; }
+    .cover h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.4rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .cover-deco { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"><div class="progress" id="progressBar"></div></div>
+<div class="slide-counter"><span id="currentNum">1</span> / <span id="totalNum">13</span></div>
+
+<div class="slide-container">
+
+<!-- Slide 1: Cover -->
+<div class="slide active cover">
+  <div class="cover-badge">龙虾出行 · 企业文化建设</div>
+  <h1>使命、愿景<br><span>价值观</span></h1>
+  <p class="cover-subtitle">龙虾出行 + Voyagent + 开放平台的共同信仰</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span>培训对象</span>
+      <strong>全体团队成员</strong>
+    </div>
+    <div class="cover-meta-item">
+      <span>核心议题</span>
+      <strong>我们为什么存在 / 要去哪里 / 如何行事</strong>
+    </div>
+    <div class="cover-meta-item">
+      <span>预计时长</span>
+      <strong>45 分钟</strong>
+    </div>
+  </div>
+  <div class="cover-deco"></div>
+</div>
+
+<!-- Slide 2: Why It Matters -->
+<div class="slide">
+  <h2><span class="num">01</span>为什么需要清晰的使命愿景价值观？</h2>
+  <p>一家公司有产品、有技术、有商业模式，但如果没有清晰的使命愿景价值观，就像一艘没有罗盘的船——可能划得很快，但不知道要去哪里。</p>
+
+  <div class="card-grid">
+    <div class="card"><h4>吸引同路人</h4><p>使命让我们找到志同道合的人。不是每个人都适合创业公司，但适合的人会因使命而来。</p></div>
+    <div class="card"><h4>指导决策</h4><p>当资源有限、信息不完备时，价值观就是决策的指南针。「这件事该不该做」，回头看看价值观。</p></div>
+    <div class="card"><h4>统一语言</h4><p>使命愿景价值观是团队的「通用协议」。它让北京、上海、硅谷、新加坡的团队成员说同一种语言。</p></div>
+    <div class="card"><h4>抵抗诱惑</h4><p>创业路上有太多捷径和快钱。清晰的使命能让我们拒绝那些「看起来很赚钱但不正确」的事。</p></div>
+  </div>
+
+  <div class="quote-block">
+    "People don't buy what you do; they buy why you do it."<br>
+    —— Simon Sinek,《Start with Why》
+  </div>
+
+  <p style="font-size:14px; color:var(--text-muted);">对于龙虾出行这样同时运作三个品牌（国内、海外、开放平台）的公司，统一的底层信仰尤为重要。</p>
+</div>
+
+<!-- Slide 3: Three Layers -->
+<div class="slide">
+  <h2><span class="num">02</span>顶层设计：三层架构</h2>
+  <p>在介绍三个品牌的使命愿景之前，先理解一个基础框架：</p>
+
+  <div class="pyramid">
+    <div class="pyramid-level top">愿景 Vision<br>我们要去往哪里？</div>
+    <div class="pyramid-level mid">使命 Mission<br>我们为什么存在？</div>
+    <div class="pyramid-level base">价值观 Values<br>我们如何行事？</div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>愿景 Vision</h4>
+      <p>长期的、终极的目标状态。通常是10-20年的方向。它回答：「当我们成功时，世界会是什么样子？」</p>
+    </div>
+    <div class="card">
+      <h4>使命 Mission</h4>
+      <p>我们存在的理由，每天工作的意义。它回答：「我们要为谁解决什么问题？」通常是5-10年的承诺。</p>
+    </div>
+    <div class="card">
+      <h4>价值观 Values</h4>
+      <p>我们做事的原则和行为准则。它回答：「在追求愿景的过程中，什么是不可妥协的？」</p>
+    </div>
+  </div>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:18px; margin-top:16px;">
+    <p style="font-size:14px; margin:0;"><strong style="color:var(--accent);">关键原则：</strong>三个品牌（龙虾出行、Voyagent、开放平台）面向不同市场和用户，但它们共享同一个<strong>「母愿景」</strong>和同一套<strong>「核心价值观」</strong>。差异主要体现在使命层面的具体表达。</p>
+  </div>
+</div>
+
+<!-- Slide 4: Mother Vision -->
+<div class="slide">
+  <h2><span class="num">03</span>母愿景：我们的终极追求</h2>
+  
+  <div class="manifesto">
+    <div class="line">让 AI 成为每个人出行时最值得信赖的伙伴</div>
+    <div class="line">让每一次出发都简单、智能、愉悦</div>
+    <div class="line">成为全球最开放的 AI 出行基础设施</div>
+  </div>
+
+  <h3>这三句话分别代表什么？</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>「AI 伙伴」—— 用户价值</h4>
+      <p>我们不只是卖机票、酒店或API，而是提供一种<strong>智能陪伴</strong>。AI理解用户偏好、主动推荐、处理突发、优化体验。</p>
+    </div>
+    <div class="card">
+      <h4>「简单、智能、愉悦」—— 体验标准</h4>
+      <p>这是我们衡量产品的三字诀。任何功能都要问自己：它让用户更简单了？更智能了？更愉悦了？</p>
+    </div>
+    <div class="card">
+      <h4>「开放基础设施」—— 生态定位</h4>
+      <p>我们不追求成为垄断性的中心化平台，而是要成为支撑整个行业智能化的底层能力提供者。</p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "如果10年后，全球数亿旅行者和数百万开发者都在使用我们的AI出行能力，那就是我们愿景的实现。"
+  </div>
+</div>
+
+<!-- Slide 5: Lobster -->
+<div class="slide">
+  <h2><span class="num">04</span>龙虾出行（国内）</h2>
+
+  <div class="brand-card lobster">
+    <div class="brand-name">🦞 龙虾出行 LongXia Trip</div>
+    <div class="brand-tagline">面向中国市场的 AI 出行决策伙伴</div>
+
+    <div class="section-title">使命 Mission</div>
+    <div class="section-text">
+      <strong>用 AI 重新定义中国人的出行体验，让复杂行程一站搞定。</strong>
+    </div>
+
+    <div class="section-title">愿景 Vision</div>
+    <div class="section-text">
+      成为中国领先的 AI 出行决策伙伴——无论是商旅人士的密集出差，还是家庭用户的假期规划，第一个想到的智能助手就是龙虾出行。
+    </div>
+
+    <div class="section-title">核心定位</div>
+    <div class="section-text" style="margin-bottom:0;">
+      <span class="tag">AI 原生</span>
+      <span class="tag">对话式交互</span>
+      <span class="tag">一站式预订</span>
+      <span class="tag">本土化深度</span>
+    </div>
+  </div>
+
+  <h3>为什么叫「龙虾出行」？</h3>
+  <div class="card-grid">
+    <div class="card"><h4>好记</h4><p>在中国文化中，「龙虾」是鲜活、有力量、让人愉悦的符号，容易被记住和传播。</p></div>
+    <div class="card"><h4>有亲和力</h4><p>相比冷冰冰的科技品牌，龙虾出行传递的是「贴心伙伴」的形象，降低用户心理门槛。</p></div>
+    <div class="card"><h4>可延展</h4><p>从C端助手到B端SaaS，从机票酒店到本地生活服务，龙虾的形象可以承载多种业务。</p></div>
+  </div>
+</div>
+
+<!-- Slide 6: Voyagent -->
+<div class="slide">
+  <h2><span class="num">05</span>Voyagent（海外）</h2>
+
+  <div class="brand-card voyagent">
+    <div class="brand-name">🌍 Voyagent</div>
+    <div class="brand-tagline">面向全球市场的 AI Travel Agent</div>
+
+    <div class="section-title">使命 Mission</div>
+    <div class="section-text">
+      <strong>Empower every traveler with an intelligent agent that plans, books, and adapts — so they can focus on the journey, not the logistics.</strong><br><br>
+      让每一位旅行者拥有一位智能代理，负责规划、预订和应变——让他们专注于旅程本身，而非繁琐的 logistics。
+    </div>
+
+    <div class="section-title">愿景 Vision</div>
+    <div class="section-text">
+      Become the world's most trusted AI travel companion — used by millions of travelers across 100+ countries to discover, plan, and book their perfect trips.
+    </div>
+
+    <div class="section-title">核心定位</div>
+    <div class="section-text" style="margin-bottom:0;">
+      <span class="tag">AI Agent</span>
+      <span class="tag">Global First</span>
+      <span class="tag">Conversational</span>
+      <span class="tag">Adaptive</span>
+    </div>
+  </div>
+
+  <h3>品牌名解析</h3>
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:18px; margin-top:12px;">
+    <p style="font-size:14px; margin:0;"><strong>Voyagent</strong> = <span style="color:var(--info);">Voyage</span>（航行/旅行）+ <span style="color:var(--info);">Agent</span>（代理）<br><br>
+    这个名字直接传递了我们的核心产品形态：<strong>一个为旅行而生的AI Agent</strong>。对海外市场来说，Agent是2025-2026年最热的概念，品牌名自带品类心智。</p>
+  </div>
+</div>
+
+<!-- Slide 7: Open Platform -->
+<div class="slide">
+  <h2><span class="num">06</span>开放平台（全球开发者 + AI Agent）</h2>
+
+  <div class="brand-card open">
+    <div class="brand-name">🔌 龙虾开放平台 / Voyagent Open Platform</div>
+    <div class="brand-tagline">面向全球开发者和 AI Agent 的出行能力基础设施</div>
+
+    <div class="section-title">使命 Mission</div>
+    <div class="section-text">
+      <strong>让全球开发者和 AI Agent 都能轻松获得世界级的出行能力，共同构建更智能的旅行生态。</strong>
+    </div>
+
+    <div class="section-title">愿景 Vision</div>
+    <div class="section-text">
+      成为全球开发者和 AI Agent 首选的出行能力层（Mobility Layer）——像 Stripe 之于支付、Twilio 之于通讯一样，成为 AI 时代出行产业的默认基础设施。
+    </div>
+
+    <div class="section-title">核心定位</div>
+    <div class="section-text" style="margin-bottom:0;">
+      <span class="tag">Open API</span>
+      <span class="tag">MCP/A2A Ready</span>
+      <span class="tag">Multi-supplier</span>
+      <span class="tag">Global Coverage</span>
+    </div>
+  </div>
+
+  <h3>开放平台的商业价值</h3>
+  <div class="card-grid">
+    <div class="card"><h4>网络效应</h4><p>开发者越多→场景越丰富→用户越多→供应商越愿意接入→能力越强→吸引更多开发者。</p></div>
+    <div class="card"><h4>防御壁垒</h4><p>当其他AI Agent都依赖我们的API时，我们成为生态中不可替代的节点。</p></div>
+    <div class="card"><h4>收入多元化</h4><p>API调用费、SaaS订阅、企业级服务，为集团提供稳定的B2B现金流。</p></div>
+  </div>
+</div>
+
+<!-- Slide 8: Relationship -->
+<div class="slide">
+  <h2><span class="num">07</span>三者的关系：一个三角，互为支撑</h2>
+  <p>三个品牌不是割裂的业务，而是<strong>相互赋能的三角生态</strong>。</p>
+
+  <div style="display:flex; justify-content:center; margin:20px 0;">
+    <svg width="320" height="280" viewBox="0 0 320 280">
+      <!-- Triangle -->
+      <polygon points="160,40 40,240 280,240" fill="none" stroke="var(--border)" stroke-width="2"/>
+      <line x1="160" y1="140" x2="160" y2="40" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="160" y1="140" x2="40" y2="240" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="160" y1="140" x2="280" y2="240" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4"/>
+      <!-- Labels -->
+      <circle cx="160" cy="40" r="30" fill="rgba(239,68,68,0.2)" stroke="var(--danger)" stroke-width="2"/>
+      <text x="160" y="45" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">龙虾出行</text>
+      <circle cx="40" cy="240" r="30" fill="rgba(59,130,246,0.2)" stroke="var(--info)" stroke-width="2"/>
+      <text x="40" y="245" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="600">Voyagent</text>
+      <circle cx="280" cy="240" r="30" fill="rgba(34,197,94,0.2)" stroke="var(--success)" stroke-width="2"/>
+      <text x="280" y="245" text-anchor="middle" fill="#86efac" font-size="10" font-weight="600">开放平台</text>
+      <circle cx="160" cy="140" r="24" fill="rgba(201,169,110,0.2)" stroke="var(--accent)" stroke-width="2"/>
+      <text x="160" y="145" text-anchor="middle" fill="var(--accent-light)" font-size="9" font-weight="600">AI引擎</text>
+    </svg>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px; text-align:center;">
+      <div style="font-size:12px; color:var(--danger); font-weight:600; margin-bottom:6px;">龙虾 → 开放平台</div>
+      <p style="font-size:12px; margin:0;">国内产品打磨出的AI能力和供应链关系，沉淀为可对外输出的API</p>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px; text-align:center;">
+      <div style="font-size:12px; color:var(--info); font-weight:600; margin-bottom:6px;">Voyagent → 开放平台</div>
+      <p style="font-size:12px; margin:0;">海外场景验证的需求和最佳实践，反哺开放平台的产品设计</p>
+    </div>
+    <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px; text-align:center;">
+      <div style="font-size:12px; color:var(--success); font-weight:600; margin-bottom:6px;">开放平台 → 双品牌</div>
+      <p style="font-size:12px; margin:0;">开放平台接入的全球供应商，同时增强两个C端产品的库存深度</p>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    "龙虾出行和Voyagent是面向用户的「前锋」，开放平台是连接供给侧的「中场」，AI引擎是贯穿三者的「大脑」。"
+  </div>
+</div>
+
+<!-- Slide 9: Values -->
+<div class="slide">
+  <h2><span class="num">08</span>核心价值观：六条信仰</h2>
+  <p>三个品牌共享同一套价值观。它是我们招聘、考核、决策的共同标准。</p>
+
+  <div class="value-card">
+    <div class="value-title"><span class="num">1</span><h4>用户至上 User Obsession</h4></div>
+    <div class="value-sub">从用户出发，回到用户。</div>
+    <p>每一个功能、每一行代码、每一次客服对话，都要问自己：这会让用户更满意吗？我们不做「老板喜欢」但「用户无感」的事。</p>
+    <ul class="behaviors">
+      <li>主动阅读用户反馈，理解真实痛点</li>
+      <li>用数据验证假设，不凭感觉做产品</li>
+      <li>宁愿自己麻烦，也要让用户少点一次</li>
+    </ul>
+  </div>
+
+  <div class="value-card">
+    <div class="value-title"><span class="num">2</span><h4>技术驱动 Technology First</h4></div>
+    <div class="value-sub">用技术的力量解决复杂问题。</div>
+    <p>我们相信AI和软件能解决出行行业长期存在的低效和不透明。不做靠堆人堆资源赚钱的生意，要做靠技术创新创造价值的生意。</p>
+    <ul class="behaviors">
+      <li>追求优雅且可扩展的架构设计</li>
+      <li>鼓励用新技术解决老问题</li>
+      <li>把重复工作自动化，释放人的创造力</li>
+    </ul>
+  </div>
+
+  <div class="value-card">
+    <div class="value-title"><span class="num">3</span><h4>开放协作 Open Collaboration</h4></div>
+    <div class="value-sub">内外兼修，共建生态。</div>
+    <p>对内，我们打破部门墙，产品、技术、商务、运营坐在一起解决问题。对外，我们与供应商、开发者、合作伙伴共赢，不做零和博弈。</p>
+    <ul class="behaviors">
+      <li>跨部门沟通时先理解对方目标</li>
+      <li>文档透明，知识共享</li>
+      <li>与合作伙伴建立长期信任关系</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 10: Values cont. -->
+<div class="slide">
+  <h2><span class="num">09</span>核心价值观（续）</h2>
+
+  <div class="value-card">
+    <div class="value-title"><span class="num">4</span><h4>追求卓越 Excellence in Execution</h4></div>
+    <div class="value-sub">把每一件小事做到120分。</div>
+    <p>创业公司的资源永远不够，但这不能成为敷衍的理由。我们追求的不是完美主义，而是「在约束条件下做到最好」的极致执行。</p>
+    <ul class="behaviors">
+      <li>上线前做充分测试，不让用户当小白鼠</li>
+      <li>关注细节，一个加载动画也值得打磨</li>
+      <li>对结果负责，不只是对过程负责</li>
+    </ul>
+  </div>
+
+  <div class="value-card">
+    <div class="value-title"><span class="num">5</span><h4>长期主义 Long-term Thinking</h4></div>
+    <div class="value-sub">做时间的朋友。</div>
+    <p>我们不追求短期的GMV泡沫，而是投资于供应链关系、数据资产、品牌信任和团队能力。这些才是长期竞争力的来源。</p>
+    <ul class="behaviors">
+      <li>不因短期利益牺牲用户体验</li>
+      <li>愿意做见效慢但正确的事</li>
+      <li>把每个决策放在3年尺度上审视</li>
+    </ul>
+  </div>
+
+  <div class="value-card">
+    <div class="value-title"><span class="num">6</span><h4>全球化视野 Global Mindset</h4></div>
+    <div class="value-sub">生于中国，放眼世界。</div>
+    <p>龙虾出行从中国市场起步，但我们的技术、产品和视野从一开始就应该是全球化的。我们尊重不同文化，服务不同市场的用户。</p>
+    <ul class="behaviors">
+      <li>设计产品时考虑多语言、多币种、多时区</li>
+      <li>关注全球竞争对手和创新趋势</li>
+      <li>建设多元文化的团队</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Slide 11: How to Practice -->
+<div class="slide">
+  <h2><span class="num">10</span>如何在日常工作中践行</h2>
+  <p>使命愿景价值观不是墙上的标语，而是融入日常的行为准则。</p>
+
+  <h3>对于产品经理</h3>
+  <div class="card-grid">
+    <div class="card"><h4>写PRD时</h4><p>开篇明确用户价值和成功指标，确保每个功能都与使命对齐。</p></div>
+    <div class="card"><h4>做决策时</h4><p>用价值观检查：这个设计是否让用户更简单？是否符合长期主义？</p></div>
+  </div>
+
+  <h3>对于技术研发</h3>
+  <div class="card-grid">
+    <div class="card"><h4>写代码时</h4><p>考虑可扩展性、可维护性，因为我们在构建的是基础设施，不是一次性脚本。</p></div>
+    <div class="card"><h4>做架构时</h4><p>思考这个系统是否支撑全球化部署？是否方便开发者接入？</p></div>
+  </div>
+
+  <h3>对于商务运营</h3>
+  <div class="card-grid">
+    <div class="card"><h4>谈判时</h4><p>不以损害合作伙伴利益为代价换取短期收益，建立长期信任。</p></div>
+    <div class="card"><h4>服务用户时</h4><p>把每一次投诉当作改进产品的机会，而不只是「处理完就结束」。</p></div>
+  </div>
+
+  <h3>对于管理者</h3>
+  <div class="card-grid">
+    <div class="card"><h4>招聘时</h4><p>除了能力，重点考察候选人与价值观的匹配度。</p></div>
+    <div class="card"><h4>考核时</h4><p>不仅看业绩结果，也看达成结果的方式是否符合价值观。</p></div>
+  </div>
+</div>
+
+<!-- Slide 12: One Pager -->
+<div class="slide">
+  <h2><span class="num">11</span>一页纸总结</h2>
+  <p>以下是全体团队成员应该能背诵和践行的一页纸版本。</p>
+
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:28px; margin-top:12px;">
+    <div style="text-align:center; margin-bottom:24px;">
+      <div style="font-size:12px; color:var(--accent); font-weight:600; letter-spacing:2px; margin-bottom:8px;">母愿景</div>
+      <div style="font-size:1.4rem; color:var(--text-primary); font-family:'Noto Serif SC',serif; font-weight:600;">
+        让 AI 成为每个人出行时最值得信赖的伙伴<br>
+        让每一次出发都简单、智能、愉悦<br>
+        成为全球最开放的 AI 出行基础设施
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:var(--danger); font-weight:600; margin-bottom:6px;">龙虾出行</div>
+        <p style="font-size:13px; margin:0;">用 AI 重新定义中国人的出行体验，让复杂行程一站搞定</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:var(--info); font-weight:600; margin-bottom:6px;">Voyagent</div>
+        <p style="font-size:13px; margin:0;">为全球旅行者提供智能代理，让他们专注于旅程本身</p>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:var(--success); font-weight:600; margin-bottom:6px;">开放平台</div>
+        <p style="font-size:13px; margin:0;">让全球开发者和 AI Agent 都能轻松获得世界级的出行能力</p>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border); padding-top:20px;">
+      <div style="font-size:12px; color:var(--accent); font-weight:600; letter-spacing:2px; margin-bottom:12px; text-align:center;">核心价值观</div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; text-align:center;">
+        <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; font-size:13px;">用户至上</div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; font-size:13px;">技术驱动</div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; font-size:13px;">开放协作</div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; font-size:13px;">追求卓越</div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; font-size:13px;">长期主义</div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; font-size:13px;">全球化视野</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 13: Discussion -->
+<div class="slide">
+  <h2><span class="num">12</span>团队讨论</h2>
+  <p>使命愿景价值观不是老板制定的，而是团队共同认同的。请围绕以下问题展开讨论。</p>
+
+  <div style="margin-top:12px;">
+    <div class="discussion-item">
+      <div class="q">Q1：你最喜欢哪个价值观？为什么？</div>
+      <div class="hint">分享一个你过去工作中体现这条价值观的具体故事。</div>
+    </div>
+    <div class="discussion-item">
+      <div class="q">Q2：当两个价值观冲突时，你会怎么选择？</div>
+      <div class="hint">例如：「追求卓越」要求打磨细节，「技术驱动」要求快速迭代，如何平衡？</div>
+    </div>
+    <div class="discussion-item">
+      <div class="q">Q3：龙虾出行、Voyagent、开放平台，你最想为哪个品牌奋斗？</div>
+      <div class="hint">三个品牌的气质和挑战不同，你的热情和优势在哪里？</div>
+    </div>
+    <div class="discussion-item">
+      <div class="q">Q4：我们应该拒绝怎样的客户/合作伙伴/商业模式？</div>
+      <div class="hint">使命愿景价值观不仅是「做什么」，更是「不做什么」。请列出不可妥协的底线。</div>
+    </div>
+  </div>
+
+  <div class="manifesto" style="margin-top:20px;">
+    <div class="line">我们因使命相聚</div>
+    <div class="line">为愿景奔赴</div>
+    <div class="line">以价值观同行</div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一页</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一页 →</button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+document.getElementById('totalNum').textContent = totalSlides;
+
+const dotsContainer = document.getElementById('dots');
+for(let i=0;i<totalSlides;i++){
+  const dot = document.createElement('span');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.onclick = ()=>goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide(){
+  slides.forEach((slide,i)=>{
+    slide.classList.remove('active','prev');
+    if(i===currentSlide) slide.classList.add('active');
+    else if(i<currentSlide) slide.classList.add('prev');
+  });
+  document.querySelectorAll('.dot').forEach((dot,i)=>{
+    dot.classList.toggle('active', i===currentSlide);
+  });
+  document.getElementById('currentNum').textContent = currentSlide + 1;
+  document.getElementById('progressBar').style.width = ((currentSlide+1)/totalSlides*100)+'%';
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+}
+
+function changeSlide(dir){
+  const newIdx = currentSlide + dir;
+  if(newIdx >= 0 && newIdx < totalSlides){
+    currentSlide = newIdx;
+    updateSlide();
+  }
+}
+
+function goToSlide(idx){
+  currentSlide = idx;
+  updateSlide();
+}
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key===' ') changeSlide(1);
+  if(e.key==='ArrowLeft') changeSlide(-1);
+});
+
+updateSlide();
+</script>
+
+</body>
+</html>
