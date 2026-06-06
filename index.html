@@ -451,15 +451,8 @@
       transform: translateX(5px);
     }
 
-    /* Bento grid sizing */
-    .course-card[data-size="large"] {
-      grid-column: span 7;
-      grid-row: span 2;
-    }
-    .course-card[data-size="medium"] {
-      grid-column: span 5;
-    }
-    .course-card[data-size="small"] {
+    /* Unified course card sizing */
+    .course-card {
       grid-column: span 4;
     }
 
@@ -507,9 +500,7 @@
         grid-template-columns: 1fr;
         gap: 12px;
       }
-      .course-card[data-size="large"] { grid-column: span 6; grid-row: span 1; }
-      .course-card[data-size="medium"] { grid-column: span 6; }
-      .course-card[data-size="small"] { grid-column: span 6; }
+      .course-card { grid-column: span 6; }
     }
     @media (max-width: 768px) {
       .header-inner { padding: 0 20px; }
@@ -522,11 +513,8 @@
       .course-grid {
         grid-template-columns: 1fr;
       }
-      .course-card[data-size="large"],
-      .course-card[data-size="medium"],
-      .course-card[data-size="small"] {
+      .course-card {
         grid-column: span 1;
-        grid-row: span 1;
       }
       .site-footer {
         flex-direction: column;
@@ -822,7 +810,7 @@
     function render(filter) {
       const items = filter === 'all' ? COURSES : COURSES.filter(c => c.id === filter);
       grid.innerHTML = items.map((c, i) => `
-        <a class="course-card reveal" href="${c.path}" data-cat="${c.id}" data-size="${c.size}" style="transition-delay:${i * 60}ms">
+        <a class="course-card reveal" href="${c.path}" data-cat="${c.id}" style="transition-delay:${i * 60}ms">
           <div class="course-card-body">
             <span class="course-tag ${c.tagClass}">${c.tag}</span>
             <h3>${c.title}</h3>
