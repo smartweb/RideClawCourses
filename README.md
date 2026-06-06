@@ -19,7 +19,7 @@
 
 | 环境 | 地址 |
 |------|------|
-| 生产环境 | `https://rideclaw-cources.vercel.app/` |
+| 生产环境 | `https://rideclaw-courses.vercel.app/` |
 | Vercel Preview | 每次 PR 自动生成 |
 
 ---
@@ -103,7 +103,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/smartweb/RideClawCources.git
+git clone https://github.com/smartweb/RideClawCourses.git
 cd courses
 
 # 安装依赖（如需使用构建工具）
