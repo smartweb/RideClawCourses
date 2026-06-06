@@ -7,37 +7,49 @@
   <meta name="description" content="龙虾出行团队学习平台，涵盖行业分享、商业策略、供应链、技术通识四大板块。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f19;
-      --bg-elevated: #111827;
-      --bg-card: #151c2c;
-      --bg-card-hover: #1a2338;
-      --accent: #c9a96e;
-      --accent-light: #e8d5a3;
-      --accent-glow: rgba(201,169,110,0.15);
-      --text: #f0f2f5;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --border: rgba(255,255,255,0.06);
-      --border-light: rgba(255,255,255,0.1);
-      --success: #22c55e;
-      --info: #38bdf8;
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow: 0 4px 24px rgba(0,0,0,0.4);
-      --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+      --bg: #080a12;
+      --bg-elevated: #0c0e18;
+      --bg-card: #0f111c;
+      --bg-card-hover: #131520;
+      --accent: #b8985e;
+      --accent-light: #d4b87a;
+      --accent-glow: rgba(184,152,94,0.08);
+      --text: #e8e6e1;
+      --text-secondary: #9a958a;
+      --text-muted: #6b665c;
+      --border: rgba(255,255,255,0.05);
+      --border-light: rgba(255,255,255,0.08);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+      --shadow: 0 4px 24px rgba(0,0,0,0.5);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+      --shadow-accent: 0 4px 32px rgba(184,152,94,0.1);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: "Geist", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ===== Noise Texture Overlay ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 128px 128px;
     }
 
     /* ===== Header ===== */
@@ -45,16 +57,16 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 1000;
-      background: rgba(11,15,25,0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(8,10,18,0.75);
+      backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
       border-bottom: 1px solid var(--border);
     }
     .header-inner {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 24px;
-      height: 60px;
+      padding: 0 32px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -66,100 +78,118 @@
       text-decoration: none;
       color: var(--text);
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
+      letter-spacing: -0.01em;
     }
-    .header-logo .logo-icon {
-      width: 32px; height: 32px;
+    .header-logo .logo-mark {
+      width: 28px; height: 28px;
       background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-      border-radius: 8px;
+      border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #080a12;
     }
     .header-logo span { color: var(--accent); }
-    .header-nav { display: flex; align-items: center; gap: 6px; }
+    .header-nav { display: flex; align-items: center; gap: 8px; }
     .header-nav a {
       padding: 8px 16px;
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       text-decoration: none;
       color: var(--text-secondary);
       font-size: 14px;
       font-weight: 500;
-      transition: all .2s;
+      transition: all .25s cubic-bezier(0.16,1,0.3,1);
+      letter-spacing: -0.01em;
     }
     .header-nav a:hover {
       color: var(--text);
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.04);
     }
     .header-nav a.nav-cta {
-      background: linear-gradient(135deg, var(--accent), #b08d4b);
-      color: #0b0f19;
+      background: linear-gradient(135deg, var(--accent), #a08040);
+      color: #080a12;
       font-weight: 600;
     }
     .header-nav a.nav-cta:hover {
-      box-shadow: 0 4px 16px var(--accent-glow);
+      box-shadow: var(--shadow-accent);
       transform: translateY(-1px);
+    }
+    .header-nav a.nav-cta:active {
+      transform: translateY(0) scale(0.98);
     }
     .mobile-menu-btn {
       display: none;
       background: none; border: none;
       color: var(--text);
-      font-size: 24px;
+      font-size: 22px;
       cursor: pointer;
-      padding: 4px;
+      padding: 6px;
     }
 
     /* ===== Hero ===== */
     .hero {
-      padding: 140px 24px 80px;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      padding: 120px 32px 80px;
       position: relative;
       overflow: hidden;
     }
     .hero-bg {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       pointer-events: none;
     }
     .hero-bg::before {
       content: '';
       position: absolute;
-      top: -40%; left: 50%;
-      width: 800px; height: 800px;
-      transform: translateX(-50%);
-      background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%);
+      top: -30%; left: 60%;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(184,152,94,0.08) 0%, transparent 65%);
     }
     .hero-bg::after {
       content: '';
       position: absolute;
-      bottom: -20%; right: -10%;
+      bottom: -20%; left: -10%;
       width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 60%);
+      background: radial-gradient(circle, rgba(100,120,160,0.05) 0%, transparent 60%);
     }
     .hero-inner {
-      max-width: 900px;
+      max-width: 1280px;
       margin: 0 auto;
-      text-align: center;
+      width: 100%;
       position: relative;
       z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 80px;
+      align-items: center;
     }
-    .hero-badge {
+    .hero-left {
+      max-width: 680px;
+    }
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       padding: 8px 18px;
-      background: rgba(201,169,110,0.1);
-      border: 1px solid rgba(201,169,110,0.2);
+      background: rgba(184,152,94,0.08);
+      border: 1px solid rgba(184,152,94,0.15);
       border-radius: 100px;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--accent);
-      font-weight: 500;
-      margin-bottom: 28px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
     }
     .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 900;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 20px;
+      font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
     }
     .hero h1 .accent {
       background: linear-gradient(90deg, var(--accent), var(--accent-light));
@@ -168,169 +198,228 @@
       background-clip: text;
     }
     .hero-desc {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-size: 1.1rem;
       color: var(--text-secondary);
-      max-width: 560px;
-      margin: 0 auto 40px;
+      max-width: 520px;
       line-height: 1.7;
+      margin-bottom: 40px;
+      letter-spacing: -0.01em;
     }
-    .hero-stats {
+    .hero-cta-row {
       display: flex;
-      justify-content: center;
-      gap: 48px;
+      gap: 16px;
       flex-wrap: wrap;
     }
-    .hero-stat {
-      text-align: center;
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--accent), #a08040);
+      color: #080a12;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .25s cubic-bezier(0.16,1,0.3,1);
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-accent);
+    }
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 500;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.03);
+    }
+    .btn-ghost:active {
+      transform: scale(0.98);
+    }
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .hero-stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      transition: all .3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .hero-stat-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-light);
+      transform: translateY(-2px);
     }
     .hero-stat-num {
-      font-size: 2.4rem;
+      font-size: 2.6rem;
       font-weight: 800;
       color: var(--accent);
       line-height: 1;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
     }
     .hero-stat-label {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-top: 8px;
+      letter-spacing: 0.02em;
     }
 
     /* ===== Section ===== */
     .section {
-      padding: 60px 24px;
-      max-width: 1200px;
+      padding: 100px 32px;
+      max-width: 1280px;
       margin: 0 auto;
     }
+    .section-header {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 56px;
+    }
     .section-title {
-      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-size: clamp(1.6rem, 3vw, 2rem);
       font-weight: 800;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
     }
     .section-subtitle {
       color: var(--text-secondary);
       font-size: 15px;
-      margin-bottom: 36px;
+      line-height: 1.7;
+      max-width: 65ch;
     }
 
-    /* ===== Category Cards ===== */
-    .cat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 60px;
+    /* ===== Category Pills ===== */
+    .cat-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
     }
-    .cat-card {
-      display: block;
-      padding: 28px 20px;
+    .cat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 100px;
       text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all .25s cubic-bezier(0.16,1,0.3,1);
+      cursor: pointer;
+    }
+    .cat-pill:hover {
       color: var(--text);
-      transition: all .3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .cat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      opacity: 0;
-      transition: opacity .3s;
-    }
-    .cat-card:hover {
       background: var(--bg-card-hover);
       border-color: var(--border-light);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
     }
-    .cat-card:hover::before { opacity: 1; }
-    .cat-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      margin-bottom: 16px;
-      background: rgba(201,169,110,0.1);
+    .cat-pill.cat-active {
+      background: rgba(184,152,94,0.1);
+      border-color: rgba(184,152,94,0.25);
+      color: var(--accent);
     }
-    .cat-card h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .cat-pill .cat-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: background .25s;
     }
-    .cat-card p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-    .cat-count {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 4px 12px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 100px;
-      font-size: 12px;
-      color: var(--text-secondary);
-      font-weight: 500;
+    .cat-pill.cat-active .cat-dot {
+      background: var(--accent);
     }
 
-    /* ===== Course Cards ===== */
+    /* ===== Course Grid — Bento-style Asymmetric ===== */
     .course-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: minmax(200px, auto);
+      gap: 16px;
     }
     .course-card {
       display: flex;
       flex-direction: column;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 16px;
       overflow: hidden;
-      transition: all .3s;
+      transition: all .35s cubic-bezier(0.16,1,0.3,1);
       text-decoration: none;
       color: var(--text);
+      position: relative;
+    }
+    .course-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      opacity: 0;
+      transition: opacity .35s;
     }
     .course-card:hover {
       background: var(--bg-card-hover);
-      border-color: rgba(201,169,110,0.25);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
+      border-color: rgba(184,152,94,0.15);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg), var(--shadow-accent);
+    }
+    .course-card:hover::before {
+      opacity: 1;
     }
     .course-card-body {
-      padding: 24px;
+      padding: 28px;
       flex: 1;
-    }
-    .course-tags {
       display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
+      flex-direction: column;
     }
     .course-tag {
-      padding: 4px 10px;
+      display: inline-block;
+      padding: 5px 12px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
+      margin-bottom: 18px;
+      width: fit-content;
     }
-    .tag-industry { background: rgba(168,85,247,0.12); color: #c084fc; }
-    .tag-strategy { background: rgba(34,197,94,0.12); color: #4ade80; }
-    .tag-supply { background: rgba(56,189,248,0.12); color: #7dd3fc; }
-    .tag-tech { background: rgba(249,115,22,0.12); color: #fdba74; }
+    .tag-industry { background: rgba(168,120,220,0.1); color: #c8a8e8; }
+    .tag-strategy { background: rgba(100,180,120,0.1); color: #88d4a0; }
+    .tag-supply { background: rgba(80,150,210,0.1); color: #7cb8e8; }
+    .tag-tech { background: rgba(220,140,80,0.1); color: #e8b070; }
     .course-card h3 {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 10px;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
     }
     .course-card p {
       font-size: 14px;
@@ -340,9 +429,10 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      flex: 1;
     }
     .course-card-footer {
-      padding: 16px 24px;
+      padding: 20px 28px;
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -351,54 +441,108 @@
     .course-format {
       font-size: 12px;
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
     }
     .course-arrow {
       color: var(--accent);
-      font-size: 18px;
-      transition: transform .2s;
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform .25s cubic-bezier(0.16,1,0.3,1);
     }
     .course-card:hover .course-arrow {
-      transform: translateX(4px);
+      transform: translateX(5px);
+    }
+
+    /* Bento grid sizing */
+    .course-card[data-size="large"] {
+      grid-column: span 7;
+      grid-row: span 2;
+    }
+    .course-card[data-size="medium"] {
+      grid-column: span 5;
+    }
+    .course-card[data-size="small"] {
+      grid-column: span 4;
     }
 
     /* ===== Footer ===== */
     .site-footer {
       border-top: 1px solid var(--border);
-      padding: 48px 24px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 13px;
+      padding: 56px 32px;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    .site-footer .footer-brand {
-      font-weight: 700;
+    .footer-left {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .footer-left strong {
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .footer-right {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
     /* ===== Responsive ===== */
     @media (max-width: 1024px) {
-      .cat-grid { grid-template-columns: repeat(2, 1fr); }
-      .course-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .hero-right {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .hero-stat-card {
+        flex: 1;
+        min-width: 140px;
+      }
+      .section-header {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .course-card[data-size="large"] { grid-column: span 6; grid-row: span 1; }
+      .course-card[data-size="medium"] { grid-column: span 6; }
+      .course-card[data-size="small"] { grid-column: span 6; }
     }
     @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
       .header-nav { display: none; }
       .mobile-menu-btn { display: block; }
-      .hero { padding: 120px 20px 60px; }
-      .hero-stats { gap: 32px; }
-      .hero-stat-num { font-size: 2rem; }
-      .cat-grid { grid-template-columns: 1fr; }
-      .course-grid { grid-template-columns: 1fr; }
-      .section { padding: 40px 20px; }
+      .hero { padding: 120px 20px 60px; min-height: auto; }
+      .hero h1 { font-size: 2.4rem; }
+      .hero-desc { font-size: 1rem; }
+      .section { padding: 64px 20px; }
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      .course-card[data-size="large"],
+      .course-card[data-size="medium"],
+      .course-card[data-size="small"] {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .site-footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+      }
     }
 
     /* ===== Scroll Reveal ===== */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .6s, transform .6s;
+      transform: translateY(28px);
+      transition: opacity .7s cubic-bezier(0.16,1,0.3,1), transform .7s cubic-bezier(0.16,1,0.3,1);
     }
     .reveal.visible {
       opacity: 1;
@@ -408,45 +552,51 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="header-logo">
-        <span class="logo-icon">🦞</span>
+        <span class="logo-mark">R</span>
         RideClaw <span>Courses</span>
       </a>
       <nav class="header-nav">
-        <a href="#categories">课程分类</a>
         <a href="#courses">全部课程</a>
-        <a href="https://github.com/rideclaw" class="nav-cta" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/smartweb/RideClawCources" class="nav-cta" target="_blank" rel="noopener">GitHub</a>
       </nav>
-      <button class="mobile-menu-btn" onclick="document.querySelector('.header-nav').classList.toggle('mobile-open')">☰</button>
+      <button class="mobile-menu-btn" aria-label="菜单">≡</button>
     </div>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-inner">
-      <div class="hero-badge">
-        🦞 龙虾出行团队学习平台
+      <div class="hero-left">
+        <div class="hero-eyebrow">龙虾出行团队学习平台</div>
+        <h1>
+          从行业认知<br>到<span class="accent">商业落地</span>
+        </h1>
+        <p class="hero-desc">
+          沉淀团队在出行行业的深度研究、创业方法论与供应链实战。对内赋能团队成长，对外共享行业洞察。
+        </p>
+        <div class="hero-cta-row">
+          <a href="#courses" class="btn-primary">
+            浏览课程
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="https://github.com/smartweb/RideClawCources" class="btn-ghost" target="_blank" rel="noopener">
+            查看源码
+          </a>
+        </div>
       </div>
-      <h1>
-        从行业认知到<br><span class="accent">商业落地</span>的系统课程
-      </h1>
-      <p class="hero-desc">
-        沉淀龙虾出行团队在出行行业的深度研究、创业方法论与供应链实战，对内赋能团队成长，对外共享行业洞察。
-      </p>
-      <div class="hero-stats">
-        <div class="hero-stat">
+      <div class="hero-right">
+        <div class="hero-stat-card reveal">
           <div class="hero-stat-num" id="stat-courses">10</div>
           <div class="hero-stat-label">门课程</div>
         </div>
-        <div class="hero-stat">
+        <div class="hero-stat-card reveal" style="transition-delay:80ms">
           <div class="hero-stat-num">4</div>
           <div class="hero-stat-label">大板块</div>
         </div>
-        <div class="hero-stat">
+        <div class="hero-stat-card reveal" style="transition-delay:160ms">
           <div class="hero-stat-num">0</div>
           <div class="hero-stat-label">注册门槛</div>
         </div>
@@ -454,56 +604,45 @@
     </div>
   </section>
 
-  <!-- Categories -->
-  <section class="section" id="categories">
-    <h2 class="section-title">📚 课程分类</h2>
-    <p class="section-subtitle">四大板块，覆盖出行行业从认知到落地的完整知识体系</p>
-    <div class="cat-grid">
-      <a class="cat-card" href="#industry">
-        <div class="cat-icon">🔍</div>
-        <h3>行业分享</h3>
-        <p>标杆企业深度分析，竞争格局洞察</p>
-        <span class="cat-count">3 门课程</span>
-      </a>
-      <a class="cat-card" href="#strategy">
-        <div class="cat-icon">🚀</div>
-        <h3>商业策略</h3>
-        <p>MVP 设计、商业模式、增长运营</p>
-        <span class="cat-count">2 门课程</span>
-      </a>
-      <a class="cat-card" href="#supply-chain">
-        <div class="cat-icon">🔗</div>
-        <h3>供应链</h3>
-        <p>机票酒店供应链入门到进阶实战</p>
-        <span class="cat-count">3 门课程</span>
-      </a>
-      <a class="cat-card" href="#tech">
-        <div class="cat-icon">💻</div>
-        <h3>技术通识</h3>
-        <p>API 大全、技术人员商业通识</p>
-        <span class="cat-count">2 门课程</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- Courses -->
   <section class="section" id="courses">
-    <h2 class="section-title">🎓 全部课程</h2>
-    <p class="section-subtitle">点击卡片开始学习，无需注册，直接访问</p>
+    <div class="section-header">
+      <h2 class="section-title">全部课程</h2>
+      <p class="section-subtitle">点击卡片开始学习，无需注册，直接访问</p>
+    </div>
+
+    <div class="cat-row">
+      <button class="cat-pill cat-active" data-filter="all">
+        <span class="cat-dot"></span>全部
+      </button>
+      <button class="cat-pill" data-filter="industry">
+        <span class="cat-dot"></span>行业分享
+      </button>
+      <button class="cat-pill" data-filter="strategy">
+        <span class="cat-dot"></span>商业策略
+      </button>
+      <button class="cat-pill" data-filter="supply-chain">
+        <span class="cat-dot"></span>供应链
+      </button>
+      <button class="cat-pill" data-filter="tech">
+        <span class="cat-dot"></span>技术通识
+      </button>
+    </div>
+
     <div class="course-grid" id="course-grid">
-      <!-- Rendered by JS -->
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
-    <div class="footer-brand">🦞 RideClaw Courses</div>
-    <p>龙虾出行团队学习平台 · 对内赋能 · 对外共享</p>
-    <p style="margin-top:8px">Built with ❤️ by RideClaw Team · Powered by Vercel</p>
+    <div class="footer-left">
+      <strong>RideClaw Courses</strong><br>
+      龙虾出行团队学习平台
+    </div>
+    <div class="footer-right">
+      Built with care by RideClaw Team
+    </div>
   </footer>
 
   <script>
-    // Course data
     const COURSES = [
       {
         id: 'industry',
@@ -512,25 +651,18 @@
         path: '/courses/industry/ctrip_analysis.html',
         tag: '行业分享',
         tagClass: 'tag-industry',
-        format: '📄 分析报告'
+        format: '分析报告',
+        size: 'large'
       },
       {
         id: 'industry',
-        title: 'Booking Holdings 20年商业演进深度分析',
-        desc: '全球OTA巨头Booking Holdings的商业演进与战略启示，对标国际视野。',
+        title: 'Booking Holdings 商业演进分析',
+        desc: '全球OTA巨头Booking Holdings的商业演进与战略启示。',
         path: '/courses/industry/booking_analysis.html',
         tag: '行业分享',
         tagClass: 'tag-industry',
-        format: '📄 分析报告'
-      },
-      {
-        id: 'industry',
-        title: '酒店机票去中心化趋势与战略启发',
-        desc: '拆解酒店与机票分销领域的去中心化趋势，以及对龙虾出行的战略启发。',
-        path: '/courses/industry/decentralization_trends.html',
-        tag: '行业分享',
-        tagClass: 'tag-industry',
-        format: '📊 培训课件'
+        format: '分析报告',
+        size: 'medium'
       },
       {
         id: 'strategy',
@@ -539,7 +671,8 @@
         path: '/courses/strategy/mvp_strategy.html',
         tag: '商业策略',
         tagClass: 'tag-strategy',
-        format: '📊 培训课件'
+        format: '培训课件',
+        size: 'medium'
       },
       {
         id: 'strategy',
@@ -548,7 +681,8 @@
         path: '/courses/strategy/mvp_growth.html',
         tag: '商业策略',
         tagClass: 'tag-strategy',
-        format: '📊 培训课件'
+        format: '培训课件',
+        size: 'medium'
       },
       {
         id: 'supply-chain',
@@ -557,7 +691,8 @@
         path: '/courses/supply-chain/intro.html',
         tag: '供应链',
         tagClass: 'tag-supply',
-        format: '📊 培训课件'
+        format: '培训课件',
+        size: 'small'
       },
       {
         id: 'supply-chain',
@@ -566,7 +701,8 @@
         path: '/courses/supply-chain/sales.html',
         tag: '供应链',
         tagClass: 'tag-supply',
-        format: '📊 培训课件'
+        format: '培训课件',
+        size: 'small'
       },
       {
         id: 'supply-chain',
@@ -575,54 +711,80 @@
         path: '/courses/supply-chain/management.html',
         tag: '供应链',
         tagClass: 'tag-supply',
-        format: '📊 培训课件'
+        format: '培训课件',
+        size: 'small'
+      },
+      {
+        id: 'industry',
+        title: '酒店机票去中心化趋势',
+        desc: '拆解分销领域的去中心化趋势与战略启发。',
+        path: '/courses/industry/decentralization_trends.html',
+        tag: '行业分享',
+        tagClass: 'tag-industry',
+        format: '培训课件',
+        size: 'small'
       },
       {
         id: 'tech',
         title: '全球出行行业API/B2B平台大全',
-        desc: '整理全球主流的Travel API、B2B平台、GDS、聚合商等行业资源。',
+        desc: '整理全球主流的Travel API、B2B平台、GDS、聚合商等资源。',
         path: '/courses/tech/api_directory.html',
         tag: '技术通识',
         tagClass: 'tag-tech',
-        format: '📋 资源目录'
+        format: '资源目录',
+        size: 'medium'
       },
       {
         id: 'tech',
-        title: '技术研发人员出行行业商业通识',
-        desc: '帮助技术同学建立对出行行业的商业认知框架，懂业务才能写好代码。',
+        title: '技术研发人员商业通识',
+        desc: '帮助技术同学建立出行行业的商业认知框架。',
         path: '/courses/tech/business_literacy.html',
         tag: '技术通识',
         tagClass: 'tag-tech',
-        format: '📊 培训课件'
+        format: '培训课件',
+        size: 'medium'
       }
     ];
 
-    // Render courses
     const grid = document.getElementById('course-grid');
-    grid.innerHTML = COURSES.map((c, i) => `
-      <a class="course-card reveal" href="${c.path}" style="transition-delay:${i * 50}ms">
-        <div class="course-card-body">
-          <div class="course-tags">
-            <span class="course-tag ${c.tagClass}">${c.tag}</span>
-          </div>
-          <h3>${c.title}</h3>
-          <p>${c.desc}</p>
-        </div>
-        <div class="course-card-footer">
-          <span class="course-format">${c.format}</span>
-          <span class="course-arrow">→</span>
-        </div>
-      </a>
-    `).join('');
+    const pills = document.querySelectorAll('.cat-pill');
 
-    // Scroll reveal
+    function render(filter) {
+      const items = filter === 'all' ? COURSES : COURSES.filter(c => c.id === filter);
+      grid.innerHTML = items.map((c, i) => `
+        <a class="course-card reveal" href="${c.path}" data-cat="${c.id}" data-size="${c.size}" style="transition-delay:${i * 60}ms">
+          <div class="course-card-body">
+            <span class="course-tag ${c.tagClass}">${c.tag}</span>
+            <h3>${c.title}</h3>
+            <p>${c.desc}</p>
+          </div>
+          <div class="course-card-footer">
+            <span class="course-format">${c.format}</span>
+            <span class="course-arrow">→</span>
+          </div>
+        </a>
+      `).join('');
+
+      // Re-observe new elements
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // IntersectionObserver for scroll reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }, { threshold: 0.08 });
 
-    // Update stat
-    document.getElementById('stat-courses').textContent = COURSES.length;
+    // Filter click handlers
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('cat-active'));
+        pill.classList.add('cat-active');
+        render(pill.dataset.filter);
+      });
+    });
+
+    // Initial render
+    render('all');
   </script>
 </body>
 </html>
