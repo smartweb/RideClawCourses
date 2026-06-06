@@ -1,5 +1,5 @@
 /**
- * RideClaw Courses — Unified Navigation Injection
+ * 龙虾出行学院 — Unified Navigation Injection
  * taste-skill inspired redesign
  */
 (function() {
@@ -110,7 +110,7 @@
         <div style="display:flex;align-items:center;min-width:0;">
           <a href="${HOME_URL}" class="rc-logo">
             <span class="rc-logo-mark">R</span>
-            <span class="rc-logo-text">RideClaw <span>Courses</span></span>
+            <span class="rc-logo-text">龙虾出行<span>学院</span></span>
           </a>
           ${breadcrumbHtml}
         </div>
