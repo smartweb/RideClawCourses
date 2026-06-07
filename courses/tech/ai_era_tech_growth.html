@@ -175,25 +175,25 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
     <div class="section-divider"></div>
 
     <div class="stat-box">
-      <div class="stat-item"><div class="stat-num">55<span style="font-size:1.2rem">%</span></div><div class="stat-label">GitHub Copilot 代码采纳率</div></div>
-      <div class="stat-item"><div class="stat-num">46<span style="font-size:1.2rem">%</span></div><div class="stat-label">开发者使用 AI 编码工具</div></div>
-      <div class="stat-item"><div class="stat-num">30<span style="font-size:1.2rem">%+</span></div><div class="stat-label">开发效率提升</div></div>
-      <div class="stat-item"><div class="stat-num">3<span style="font-size:1.2rem">分钟</span></div><div class="stat-label">Cursor 写一个完整功能</div></div>
+      <div class="stat-item"><div class="stat-num">72.7<span style="font-size:1.2rem">%</span></div><div class="stat-label">Claude 4 SWE-bench</div></div>
+      <div class="stat-item"><div class="stat-num">7<span style="font-size:1.2rem">小时</span></div><div class="stat-label">AI Agent 持续工作</div></div>
+      <div class="stat-item"><div class="stat-num">70<span style="font-size:1.2rem">%+</span></div><div class="stat-label">开发者用 AI 编码</div></div>
+      <div class="stat-item"><div class="stat-num">1<span style="font-size:1.2rem">句话</span></div><div class="stat-label">生成完整项目</div></div>
     </div>
 
-    <h2 class="section-title"><span class="num">1</span>一个真实的开发日常（2025年）</h2>
+    <h2 class="section-title"><span class="num">1</span>一个真实的开发日常（2025年中）</h2>
     <div class="flow-box">
       <div class="flow-item purple">需求理解<br>（和产品对齐）</div>
       <span class="flow-arrow">→</span>
-      <div class="flow-item purple">AI生成代码<br>（Cursor/Copilot）</div>
+      <div class="flow-item purple">AI 生成代码<br>（Claude 4 / o3）</div>
       <span class="flow-arrow">→</span>
-      <div class="flow-item purple">代码审查<br>（AI辅助+人工）</div>
+      <div class="flow-item purple">代码审查<br>（AI 辅助 + 人工）</div>
       <span class="flow-arrow">→</span>
-      <div class="flow-item purple">测试验证<br>（AI生成用例）</div>
+      <div class="flow-item purple">测试验证<br>（AI 生成用例）</div>
       <span class="flow-arrow">→</span>
-      <div class="flow-item purple">部署上线<br>（CI/CD自动化）</div>
+      <div class="flow-item purple">部署上线<br>（CI/CD 自动化）</div>
     </div>
-    <p style="text-align:center;font-size:.85rem;color:var(--gray);margin-top:8px">手写代码的时间占比可能不到 5%，但技术决策的质量要求反而更高了</p>
+    <p style="text-align:center;font-size:.85rem;color:var(--gray);margin-top:8px">手写代码的时间占比可能不到 5%，但技术决策的质量要求反而更高了。AI 从"补全代码"进化到了"自主完成整个功能模块"。</p>
 
     <h2 class="section-title"><span class="num">2</span>两个危险误区</h2>
     <div class="two-col">
@@ -222,15 +222,16 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
       <p>AI 生成的是<strong>代码片段</strong>，不是<strong>系统</strong>。一个出行平台的技术复杂度（高并发、分布式事务、数据一致性、安全合规）不可能靠 AI "一键生成"。AI 帮你省掉了打字的时间，但省不掉思考的时间。</p>
     </div>
 
-    <h2 class="section-title"><span class="num">1</span>AI 能做什么 vs 不能做什么</h2>
+    <h2 class="section-title"><span class="num">1</span>AI 能做什么 vs 不能做什么（2025年最新）</h2>
     <table class="data-table">
-      <tr><th>维度</th><th>AI 能做好的</th><th>AI 做不好的（需要人来）</th></tr>
-      <tr><td>代码生成</td><td>单函数、CRUD、常规算法</td><td>跨模块协调、性能优化、异常场景处理</td></tr>
-      <tr><td>架构设计</td><td>给出常见模式建议</td><td>根据业务特点选择架构、权衡取舍</td></tr>
-      <tr><td>Bug 修复</td><td>常见错误识别</td><td>根因分析、连锁影响评估、修复方案选型</td></tr>
-      <tr><td>技术选型</td><td>列出流行框架</td><td>结合团队能力、业务阶段、维护成本做决策</td></tr>
-      <tr><td>安全合规</td><td>检查常见漏洞</td><td>整体安全架构、数据合规策略、风险评估</td></tr>
-      <tr><td>性能优化</td><td>给出通用建议</td><td>定位真实瓶颈、验证优化效果、避免过度优化</td></tr>
+      <tr><th>维度</th><th>AI 能做好的（2025）</th><th>AI 做不好的（需要人来）</th></tr>
+      <tr><td>代码生成</td><td>完整功能模块、多文件项目、端到端生成</td><td>跨系统架构设计、性能优化、异常场景处理</td></tr>
+      <tr><td>架构设计</td><td>给出常见模式建议、生成技术方案草稿</td><td>根据业务特点选择架构、权衡取舍、长期演进</td></tr>
+      <tr><td>Bug 修复</td><td>常见错误识别、自动修复简单 Bug</td><td>根因分析、连锁影响评估、修复方案选型</td></tr>
+      <tr><td>代码重构</td><td>单文件重构、代码风格统一</td><td>大规模跨模块重构、保留业务语义的复杂重构</td></tr>
+      <tr><td>技术选型</td><td>列出流行框架、对比优劣势</td><td>结合团队能力、业务阶段、维护成本做决策</td></tr>
+      <tr><td>安全合规</td><td>检查常见漏洞、生成安全建议</td><td>整体安全架构、数据合规策略、风险评估</td></tr>
+      <tr><td>性能优化</td><td>给出通用建议、识别明显瓶颈</td><td>定位真实瓶颈、验证优化效果、避免过度优化</td></tr>
     </table>
 
     <div class="tip-box">
@@ -349,57 +350,57 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
     <div class="section-divider"></div>
     <p class="lead">会用 AI 不是竞争力，<strong>用得比别人好</strong>才是。AI 工具链的熟练度，直接决定你的工作效率和质量上限。</p>
 
-    <h2 class="section-title"><span class="num">1</span>技术同学的 AI 工具箱</h2>
+    <h2 class="section-title"><span class="num">1</span>技术同学的 AI 工具箱（2025年最新）</h2>
     <div class="card-grid">
       <div class="card">
+        <div class="card-icon">🤖</div>
+        <h4>AI 编码 Agent</h4>
+        <p><strong>Claude 4</strong>（Sonnet 4 / Opus 4）：2025年最强编程模型，SWE-bench 72.7%，可持续工作7小时自主完成复杂任务。<strong>OpenAI o3 / o4-mini</strong>：推理能力最强，支持工具调用。<strong>GPT-4.1</strong>：100万 tokens 上下文，适合大型代码库。</p>
+        <span class="card-tag">核心生产力</span>
+      </div>
+      <div class="card">
         <div class="card-icon">⌨️</div>
-        <h4>编码助手</h4>
-        <p>GitHub Copilot、Cursor、Codeium、Tabnine。不只是"自动补全"，而是学会用自然语言描述需求，让 AI 生成代码框架，再人工精炼。</p>
+        <h4>AI IDE</h4>
+        <p><strong>Cursor</strong>（$20/月）：功能最全的 AI IDE，支持多模型切换。<strong>Windsurf</strong>（$15/月）：被 Devin 团队收购，Cascade Agent 可自主执行多步骤任务。<strong>Trae</strong>（字节跳动，免费）：中文体验最佳，适合国内开发者。</p>
         <span class="card-tag">日常必备</span>
       </div>
       <div class="card">
-        <div class="card-icon">💬</div>
-        <h4>大模型对话</h4>
-        <p>ChatGPT、Claude、Gemini。用于：技术调研、方案对比、Bug 分析、文档生成、学习新概念。关键是学会提问（Prompt Engineering）。</p>
-        <span class="card-tag">日常必备</span>
+        <div class="card-icon">💻</div>
+        <h4>终端编码 Agent</h4>
+        <p><strong>OpenAI Codex CLI</strong>：开源本地编码 Agent，用自然语言描述需求即可生成完整项目。<strong>Claude Code</strong>：Anthropic 官方 CLI 工具，可直接操作代码库、运行测试、提交 PR。</p>
+        <span class="card-tag">新范式</span>
       </div>
       <div class="card">
         <div class="card-icon">🔍</div>
         <h4>代码审查</h4>
-        <p>CodeRabbit、DeepCode、Amazon CodeGuru。AI 辅助代码审查，发现潜在 Bug、安全漏洞、性能问题。但最终决策权在人。</p>
+        <p><strong>CodeRabbit</strong>、<strong>Claude 4</strong>、<strong>Amazon CodeGuru</strong>。AI 辅助代码审查，发现潜在 Bug、安全漏洞、性能问题。Claude 4 的代码审查能力已接近中级工程师水平。</p>
         <span class="card-tag">质量保障</span>
       </div>
       <div class="card">
         <div class="card-icon">🧪</div>
         <h4>测试生成</h4>
-        <p>CodiumAI、GitHub Copilot Chat。自动生成单元测试、集成测试用例。但边界条件和异常场景的测试，仍需人工补充。</p>
+        <p>AI 可自动生成单元测试、集成测试用例。Claude 4 和 o3 能理解业务逻辑生成更精准的测试。但边界条件和异常场景的测试，仍需人工补充。</p>
         <span class="card-tag">效率提升</span>
       </div>
       <div class="card">
-        <div class="card-icon">📊</div>
-        <h4>数据分析</h4>
-        <p>ChatGPT + Code Interpreter、Julius AI。快速分析日志、生成报表、做数据探索。但数据解读和业务结论，需要人来完成。</p>
-        <span class="card-tag">决策支持</span>
-      </div>
-      <div class="card">
         <div class="card-icon">🎨</div>
-        <h4>原型与设计</h4>
-        <p>v0.dev、Galileo AI、Uizard。用自然语言生成前端页面原型。适合快速验证想法，但生产级代码仍需人工优化。</p>
+        <h4>全栈生成</h4>
+        <p><strong>v0.dev</strong>、<strong>Lovable</strong>、<strong>Zoer</strong>。用自然语言生成完整全栈应用（前端 + 后端 + 数据库）。适合快速验证想法，但生产级代码仍需人工优化。</p>
         <span class="card-tag">快速验证</span>
       </div>
     </div>
 
-    <h2 class="section-title"><span class="num">2</span>Prompt Engineering 的核心原则</h2>
+    <h2 class="section-title"><span class="num">2</span>从 Prompt Engineering 到 Agent 协作</h2>
     <div class="two-col">
       <div class="card">
-        <div class="card-icon">❌</div>
-        <h4>低效 Prompt</h4>
-        <p>"写一个登录功能"<br><br>结果：AI 给出一个通用的登录代码，可能不符合你的技术栈、安全规范、业务需求。</p>
+        <div class="card-icon">📜</div>
+        <h4>旧范式：Prompt Engineering</h4>
+        <p>"用 React + TypeScript 写一个登录页面，要求..."<br><br>AI 给出一堆代码，你复制粘贴、调试、修改。每次交互是"一次性"的。</p>
       </div>
       <div class="card">
-        <div class="card-icon">✅</div>
-        <h4>高效 Prompt</h4>
-        <p>"用 React + TypeScript 写一个登录页面，要求：<br>1. 支持手机号+验证码登录<br>2. 集成 Google reCAPTCHA<br>3. 错误提示用 Toast 组件<br>4. 符合我们公司 PIPL 合规要求<br>5. 使用 Tailwind CSS"</p>
+        <div class="card-icon">🚀</div>
+        <h4>新范式：Agent 协作</h4>
+        <p>"帮我实现一个完整的用户认证系统，包括登录、注册、找回密码、JWT 鉴权。"<br><br>Claude 4 / Codex CLI 会自主分析代码库、创建文件、编写代码、运行测试、修复错误，持续工作数小时。</p>
       </div>
     </div>
   </div>
@@ -423,41 +424,41 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
       <tr><td>版权风险</td><td>复制了 GPL 许可证的代码</td><td>法律纠纷</td></tr>
     </table>
 
-    <h2 class="section-title"><span class="num">2</span>Code Review 的检查清单</h2>
+    <h2 class="section-title"><span class="num">2</span>Code Review 的检查清单（AI 生成代码特别版）</h2>
     <div class="checklist">
       <div class="check-item">
         <div class="check-icon">✓</div>
         <div class="check-text">
           <h5>功能正确性</h5>
-          <p>代码是否实现了需求？边界条件是否处理？异常场景是否覆盖？</p>
+          <p>AI 是否理解错了需求？边界条件是否处理？异常场景是否覆盖？多检查 AI "自以为正确"的逻辑。</p>
         </div>
       </div>
       <div class="check-item">
         <div class="check-icon">✓</div>
         <div class="check-text">
           <h5>安全性</h5>
-          <p>是否有注入风险？是否有敏感信息泄露？权限控制是否正确？</p>
+          <p>AI 是否生成了硬编码密钥？是否有 SQL 注入风险？权限控制是否正确？Claude 4 有时也会"偷懒"绕过安全最佳实践。</p>
         </div>
       </div>
       <div class="check-item">
         <div class="check-icon">✓</div>
         <div class="check-text">
           <h5>性能</h5>
-          <p>是否有明显的性能瓶颈？数据库查询是否合理？缓存使用是否正确？</p>
+          <p>AI 生成的代码是否引入了 N+1 查询？是否 unnecessary re-renders？缓存策略是否合理？</p>
         </div>
       </div>
       <div class="check-item">
         <div class="check-icon">✓</div>
         <div class="check-text">
           <h5>可维护性</h5>
-          <p>命名是否清晰？注释是否充分？是否符合团队编码规范？</p>
+          <p>AI 是否过度设计？是否引入了不必要的依赖？命名是否符合团队规范？</p>
         </div>
       </div>
       <div class="check-item">
         <div class="check-icon">✓</div>
         <div class="check-text">
           <h5>可测试性</h5>
-          <p>是否可单元测试？依赖是否可 Mock？测试覆盖率是否足够？</p>
+          <p>AI 生成的代码是否可测？依赖是否可 Mock？AI 自己生成的测试是否覆盖了真正重要的场景？</p>
         </div>
       </div>
     </div>
@@ -466,7 +467,7 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
       <div class="warn-icon">⚠️</div>
       <div>
         <h5>重要原则</h5>
-        <p>AI 时代，Code Review 不是"可有可无的流程"，而是<strong>质量保证的最后防线</strong>。如果你的团队因为"AI 写代码很快"而跳过 Code Review，那离生产事故就不远了。</p>
+        <p>AI 时代，Code Review 不是"可有可无的流程"，而是<strong>质量保证的最后防线</strong>。Claude 4 的 SWE-bench 只有 72.7%，意味着仍有 27.3% 的代码有问题。如果你的团队因为"AI 写代码很快"而跳过 Code Review，那离生产事故就不远了。</p>
       </div>
     </div>
   </div>
@@ -555,11 +556,12 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
     <h2 class="section-title"><span class="num">2</span>AI 时代的特殊安全挑战</h2>
     <table class="data-table">
       <tr><th>风险</th><th>说明</th><th>防护措施</th></tr>
-      <tr><td>代码泄露</td><td>使用 AI 编码工具时，代码可能被上传到云端训练</td><td>使用企业版（Copilot Business）、配置隐私设置</td></tr>
-      <tr><td>AI 生成漏洞代码</td><td>AI 可能生成含有已知漏洞的代码</td><td>代码审查 + SAST/DAST 扫描</td></tr>
+      <tr><td>代码泄露</td><td>使用 AI 编码工具时，代码可能被上传到云端训练</td><td>使用企业版（Cursor Business、Claude Enterprise）、本地部署（Ollama）、配置隐私设置</td></tr>
+      <tr><td>AI 生成漏洞代码</td><td>AI 可能生成含有已知漏洞的代码</td><td>代码审查 + SAST/DAST 扫描（Snyk、Semgrep）</td></tr>
       <tr><td>Prompt 注入</td><td>用户输入恶意 Prompt，让 AI 执行非预期操作</td><td>输入校验 + Prompt 过滤 + 权限隔离</td></tr>
       <tr><td>数据投毒</td><td>AI 训练数据被污染，输出错误/有害内容</td><td>RAG（检索增强生成）+ 人工审核</td></tr>
-      <tr><td>供应链攻击</td><td>AI 推荐的库可能包含恶意代码</td><td>依赖扫描（Snyk、Dependabot）</td></tr>
+      <tr><td>供应链攻击</td><td>AI 推荐的库可能包含恶意代码</td><td>依赖扫描（Snyk、Dependabot）、 vet 第三方库</td></tr>
+      <tr><td>AI Agent 失控</td><td>Agent 自主执行时可能误删文件、错误部署</td><td>沙箱环境 + 操作审计 + 人工确认关键操作</td></tr>
     </table>
   </div>
 </div>
@@ -573,9 +575,9 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
     <h2 class="section-title"><span class="num">1</span>技术同学的成长路径（AI 时代版）</h2>
     <table class="data-table">
       <tr><th>阶段</th><th>核心能力</th><th>AI 工具使用</th><th>业务参与度</th></tr>
-      <tr><td>初级工程师<br>（0-2 年）</td><td>扎实的技术基础 + 学习能力</td><td>用 Copilot 辅助编码，用 ChatGPT 学习新概念</td><td>理解需求，执行方案</td></tr>
-      <tr><td>中级工程师<br>（2-5 年）</td><td>独立负责模块 + 代码质量把控</td><td>用 AI 生成测试、做 Code Review、技术调研</td><td>参与需求讨论，提出技术建议</td></tr>
-      <tr><td>高级工程师<br>（5-8 年）</td><td>系统设计 + 跨团队协作 + 技术决策</td><td>用 AI 做架构方案对比、生成文档、自动化流程</td><td>主导技术方案，推动业务价值</td></tr>
+      <tr><td>初级工程师<br>（0-2 年）</td><td>扎实的技术基础 + 学习能力</td><td>用 Cursor / Trae 辅助编码，用 Claude 4 学习新概念</td><td>理解需求，执行方案</td></tr>
+      <tr><td>中级工程师<br>（2-5 年）</td><td>独立负责模块 + 代码质量把控</td><td>用 Claude 4 / o3 生成代码、做 Code Review、技术调研</td><td>参与需求讨论，提出技术建议</td></tr>
+      <tr><td>高级工程师<br>（5-8 年）</td><td>系统设计 + 跨团队协作 + 技术决策</td><td>用 AI Agent 做架构方案对比、生成文档、自动化流程</td><td>主导技术方案，推动业务价值</td></tr>
       <tr><td>技术专家/架构师<br>（8 年+）</td><td>领域深度 + 架构视野 + 技术影响力</td><td>用 AI 做技术预研、团队知识管理、培训材料生成</td><td>参与业务战略，技术驱动业务</td></tr>
       <tr><td>技术管理者<br>（可选路径）</td><td>团队建设 + 资源分配 + 战略落地</td><td>用 AI 辅助招聘、绩效分析、项目估算</td><td>与业务 Leader 共同制定战略</td></tr>
     </table>
@@ -600,7 +602,7 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
       <div class="card">
         <div class="card-icon">📚</div>
         <h4>AI 工具</h4>
-        <p>Cursor 文档、LangChain 文档、Prompt Engineering Guide（OpenAI）、日常多用多练</p>
+        <p>Claude 4 官方文档、Cursor / Windsurf / Trae 文档、OpenAI Codex CLI、日常多用多练</p>
       </div>
     </div>
   </div>
@@ -638,9 +640,9 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
       <span class="flow-arrow">→</span>
       <div class="flow-item purple">2023<br>全栈开发<br>Node + 前端</div>
       <span class="flow-arrow">→</span>
-      <div class="flow-item orange">2024<br>发现 Cursor<br>效率暴增</div>
+      <div class="flow-item orange">2024<br>深度使用<br>Claude 4 / Cursor</div>
       <span class="flow-arrow">→</span>
-      <div class="flow-item green">2024 H2<br>专注：AI 产品<br>工程化落地</div>
+      <div class="flow-item green">2024 H2<br>专注：AI Agent<br>工程化落地</div>
       <span class="flow-arrow">→</span>
       <div class="flow-item green">2025<br>AI 工程负责人<br>带队落地 AI 功能</div>
     </div>
@@ -648,7 +650,7 @@ p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
       <div class="tip-icon">💡</div>
       <div>
         <h5>小李的转型关键</h5>
-        <p>• 是最早一批深度使用 Cursor、Copilot 的工程师<br>• 不只停留在"用 AI 写代码"，而是研究"如何把 AI 集成到产品中"<br>• 学习了 LLM 应用开发（RAG、Agent、Prompt Engineering）<br>• 主导了公司的 AI 客服、AI 行程规划等功能落地<br>• 成为"AI 工程化"领域的内部专家</p>
+        <p>• 是最早一批深度使用 Claude 4、Cursor、Codex CLI 的工程师<br>• 不只停留在"用 AI 写代码"，而是研究"如何把 AI Agent 集成到产品中"<br>• 学习了 LLM 应用开发（RAG、Agent、Function Calling、MCP）<br>• 主导了公司的 AI 客服、AI 行程规划等功能落地<br>• 成为"AI 工程化"领域的内部专家</p>
       </div>
     </div>
   </div>
