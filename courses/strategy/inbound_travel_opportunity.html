@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>入境游市场战略机会分析 | 龙虾出行高管战略简报</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a237e; --primary-light: #3949ab; --accent: #ffd700;
+  --secondary: #c62828; --success: #2e7d32; --warning: #f9a825;
+  --dark: #0d1642; --light: #f5f6fa; --gray: #78909c;
+  --gradient-1: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #5c6bc0 100%);
+  --gradient-2: linear-gradient(135deg, #ffd700 0%, #ff8f00 100%);
+  --shadow: 0 8px 32px rgba(26,35,126,.12);
+  --shadow-lg: 0 16px 48px rgba(26,35,126,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--light);color:#333;overflow:hidden;height:100vh}
+
+/* Slide Container */
+.slide-container{position:relative;width:100%;height:100vh;overflow:hidden}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;visibility:hidden;transition:all .5s ease;transform:translateX(100px);display:flex;flex-direction:column}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0)}
+.slide.prev{opacity:0;visibility:hidden;transform:translateX(-100px)}
+
+/* Slide Content */
+.slide-content{flex:1;overflow-y:auto;padding:60px 40px 40px;max-width:1200px;margin:0 auto;width:100%}
+.slide-content::-webkit-scrollbar{width:6px}
+.slide-content::-webkit-scrollbar-thumb{background:var(--primary-light);border-radius:3px}
+
+/* Top Bar */
+.top-bar{position:fixed;top:0;left:0;right:0;height:50px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.top-bar-title{font-size:.9rem;font-weight:700;color:var(--primary)}
+.top-bar-progress{display:flex;align-items:center;gap:12px}
+.progress-text{font-size:.75rem;color:var(--gray)}
+.progress-track{width:160px;height:6px;background:#e8eaf6;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--gradient-1);border-radius:3px;transition:width .3s}
+
+/* Navigation */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;height:60px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:10px 24px;border-radius:30px;border:none;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .3s;font-family:inherit}
+.nav-btn-primary{background:var(--gradient-1);color:#fff;box-shadow:0 4px 16px rgba(26,35,126,.25)}
+.nav-btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,35,126,.35)}
+.nav-btn-secondary{background:#e8eaf6;color:var(--primary)}
+.nav-btn-secondary:hover{background:#c5cae9}
+.nav-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.slide-dots{display:flex;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#cfd8dc;cursor:pointer;transition:all .3s}
+.dot.active{width:24px;border-radius:4px;background:var(--primary-light)}
+
+/* Typography */
+h1.slide-title{font-size:2.4rem;font-weight:900;color:var(--dark);margin-bottom:12px;line-height:1.3}
+h1.slide-title span{background:var(--gradient-2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.section-title{font-size:1.6rem;font-weight:800;color:var(--dark);margin:32px 0 16px;display:flex;align-items:center;gap:10px}
+h2.section-title .num{width:36px;height:36px;border-radius:50%;background:var(--gradient-1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.lead{font-size:1.15rem;color:var(--gray);line-height:1.8;margin-bottom:24px}
+p{color:#455a64;line-height:1.9;margin-bottom:12px;font-size:.95rem}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin:20px 0}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:var(--shadow);transition:all .3s;border:1px solid #e8eaf6}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--primary-light)}
+.card-icon{width:48px;height:48px;border-radius:12px;background:var(--gradient-1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px;color:#fff}
+.card h4{font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:8px}
+.card p{font-size:.85rem;color:var(--gray);margin:0;line-height:1.7}
+.card-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600;margin-top:10px;background:#e8eaf6;color:var(--primary)}
+
+/* Flow Diagram */
+.flow-box{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:24px 0;padding:20px;background:#fff;border-radius:16px;box-shadow:var(--shadow)}
+.flow-item{padding:10px 18px;border-radius:10px;font-size:.85rem;font-weight:600;text-align:center;min-width:100px}
+.flow-item.navy{background:#e8eaf6;color:var(--primary);border:2px solid #c5cae9}
+.flow-item.gold{background:#fff8e1;color:#f57f17;border:2px solid #ffecb3}
+.flow-item.red{background:#ffebee;color:var(--secondary);border:2px solid #ef9a9a}
+.flow-item.green{background:#e8f5e9;color:var(--success);border:2px solid #a5d6a7}
+.flow-arrow{font-size:1.4rem;color:var(--gray)}
+
+/* Definition Box */
+.def-box{background:linear-gradient(135deg,#e8eaf6 0%,#e3f2fd 100%);border-radius:16px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--primary)}
+.def-box h5{font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.def-box p{font-size:.85rem;color:#455a64;margin:0}
+
+/* Stat Box */
+.stat-box{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.stat-item{background:#fff;border-radius:16px;padding:24px;box-shadow:var(--shadow);text-align:center;border:1px solid #e8eaf6}
+.stat-num{font-size:2.4rem;font-weight:900;color:var(--primary);line-height:1}
+.stat-label{font-size:.85rem;color:var(--gray);margin-top:8px}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin:16px 0;font-size:.85rem}
+.data-table th,.data-table td{padding:12px 16px;text-align:left;border-bottom:1px solid #eceff1}
+.data-table th{background:var(--gradient-1);color:#fff;font-weight:600;font-size:.8rem}
+.data-table tr:hover{background:#f5f7fa}
+.data-table td{color:#455a64}
+
+/* Tip Box */
+.tip-box{background:linear-gradient(135deg,#fff8e1 0%,#fff3e0 100%);border-radius:16px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--warning);display:flex;gap:14px;align-items:flex-start}
+.tip-box .tip-icon{font-size:1.6rem;flex-shrink:0}
+.tip-box h5{font-size:.9rem;font-weight:700;color:var(--warning);margin-bottom:6px}
+.tip-box p{font-size:.85rem;color:#5d4037;margin:0}
+
+/* Warn Box */
+.warn-box{background:linear-gradient(135deg,#ffebee 0%,#fff3e0 100%);border-radius:16px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--secondary);display:flex;gap:14px;align-items:flex-start}
+.warn-box .warn-icon{font-size:1.6rem;flex-shrink:0}
+.warn-box h5{font-size:.9rem;font-weight:700;color:var(--secondary);margin-bottom:6px}
+.warn-box p{font-size:.85rem;color:#5d4037;margin:0}
+
+/* Executive Summary Box */
+.exec-box{background:var(--dark);border-radius:16px;padding:28px;margin:20px 0;color:#fff}
+.exec-box h5{font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.exec-box p{color:rgba(255,255,255,.85);margin-bottom:8px;font-size:.9rem;line-height:1.8}
+.exec-box p:last-child{margin-bottom:0}
+
+/* Hero slide */
+.hero-slide{display:flex;align-items:center;justify-content:center;text-align:center;background:var(--dark);position:relative;overflow:hidden}
+.hero-slide::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 50%,rgba(26,35,126,.3),transparent 60%),radial-gradient(circle at 70% 80%,rgba(255,215,0,.1),transparent 50%)}
+.hero-slide .slide-content{position:relative;z-index:2}
+.hero-slide h1{color:#fff;font-size:3rem;margin-bottom:16px}
+.hero-slide h1 span{background:var(--gradient-2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-slide .lead{color:rgba(255,255,255,.7);font-size:1.2rem;margin-bottom:32px}
+.hero-badges{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.hero-badge{padding:8px 20px;border-radius:30px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.85rem;font-weight:500}
+.hero-stat-row{display:flex;justify-content:center;gap:48px;margin-top:40px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-size:2.4rem;font-weight:900;color:#fff;line-height:1}
+.hero-stat-num span{font-size:1.2rem;color:var(--accent)}
+.hero-stat-label{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:6px}
+
+/* Section divider */
+.section-divider{width:50px;height:4px;background:var(--gradient-1);border-radius:2px;margin:16px 0}
+
+/* Two column */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){
+  .two-col{grid-template-columns:1fr}
+  .slide-content{padding:60px 20px 80px}
+  h1.slide-title{font-size:1.8rem}
+  .hero-slide h1{font-size:2rem}
+  .flow-box{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg)}
+  .nav-btn{padding:8px 16px;font-size:.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+<!-- Slide 0: Cover -->
+<div class="slide hero-slide active" data-index="0">
+  <div class="slide-content">
+    <div class="hero-badge">🔒 高管战略简报 · 机密</div>
+    <h1>入境游市场<br><span>战略机会分析</span></h1>
+    <p class="lead" style="max-width:650px;margin:0 auto 32px">"China Travel"全球现象级热潮下，入境游市场的真实数据、用户痛点与龙虾出行的战略窗口期</p>
+    <div class="hero-badges">
+      <span class="hero-badge">📊 市场数据</span>
+      <span class="hero-badge">🎯 用户痛点</span>
+      <span class="hero-badge">💰 商业机会</span>
+      <span class="hero-badge">🚀 战略建议</span>
+    </div>
+    <div class="hero-stat-row">
+      <div class="hero-stat"><div class="hero-stat-num">5000<span>亿+</span></div><div class="hero-stat-label">历史峰值收入</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">144<span>h</span></div><div class="hero-stat-label">过境免签</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">37<span>城</span></div><div class="hero-stat-label">免签覆盖</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 1: Executive Summary -->
+<div class="slide" data-index="1">
+  <div class="slide-content">
+    <h1 class="slide-title">高管摘要：<span>核心结论先行</span></h1>
+    <div class="section-divider"></div>
+
+    <div class="exec-box">
+      <h5>📌 核心结论</h5>
+      <p><strong>1. 入境游是中国旅游市场未来 3-5 年最具确定性的增长赛道。</strong>政策端（144h 免签扩展、54 国开放）、需求端（"China Travel"全球热潮）、供给端（中国基础设施升级）三重共振，窗口期已打开。</p>
+      <p><strong>2. 当前市场存在严重的"服务真空"。</strong>没有一家平台真正解决外国游客在中国旅行的一站式痛点。携程国际版（Trip.com）主要服务海外华人，Booking/Expedia 在中国产品体验极差。</p>
+      <p><strong>3. 龙虾出行的机会不是"做另一个 OTA"，而是成为"外国游客在中国旅行的基础设施"。</strong>从支付、语言、网络、预订到行程安排，提供全链路无障碍服务。</p>
+      <p><strong>4. 建议：将入境游列为公司战略级项目，配置独立团队，6 个月内推出 MVP。</strong></p>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--success)">+60<span style="font-size:1.2rem">%</span></div>
+        <div class="stat-label">2024年入境人次增速</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--success)">+80<span style="font-size:1.2rem">%</span></div>
+        <div class="stat-label">2024年免签入境增速</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--secondary)">30<span style="font-size:1.2rem">%</span></div>
+        <div class="stat-label">vs 2019 恢复水平</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--warning)">3-5<span style="font-size:1.2rem">年</span></div>
+        <div class="stat-label">预计恢复至 2019 峰值</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: Market Data -->
+<div class="slide" data-index="2">
+  <div class="slide-content">
+    <h1 class="slide-title">📊 入境游市场全景：<br><span>数据与趋势</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>市场规模：从谷底反弹</h2>
+    <table class="data-table">
+      <tr><th>指标</th><th>2019（峰值）</th><th>2023</th><th>2024</th><th>趋势判断</th></tr>
+      <tr><td>入境旅游人次</td><td>1.45 亿</td><td>8200 万</td><td>约 1.1 亿</td><td>快速恢复，预计 2026-2027 超越 2019</td></tr>
+      <tr><td>入境旅游收入</td><td>1300 亿美元</td><td>约 500 亿美元</td><td>约 700 亿美元</td><td>收入恢复慢于人次，客单价在下降</td></tr>
+      <tr><td>外国人入境人次</td><td>约 5000 万</td><td>约 1400 万</td><td>约 2500 万</td><td>外国人恢复显著慢于港澳台</td></tr>
+      <tr><td>免签入境人次</td><td>数据不突出</td><td>约 300 万</td><td>约 600 万</td><td>144h 免签政策驱动爆发式增长</td></tr>
+    </table>
+
+    <div class="warn-box">
+      <div class="warn-icon">⚠️</div>
+      <div>
+        <h5>关键洞察：人次恢复快于收入</h5>
+        <p>2024 年入境人次恢复到 2019 年的约 75%，但收入仅恢复到约 55%。这意味着<strong>外国游客的结构变了</strong>：更多东南亚、东亚短期游客（客单价低），更少欧美长途游客（客单价高）。但同时，"China Travel"现象正在改变欧美游客的意愿，这是机会。</p>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>"China Travel"：社交媒体驱动的免费营销</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📹</div>
+        <h4>YouTube/TikTok 病毒传播</h4>
+        <p>外国博主"第一次来中国"的视频在 YouTube 上动辄百万播放。关键词"China Travel"在 TikTok 上播放量超 10 亿次。这些内容打破了西方媒体的负面叙事。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗣️</div>
+        <h4>口碑效应</h4>
+        <p>来过中国的外国游客普遍给出极高评价（安全、便捷、美食、基础设施）。他们在社交媒体上的自发传播，是最有效的"零成本营销"。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Policy -->
+<div class="slide" data-index="3">
+  <div class="slide-content">
+    <h1 class="slide-title">🏛️ 政策红利：<br><span>144小时免签与开放信号</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>过境免签政策演进</h2>
+    <div class="flow-box">
+      <div class="flow-item navy">2013<br>72h 免签（北京/上海）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">2016<br>144h 扩围</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">2023.11<br>54 国 + 15 天</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item gold">2024.12<br>54 国 + 240h<br>+ 37 城</div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>2024 年 12 月最新政策（240 小时 / 10 天）</h2>
+    <table class="data-table">
+      <tr><th>维度</th><th>内容</th></tr>
+      <tr><td>停留时间</td><td>从 144 小时延长至 <strong>240 小时（10 天）</strong></td></tr>
+      <tr><td>适用国家</td><td><strong>54 国</strong>，覆盖欧洲 40 国、美洲 6 国、大洋洲 2 国、亚洲 6 国</td></tr>
+      <tr><td>适用城市</td><td>从 20 城扩至 <strong>37 城</strong>，涵盖北京、上海、广州、深圳、成都、西安、厦门等</td></tr>
+      <tr><td>活动范围</td><td>可在适用城市所在的 19 个省（区、市）内自由旅行，<strong>不再限制于入境城市</strong></td></tr>
+      <tr><td>入境口岸</td><td>从 39 个扩至 <strong>60 个</strong>（含机场、港口、陆路口岸）</td></tr>
+    </table>
+
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <div>
+        <h5>政策解读</h5>
+        <p>240 小时（10 天）意味着什么？一个欧洲游客可以：<strong>北京入境 → 游长城 → 高铁去西安看兵马俑 → 飞成都看大熊猫 → 高铁去重庆吃火锅 → 飞上海离境</strong>。这已经完全支撑一次"深度中国游"，不再只是"过境顺便看看"。政策本质上是在用"免签"替代"签证"，降低入境门槛。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: User Profile -->
+<div class="slide" data-index="4">
+  <div class="slide-content">
+    <h1 class="slide-title">🌍 谁在来中国？<br><span>客源结构与用户画像</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>2024 年入境游客源结构（外国人）</h2>
+    <table class="data-table">
+      <tr><th>区域</th><th>占比</th><th>典型国家</th><th>客单价</th><th>出行特征</th></tr>
+      <tr><td>东南亚</td><td>约 35%</td><td>泰国、越南、马来西亚、新加坡</td><td>低（$500-1500）</td><td>短途、高频、周末游、美食驱动</td></tr>
+      <tr><td>东北亚</td><td>约 25%</td><td>日本、韩国、蒙古</td><td>中（$1500-3000）</td><td>商务+休闲、文化相近、购物驱动</td></tr>
+      <tr><td>欧洲</td><td>约 15%</td><td>德国、英国、法国、俄罗斯</td><td>高（$3000-8000）</td><td>长途、深度、文化/历史驱动</td></tr>
+      <tr><td>北美</td><td>约 10%</td><td>美国、加拿大</td><td>高（$4000-10000）</td><td>长途、高端、探险/文化驱动</td></tr>
+      <tr><td>大洋洲</td><td>约 8%</td><td>澳大利亚、新西兰</td><td>中高（$2500-6000）</td><td>中长途、户外/自然驱动</td></tr>
+      <tr><td>其他</td><td>约 7%</td><td>中东、非洲、南美</td><td>差异大</td><td>小众、商务为主</td></tr>
+    </table>
+
+    <h2 class="section-title"><span class="num">2</span>"China Travel"现象带来的新客群</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🎥</div>
+        <h4>社交媒体驱动型游客</h4>
+        <p>看了 YouTube/TikTok 视频后决定"必须去中国看看"。特点是：年轻（25-35岁）、预算有限、重视"出片率"、依赖社交媒体获取信息。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h4>"颠覆认知"型游客</h4>
+        <p>受西方媒体负面叙事影响，对中国有偏见，但被社交媒体上的真实内容打动。特点是：好奇心强、愿意深度体验、回国后会成为"自来水"。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💼</div>
+        <h4>商务+休闲（Bleisure）</h4>
+        <p>利用商务出差机会延长停留时间。特点是：时间灵活、预算较高、对酒店和服务品质要求高。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👨‍👩‍👧</div>
+        <h4>海外华人二代/三代</h4>
+        <p>有中国血统但从未回国，希望"寻根"。特点是：有一定中文基础、对中国文化有情感连接、家庭出行居多。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: Pain Point 1 -->
+<div class="slide" data-index="5">
+  <div class="slide-content">
+    <h1 class="slide-title">用户痛点一：<br><span>支付与数字生活障碍</span></h1>
+    <div class="section-divider"></div>
+    <p class="lead">这是外国游客在中国遇到的最大障碍，没有之一。一个欧洲游客在中国可能寸步难行，不是因为语言，而是因为"付不了钱"。</p>
+
+    <h2 class="section-title"><span class="num">1</span>中国的"无现金社会" vs 外国游客的"支付孤岛"</h2>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">🇨🇳</div>
+        <h4>中国人的日常</h4>
+        <p>• 早餐摊：扫码支付<br>• 地铁：支付宝/微信乘车码<br>• 打车：滴滴自动扣款<br>• 酒店：押金预授权<br>• 景区门票：小程序购票<br>• 餐厅：扫码点餐+支付</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">🌍</div>
+        <h4>外国游客的现实</h4>
+        <p>• 没有支付宝/微信账户<br>• 信用卡在很多小店用不了<br>• 现金找零困难（很多店没零钱）<br>• 无法注册滴滴（需要国内手机号）<br>• 无法购买火车票（12306 需实名认证）<br>• 扫码点餐看不懂菜单</p>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>支付障碍的具体场景</h2>
+    <table class="data-table">
+      <tr><th>场景</th><th>障碍</th><th>游客 workaround</th></tr>
+      <tr><td>街边小店/夜市</td><td>只收微信/支付宝</td><td>找中国人代付 → 给现金</td></tr>
+      <tr><td>打车</td><td>滴滴需国内手机号+支付方式</td><td>拦出租车 → 现金/信用卡（部分不支持）</td></tr>
+      <tr><td>地铁/公交</td><td>需支付宝/微信乘车码</td><td>买单程票（部分城市机器只收现金）</td></tr>
+      <tr><td>景区门票</td><td>线上购票需国内身份证/手机号</td><td>窗口排队购票（热门景区可能售罄）</td></tr>
+      <tr><td>餐厅</td><td>扫码点餐 + 线上支付</td><td>指着别人的菜说"要这个" → 现金</td></tr>
+      <tr><td>酒店押金</td><td>预授权需国内银行卡</td><td>交大量现金押金</td></tr>
+    </table>
+
+    <div class="warn-box">
+      <div class="warn-icon">🔴</div>
+      <div>
+        <h5>这不是"小问题"，这是系统性障碍</h5>
+        <p>2024 年央行推动"外卡受理改造"，要求商户支持 Visa/Mastercard。但实际情况是：<strong>一线城市核心商圈覆盖率约 70%，二三线城市不足 30%</strong>。而且外卡刷卡手续费高（2-3%），很多小商户不愿开通。支付问题短期内无法根本解决。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: Pain Point 2 -->
+<div class="slide" data-index="6">
+  <div class="slide-content">
+    <h1 class="slide-title">用户痛点二：<br><span>语言与信息获取障碍</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>信息获取：外国游客的"信息沙漠"</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h4>Google 不可用</h4>
+        <p>外国游客习惯用 Google Search、Google Maps、TripAdvisor。在中国全部无法直接访问。他们突然失去了最熟悉的信息获取工具。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h4>中文信息壁垒</h4>
+        <p>小红书、抖音、大众点评上的优质内容都是中文。外国游客即使能用翻译工具，也无法获取深度、实时的本地信息。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h4>英文内容质量差</h4>
+        <p>中国的英文旅游信息（政府官网、景区介绍、酒店描述）翻译质量普遍较差，信息更新不及时，缺乏实用性。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h4>没有"外国游客版"攻略</h4>
+        <p>现有攻略都是写给中国人的。外国游客需要的信息完全不同：签证/免签政策、支付方式、网络问题、文化禁忌、紧急联系方式。</p>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>语言障碍的具体场景</h2>
+    <table class="data-table">
+      <tr><th>场景</th><th>障碍</th><th>影响程度</th></tr>
+      <tr><td>餐厅点餐</td><td>菜单无英文/图片，服务员不会英语</td><td>🔴 极高</td></tr>
+      <tr><td>交通导航</td><td>路牌/地铁站点无拼音或英文</td><td>🔴 极高</td></tr>
+      <tr><td>酒店入住</td><td>前台英语有限，无法解释设施/规则</td><td>🟡 高</td></tr>
+      <tr><td>紧急求助</td><td>120/110 无英语服务</td><td>🔴 极高</td></tr>
+      <tr><td>购物</td><td>无法砍价、看不懂成分/尺码</td><td>🟢 中</td></tr>
+      <tr><td>文化体验</td><td>导游讲解无英语，无法理解历史背景</td><td>🟡 高</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Slide 7: Pain Point 3 -->
+<div class="slide" data-index="7">
+  <div class="slide-content">
+    <h1 class="slide-title">用户痛点三：<br><span>预订与行程规划障碍</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>预订障碍：外国游客无法使用中国主流平台</h2>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-icon">🏨</div>
+        <h4>酒店预订</h4>
+        <p>• 携程/美团：需国内手机号注册，界面中文<br>• Booking/Expedia：中国酒店覆盖少、价格高、库存不准<br>• 外国游客常遇到"预订了但酒店说没房"</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✈️</div>
+        <h4>机票预订</h4>
+        <p>• 国际段：Booking/Expedia 可订，但价格不一定最优<br>• 中国国内段：外国 OTA 基本不覆盖，需找代理<br>• 退改签规则复杂，外语客服支持差</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚄</div>
+        <h4>火车票</h4>
+        <p>• 12306：外国人可用护照注册，但流程复杂、界面中文、支付困难<br>• 很多外国游客根本不知道 12306 可以外国人注册<br>• 第三方代购加价高、可靠性低</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎫</div>
+        <h4>景区门票</h4>
+        <p>• 热门景区需提前线上预约（如故宫、兵马俑）<br>• 预约系统中文-only，外国人操作困难<br>• 很多景区有"外国人窗口"，但排队时间长</p>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>行程规划：没有"外国游客友好"的工具</h2>
+    <div class="warn-box">
+      <div class="warn-icon">🔴</div>
+      <div>
+        <h5>核心痛点</h5>
+        <p>• <strong>没有一站式平台</strong>：外国游客需要在 Booking（酒店）+ 某代理（机票）+ 12306（火车）+ 大众点评（餐厅）+ 百度地图（导航）之间切换。<br>• <strong>没有"中国旅行"的行程模板</strong>：不知道 10 天该怎么分配，不知道城市之间怎么连接最合理。<br>• <strong>没有实时支持</strong>：遇到问题时（航班取消、酒店超售），没有 24 小时英语客服。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Opportunity Map -->
+<div class="slide" data-index="8">
+  <div class="slide-content">
+    <h1 class="slide-title">💰 商业机会地图：<br><span>入境游价值链拆解</span></h1>
+    <div class="section-divider"></div>
+
+    <div class="flow-box">
+      <div class="flow-item navy">行前<br>信息/签证/预订</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">入境<br>机场/口岸</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">交通<br>城市间/市内</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">住宿<br>酒店/民宿</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">体验<br>景点/餐饮/购物</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item navy">离境<br>机场/售后</div>
+    </div>
+
+    <h2 class="section-title"><span class="num">1</span>各环节的痛点与机会评估</h2>
+    <table class="data-table">
+      <tr><th>环节</th><th>痛点强度</th><th>当前玩家</th><th>机会评级</th><th>龙虾出行切入点</th></tr>
+      <tr><td>行前信息</td><td>🔴 极高</td><td>无</td><td>⭐⭐⭐⭐⭐</td><td>"首次来中国"一站式攻略平台</td></tr>
+      <tr><td>签证/免签指导</td><td>🟡 高</td><td>旅行社</td><td>⭐⭐⭐⭐</td><td>免签政策自动查询 + 入境指南</td></tr>
+      <tr><td>机票预订</td><td>🟡 高</td><td>Booking, Trip.com</td><td>⭐⭐⭐</td><td>国际+国内联程打包</td></tr>
+      <tr><td>酒店预订</td><td>🟡 高</td><td>Booking, Trip.com</td><td>⭐⭐⭐</td><td>"外国游客友好"酒店认证</td></tr>
+      <tr><td>火车票预订</td><td>🔴 极高</td><td>12306, 代理</td><td>⭐⭐⭐⭐⭐</td><td>外国人友好的火车预订接口</td></tr>
+      <tr><td>支付解决方案</td><td>🔴 极高</td><td>支付宝（Tour Pass）</td><td>⭐⭐⭐⭐⭐</td><td>代付/预付/旅游卡</td></tr>
+      <tr><td>行程规划</td><td>🔴 极高</td><td>无</td><td>⭐⭐⭐⭐⭐</td><td>AI 驱动的多语言行程规划</td></tr>
+      <tr><td>当地体验</td><td>🟡 高</td><td>Klook, GetYourGuide</td><td>⭐⭐⭐⭐</td><td>中文文化体验的英语交付</td></tr>
+      <tr><td>紧急支持</td><td>🔴 极高</td><td>无</td><td>⭐⭐⭐⭐⭐</td><td>24h 英语客服 + 应急服务</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Slide 9: Competitive Landscape -->
+<div class="slide" data-index="9">
+  <div class="slide-content">
+    <h1 class="slide-title">🏁 竞争格局：<br><span>谁在服务入境游客？</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>现有玩家分析</h2>
+    <table class="data-table">
+      <tr><th>玩家</th><th>定位</th><th>优势</th><th>劣势</th><th>对龙虾的威胁</th></tr>
+      <tr><td>Trip.com（携程国际）</td><td>全球 OTA</td><td>供应链强、多语言</td><td>主要服务海外华人，外国游客体验一般</td><td>中</td></tr>
+      <tr><td>Booking.com</td><td>全球住宿预订</td><td>品牌认知度高、外卡支付</td><td>中国酒店覆盖少、价格高、库存不准</td><td>低</td></tr>
+      <tr><td>Expedia</td><td>全球 OTA</td><td>品牌认知度高</td><td>在中国市场几乎无投入</td><td>极低</td></tr>
+      <tr><td>Klook 客路</td><td>目的地体验</td><td>亚太目的地深耕、多语言</td><td>不做机票酒店，只做体验</td><td>中（可合作）</td></tr>
+      <tr><td>GetYourGuide</td><td>目的地体验</td><td>欧洲市场强</td><td>中国产品极少</td><td>极低</td></tr>
+      <tr><td>传统旅行社</td><td>入境跟团游</td><td>有接待经验</td><td>产品老化、数字化弱、口碑差</td><td>低</td></tr>
+      <tr><td>支付宝 Tour Pass</td><td>支付解决方案</td><td>支付痛点解决</td><td>只是支付工具，不做旅游服务</td><td>低（可合作）</td></tr>
+    </table>
+
+    <h2 class="section-title"><span class="num">2</span>竞争真空地带</h2>
+    <div class="exec-box">
+      <h5>🎯 核心判断</h5>
+      <p><strong>没有一家公司在做"外国游客在中国的一站式服务平台"。</strong></p>
+      <p>Trip.com 有供应链但不够"外国游客友好"；Booking 有品牌但在中国产品弱；Klook 有体验但不做机酒；支付宝解决支付但不碰旅游。</p>
+      <p>这意味着：<strong>入境游市场存在一个巨大的"服务真空"，龙虾出行有机会成为第一个填补这个真空的公司。</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: Strategy -->
+<div class="slide" data-index="10">
+  <div class="slide-content">
+    <h1 class="slide-title">🚀 龙虾出行的机会<br><span>与战略建议</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>战略定位：不做 OTA，做"外国游客的中国旅行基础设施"</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🌉</div>
+        <h4>降低门槛</h4>
+        <p>解决外国游客在中国的核心障碍：支付、语言、预订、信息。让"来中国旅行"像"去泰国旅行"一样简单。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h4>聚焦高价值客群</h4>
+        <p>优先服务欧美长途游客（客单价 $3000-10000）和"China Travel"社交媒体驱动型游客（传播力强）。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h4>AI 驱动差异化</h4>
+        <p>用 AI 实现：多语言实时沟通、智能行程规划、个性化推荐、自动化客服。技术是龙虾出行的核心壁垒。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h4>轻资产整合</h4>
+        <p>不自建酒店/车队，而是整合现有供应链（携程库存、滴滴接口、支付宝支付），在上面叠加"外国游客友好"的服务层。</p>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>产品 MVP 建议（6 个月内）</h2>
+    <table class="data-table">
+      <tr><th>功能</th><th>说明</th><th>优先级</th></tr>
+      <tr><td>多语言攻略网站</td><td>英文版"首次来中国"一站式攻略：签证、支付、网络、文化禁忌、推荐行程</td><td>P0</td></tr>
+      <tr><td>酒店预订（外国友好认证）</td><td>筛选"支持外卡/英语前台/国际插座"的酒店，叠加 10% 服务费提供代订</td><td>P0</td></tr>
+      <tr><td>火车票代订</td><td>外国人友好的火车预订服务（收服务费），解决 12306 注册/支付难题</td><td>P0</td></tr>
+      <tr><td>AI 行程规划</td><td>输入时间+兴趣，AI 生成多语言行程单（含交通、酒店、景点、餐厅）</td><td>P1</td></tr>
+      <tr><td>24h 英语客服</td><td>微信/WhatsApp 双语客服，处理紧急问题（航班取消、酒店超售、生病）</td><td>P1</td></tr>
+      <tr><td>支付解决方案</td><td>预付卡/代付服务（与支付宝/银行合作），让游客提前充值，在华消费</td><td>P1</td></tr>
+      <tr><td>KOL 合作</td><td>与"China Travel"热门 YouTube/TikTok 博主合作，提供体验赞助</td><td>P2</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Slide 11: Risk -->
+<div class="slide" data-index="11">
+  <div class="slide-content">
+    <h1 class="slide-title">⚠️ 风险评估<br><span>与应对策略</span></h1>
+    <div class="section-divider"></div>
+
+    <h2 class="section-title"><span class="num">1</span>主要风险</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">📉</div>
+        <h4>政策风险</h4>
+        <p>地缘政治紧张可能导致签证政策收紧、国际航班减少。如中美关系恶化可能影响美国游客入境。</p>
+        <span class="card-tag">不可控</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">🏢</div>
+        <h4>巨头入场</h4>
+        <p>Trip.com 可能加大外国游客市场投入；Booking 可能收购本土公司。巨头的资源碾压是真实威胁。</p>
+        <span class="card-tag">中高风险</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">💸</div>
+        <h4>获客成本高</h4>
+        <p>外国游客的获客渠道（Google Ads、Facebook、YouTube KOL）成本较高，且 ROI 难以预测。</p>
+        <span class="card-tag">可控</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--gradient-2)">🔄</div>
+        <h4>供应链依赖</h4>
+        <p>轻资产模式下，酒店/机票库存依赖第三方。如果携程/Booking 提高 API 费用或限制库存，业务受影响。</p>
+        <span class="card-tag">中风险</span>
+      </div>
+    </div>
+
+    <h2 class="section-title"><span class="num">2</span>应对策略</h2>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h4>分散客源市场</h4>
+        <p>不依赖单一国家。同时拓展欧洲、北美、东南亚、日韩市场，降低单一国家政策风险。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h4>速度优先</h4>
+        <p>在巨头反应过来之前，快速建立品牌认知和用户口碑。入境游市场的"先发优势"非常重要。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h4>内容营销 + KOL</h4>
+        <p>通过与"China Travel"博主合作，用内容而非广告获客。成本更低，信任度更高。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h4>多供应链备份</h4>
+        <p>酒店库存同时接携程、Booking、直签酒店；机票接多家 GDS。避免单一供应商锁定。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 12: Conclusion -->
+<div class="slide" data-index="12">
+  <div class="slide-content">
+    <h1 class="slide-title">📌 结论：<br><span>行动建议与决策要点</span></h1>
+    <div class="section-divider"></div>
+
+    <div class="exec-box">
+      <h5>🎯 给高管团队的决策建议</h5>
+      <p><strong>1. 入境游是一个"确定性增长 + 竞争真空"的战略级机会。</strong>政策红利（240h 免签）、需求红利（"China Travel"热潮）、供给红利（中国基础设施升级）三重叠加，窗口期 3-5 年。</p>
+      <p><strong>2. 建议将入境游列为公司第二增长曲线。</strong>配置独立团队（建议 5-10 人），给予 6 个月试错期，目标不是盈利，而是验证 PMF（产品-市场匹配）。</p>
+      <p><strong>3. MVP 路径：攻略内容 → 酒店代订 → 火车票代订 → AI 行程规划 → 一站式平台。</strong>每一步都有清晰的验证指标，不烧钱做大盘。</p>
+      <p><strong>4. 核心壁垒不是供应链，而是"外国游客信任"和"AI 服务能力"。</strong>巨头有供应链但不懂外国游客，传统旅行社懂游客但不懂技术。龙虾出行的 sweet spot 是"技术驱动 + 场景理解"。</p>
+      <p><strong>5. 风险提示：政策变化、巨头入场、获客成本。</strong>但通过分散市场、速度优先、内容营销、多供应链备份，可以将风险控制在可接受范围。</p>
+    </div>
+
+    <div class="stat-box">
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--primary)">6<span style="font-size:1.2rem">个月</span></div>
+        <div class="stat-label">MVP 目标周期</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--primary)">100<span style="font-size:1.2rem">万</span></div>
+        <div class="stat-label">首年投入预算建议</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--primary)">500<span style="font-size:1.2rem">万</span></div>
+        <div class="stat-label">首年 GMV 目标</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" style="color:var(--primary)">3<span style="font-size:1.2rem">年</span></div>
+        <div class="stat-label">成为赛道头部的时间窗口</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px">
+      <a href="../index.html" class="nav-btn nav-btn-primary" style="text-decoration:none;display:inline-flex">
+        ← 返回课程首页
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="top-bar-title">🔒 高管战略简报 · 入境游市场战略机会分析</div>
+  <div class="top-bar-progress">
+    <span class="progress-text" id="progressText">1 / 13</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:7%"></div></div>
+  </div>
+</div>
+
+<!-- Nav Bar -->
+<div class="nav-bar">
+  <button class="nav-btn nav-btn-secondary" id="prevBtn" onclick="prevSlide()">← 上一页</button>
+  <div class="slide-dots" id="slideDots"></div>
+  <button class="nav-btn nav-btn-primary" id="nextBtn" onclick="nextSlide()">下一页 →</button>
+</div>
+
+</div><!-- /slide-container -->
+
+<script>
+let currentSlide = 0;
+const totalSlides = 13;
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('slideDots');
+
+// Create dots
+for(let i=0;i<totalSlides;i++){
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i===0?' active':'');
+  dot.onclick = ()=>goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide(){
+  slides.forEach((slide,i)=>{
+    slide.classList.remove('active','prev');
+    if(i===currentSlide) slide.classList.add('active');
+    else if(i<currentSlide) slide.classList.add('prev');
+  });
+  document.querySelectorAll('.dot').forEach((dot,i)=>{
+    dot.classList.toggle('active',i===currentSlide);
+  });
+  document.getElementById('prevBtn').disabled = currentSlide===0;
+  document.getElementById('nextBtn').disabled = currentSlide===totalSlides-1;
+  document.getElementById('nextBtn').textContent = currentSlide===totalSlides-1?'已完成':'下一页 →';
+  document.getElementById('progressText').textContent = `${currentSlide+1} / ${totalSlides}`;
+  document.getElementById('progressFill').style.width = `${((currentSlide+1)/totalSlides*100)}%`;
+  window.scrollTo(0,0);
+}
+
+function nextSlide(){if(currentSlide<totalSlides-1){currentSlide++;updateSlide()}}
+function prevSlide(){if(currentSlide>0){currentSlide--;updateSlide()}}
+function goToSlide(n){currentSlide=n;updateSlide()}
+
+// Keyboard nav
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+});
+</script>
+</body>
+</html>
